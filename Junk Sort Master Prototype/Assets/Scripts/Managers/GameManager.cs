@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
 
     public bool isGameStarted = false;
-    //-------Managers-------
+    [Header("Managers")]
 
     public UIManager UIManager;
     public Spawner  Spawner;
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    //-------DifficultySettings-----
+    [Header("DifficultySettings")]
 
     public DifficultySettings easy;
     public DifficultySettings medium;
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    //-------Timer Variables-------
+   [Header("Level Timers")]
     public float easyTimer = 150.0f;
     public float mediumTimer = 120.0f;
     public float hardTimer = 90.0f;

@@ -23,10 +23,10 @@ public class ConveyorManager : MonoBehaviour
 
         currentTime += Time.deltaTime;
 
-        float t = Mathf.Clamp01(currentTime / diff.rampDuration);
+        float t = Mathf.Clamp01(currentTime / diff.speedRampTime);
         float curveValue = diff.rampCurve.Evaluate(t);
 
-        CurrentSpeed = Mathf.Lerp(diff.minSpeed, diff.maxSpeed, curveValue);
+        CurrentSpeed = Mathf.Lerp(diff.minConveyorSpeed, diff.maxConveyorSpeed, curveValue);
 
         // Apply to shader
         float conveyorSpeed = CurrentSpeed / 50f;
