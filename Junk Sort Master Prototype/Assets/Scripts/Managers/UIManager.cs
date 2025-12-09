@@ -112,9 +112,12 @@ public class UIManager : MonoBehaviour
         ShowMainMenu();
     }
 
-    public void onRestartButton()
+    public void ShowGameOverPanel(int score, int streak, int multiplier)
     {
+        gameOverPanel.SetActive(true);
 
+        finalScoreText.text = "Final Score: " + score;
         
     }
+
 }

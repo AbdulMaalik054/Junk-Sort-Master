@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -108,4 +108,71 @@ public class ScoreManager : MonoBehaviour
     // Public accessors (optional)
     public int GetStreak() => currentStreak;
     public int GetMultiplier() => currentMultiplier;
+
+    // ----------------------------------------------------
+    // UI Helper Method
+    // ----------------------------------------------------
+
+    private void SpawnFloatingText(string text, Color color, Vector3 worldPos)
+    {
+        if (FloatingTextPool.Instance == null) return;
+
+        var ft = FloatingTextPool.Instance.Get();
+        if (ft == null) return;
+
+        Camera cam = Camera.main;
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(cam, worldPos);
+
+        // Use main Canvas RectTransform instead of the pool
+        RectTransform canvasRect = FloatingTextPool.Instance.floatingTextParent;
+
+        Vector2 anchoredPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, cam, out anchoredPos);
+
+        ft.rectTransform.anchoredPosition = anchoredPos;
+        ft.Init(text, color);
+        ft.Play();
+    }
+
+    // ----------------------------------------------------
+    // PUBLIC SCORE API (Overload Methods)
+    // ----------------------------------------------------
+    public void AddCorrectScore(int baseAmount, Vector3 worldPos)
+    {
+        int amount = baseAmount * currentMultiplier;
+        Score += amount;
+
+        UIManager.Instance.UpdateScoreUI(Score);
+
+        // floating text " +10 "
+        SpawnFloatingText("+" + amount, Color.green, worldPos);
+
+        IncreaseStreak();
+    }
+
+    public void AddWrongPenalty(int penaltyAmount, Vector3 worldPos)
+    {
+        Score -= penaltyAmount;
+        if (Score < 0) Score = 0;
+
+        UIManager.Instance.UpdateScoreUI(Score);
+
+        SpawnFloatingText("-" + penaltyAmount, Color.red, worldPos);
+
+        ResetStreak();
+    }
+
+    public void AddOverflowPenalty(int penaltyAmount, Vector3 worldPos)
+    {
+        Score -= penaltyAmount;
+        if (Score < 0) Score = 0;
+
+        UIManager.Instance.UpdateScoreUI(Score);
+
+        SpawnFloatingText("-" + penaltyAmount, Color.red, worldPos);
+
+        ResetStreak();
+    }
+
+
 }

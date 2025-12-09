@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [Header("Runtime Timer")]
     public float currentTime;
     private bool gameRunning;
+    
 
     [Header("References")]
     [SerializeField] private Spawner spawner;
@@ -29,6 +30,8 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.ShowMainMenu();
     }
+
+    
 
     // ---------------------------------------------------------
     // PUBLIC METHODS CALLED FROM UI
@@ -46,15 +49,16 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.ShowGameplayUI();
 
         gameRunning = true;
+        DragController.DisableDrag = false;
         StartCoroutine(GameTimer());
     }
 
     public void GameOver()
     {
         gameRunning = false;
-
         spawner.StopSpawning();
-       conveyor.StopConveyor();
+        conveyor.StopConveyor(false);
+        DragController.DisableDrag = true; // disable interaction
 
         UIManager.Instance.ShowGameOverUI();
     }
@@ -108,22 +112,25 @@ public class GameManager : MonoBehaviour
     {
         ScoreManager.Instance.ResetScore();
         conveyor.StartConveyor();
+        
         spawner.StartSpawning();
     }
+
+    
 
     // ---------------------------------------------------------
     // PUBLIC GAME EVENTS
     // ---------------------------------------------------------
-    public void AddScore(int amount)
+    public void AddScore(int amount , Vector3 objectPosition)
     {
-        ScoreManager.Instance.AddCorrectScore(1);
+        ScoreManager.Instance.AddCorrectScore(amount , objectPosition);
 
         UIManager.Instance.UpdateScoreUI(ScoreManager.Instance.Score);
     }
 
-    public void WrongSortingPenalty()
+    public void WrongSortingPenalty(int amount , Vector3 objectPosition)
     {
-        ScoreManager.Instance.AddWrongPenalty(-2);
+        ScoreManager.Instance.AddWrongPenalty(amount , objectPosition);
         UIManager.Instance.UpdateScoreUI(ScoreManager.Instance.Score);
 
         // Optional time penalty

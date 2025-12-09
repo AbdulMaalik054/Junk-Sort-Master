@@ -15,9 +15,9 @@ public class JunkBin : MonoBehaviour
         bool isCorrect = (junk.junkType == correctjunkType);
 
         if (junk.junkType == correctjunkType)
-            GameManager.Instance.AddScore(1);
+            GameManager.Instance.AddScore(1 , transform.position);
         else
-            GameManager.Instance.WrongSortingPenalty();
+            GameManager.Instance.WrongSortingPenalty(-2 , transform.position);
 
         other.gameObject.SetActive(false);
 

@@ -2,12 +2,15 @@ using UnityEngine;
 
 public class DragController : MonoBehaviour
 {
+    public static bool DisableDrag = false;
     private bool isDragging = false;
     private Vector3 offset;
     private Plane dragPlane;
 
     public void BeginDrag(Vector3 hitPoint)
     {
+        if (DisableDrag) return;
+        
         // Create a drag plane facing the camera
         dragPlane = new Plane(-Camera.main.transform.forward, transform.position);
 

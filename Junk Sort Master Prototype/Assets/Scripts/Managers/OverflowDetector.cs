@@ -13,7 +13,7 @@ public class OverflowDetector : MonoBehaviour
 
         // Overflow = penalty
         
-        scoreManager.AddOverflowPenalty(-5);
+        scoreManager.AddOverflowPenalty(-5 , transform.position);
 
         Debug.Log("Overflow! -1 score");
 

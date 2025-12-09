@@ -23,25 +23,31 @@ public class ConveyorManager : MonoBehaviour
         else Destroy(gameObject);
 
         if (beltRenderer != null)
+        {
+            // Instantiate unique material so scrolling affects only this belt
             beltMaterial = beltRenderer.material;
+        }
     }
 
     private void Update()
     {
-        if (!conveyorRunning) return;
+        if (!conveyorRunning)
+            return;
 
-        // Smooth acceleration up to max speed
+        // Accelerate smoothly to max speed
         if (currentSpeed < maxSpeed)
         {
             currentSpeed += acceleration * Time.deltaTime;
             currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
+            
         }
 
-        // Belt UV scrolling effect
+        // Apply UV scrolling
         if (beltMaterial != null)
         {
             float offset = Time.time * currentSpeed * uvMultiplier;
 
+            // URP Lit uses _BaseMap, Standard shader uses _MainTex
             if (beltMaterial.HasProperty("_BaseMap"))
                 beltMaterial.SetTextureOffset("_BaseMap", new Vector2(0, offset));
             else if (beltMaterial.HasProperty("_MainTex"))
@@ -60,15 +66,16 @@ public class ConveyorManager : MonoBehaviour
                 moveDirection.normalized * currentSpeed * Time.fixedDeltaTime;
 
             rb.MovePosition(rb.position + displacement);
+            
         }
     }
 
     // ---------------------------------------------------------
-    // PUBLIC API — matches GameManager requirements
+    // PUBLIC API
     // ---------------------------------------------------------
 
     /// <summary>
-    /// Sets start speed, max speed, and acceleration based on difficulty.
+    /// Set speed ranges based on difficulty.
     /// </summary>
     public void SetDifficulty(float startSpeed, float maxSpeed, float accel)
     {
@@ -78,7 +85,7 @@ public class ConveyorManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Starts conveyor motion (with ramping).
+    /// Begin conveyor movement
     /// </summary>
     public void StartConveyor()
     {
@@ -86,9 +93,9 @@ public class ConveyorManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Stops conveyor. Optionally resets speed to zero.
+    /// Stop conveyor movement
     /// </summary>
-    public void StopConveyor(bool resetSpeed = false)
+    public void StopConveyor(bool resetSpeed)
     {
         conveyorRunning = false;
 
@@ -96,6 +103,9 @@ public class ConveyorManager : MonoBehaviour
             currentSpeed = 0f;
     }
 
+    /// <summary>
+    /// Fully reset conveyor for a new game round
+    /// </summary>
     public void ResetConveyor()
     {
         currentSpeed = 0f;
