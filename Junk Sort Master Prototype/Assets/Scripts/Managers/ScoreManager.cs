@@ -1,58 +1,96 @@
-using TMPro;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public TextMeshProUGUI scoreCounter;
-    public TextMeshProUGUI comboCounter;
+    public static ScoreManager Instance;
 
-    private float totalScore = 0;
+    // ------------------------------
+    // SCORE + STREAK
+    // ------------------------------
+    public int Score { get; private set; }
     private int currentStreak = 0;
-    private int currentMultiplier = 0;
+    private int currentMultiplier = 1;
 
-    private DifficultySettings difficulty => GameManager.Instance.ActiveDifficulty;
-
-    public void AddCorrectScore()
+    private void Awake()
     {
-        float amount = difficulty.baseScore * currentMultiplier;
-        
-        totalScore += amount;
-
-        UpdateScoreUI();
-        Debug.Log($"Score Added: {amount} x{currentMultiplier} = {amount}");
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
-    public void AddWrongPenalty()
+    // ----------------------------------------------------
+    // PUBLIC SCORE API
+    // ----------------------------------------------------
+    public void ResetScore()
     {
-        totalScore += difficulty.wrongPenalty;
+        Score = 0;
+        currentStreak = 0;
+        currentMultiplier = 1;
 
-        Debug.Log($"Wrong Penalty: {difficulty.wrongPenalty}");
-
-        UpdateScoreUI();
+        UIManager.Instance.UpdateScoreUI(Score);
+        UIManager.Instance.UpdateComboUI(currentMultiplier);
     }
 
-    public void AddOverflowPenalty()
+    /// <summary>
+    /// Adds correct score using multiplier (combo system)
+    /// </summary>
+    public void AddCorrectScore(int baseAmount)
     {
-        totalScore += difficulty.overflowPenalty;
+        int amount = baseAmount * currentMultiplier;
 
-        Debug.Log($"Overflow Penalty: {difficulty.overflowPenalty}");
+        Score += amount;
+        UIManager.Instance.UpdateScoreUI(Score);
 
-        UpdateScoreUI();
+        IncreaseStreak();
+
+        Debug.Log($"Correct Score: {baseAmount} x{currentMultiplier} = {amount}");
     }
-    public void IncreaseStreak()
+
+    /// <summary>
+    /// Wrong sorting penalty
+    /// </summary>
+    public void AddWrongPenalty(int penaltyAmount)
+    {
+        Score -= penaltyAmount;
+        if (Score < 0) Score = 0;
+
+        ResetStreak();
+
+        UIManager.Instance.UpdateScoreUI(Score);
+        Debug.Log($"Wrong Penalty: -{penaltyAmount}");
+    }
+
+    /// <summary>
+    /// Overflow penalty (trash piled up)
+    /// </summary>
+    public void AddOverflowPenalty(int penaltyAmount)
+    {
+        Score -= penaltyAmount;
+        if (Score < 0) Score = 0;
+
+        ResetStreak();
+
+        UIManager.Instance.UpdateScoreUI(Score);
+        Debug.Log($"Overflow Penalty: -{penaltyAmount}");
+    }
+
+    // ----------------------------------------------------
+    // STREAK + MULTIPLIER SYSTEM
+    // ----------------------------------------------------
+    private void IncreaseStreak()
     {
         currentStreak++;
         UpdateMultiplier();
-        Debug.Log("Streak " + currentStreak);
+
+        Debug.Log($"Streak Increased: {currentStreak}");
     }
 
-    public void ResetStreak()
+    private void ResetStreak()
     {
         currentStreak = 0;
         UpdateMultiplier();
+
         Debug.Log("Streak Reset");
     }
-
 
     private void UpdateMultiplier()
     {
@@ -61,22 +99,13 @@ public class ScoreManager : MonoBehaviour
         else if (currentStreak >= 3) currentMultiplier = 2;
         else currentMultiplier = 1;
 
-        Debug.Log($"Streak: {currentStreak} | Multiplier x{currentMultiplier}");
-        comboCounter.text = "Combo: " + currentMultiplier;
+        // Call UI updates
+        UIManager.Instance.UpdateComboUI(currentMultiplier);
 
-
+        Debug.Log($"Multiplier Updated: x{currentMultiplier}");
     }
 
-    public int GetStreak() => currentStreak; // Another way of writing "return current streak"
-    
-
+    // Public accessors (optional)
+    public int GetStreak() => currentStreak;
     public int GetMultiplier() => currentMultiplier;
-    
-
-    public void UpdateScoreUI()
-    {
-    
-        scoreCounter.text = "Score: " + totalScore;
-    }
-
 }

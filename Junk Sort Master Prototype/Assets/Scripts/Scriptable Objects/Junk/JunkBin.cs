@@ -14,20 +14,13 @@ public class JunkBin : MonoBehaviour
 
         bool isCorrect = (junk.junkType == correctjunkType);
 
-        if (isCorrect)
-        {
-            other.gameObject.SetActive(false);
-
-            scoreManager.IncreaseStreak();
-            scoreManager.AddCorrectScore();  // multiplier applied internally
-        }
+        if (junk.junkType == correctjunkType)
+            GameManager.Instance.AddScore(1);
         else
-        {
-            other.gameObject.SetActive(false);
+            GameManager.Instance.WrongSortingPenalty();
 
-            scoreManager.ResetStreak();
-            scoreManager.AddWrongPenalty();  // does NOT multiply negative score
-        }
+        other.gameObject.SetActive(false);
+
     }
 
 }

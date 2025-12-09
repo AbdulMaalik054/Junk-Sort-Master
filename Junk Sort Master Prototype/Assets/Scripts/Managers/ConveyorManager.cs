@@ -1,42 +1,104 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class ConveyorManager : MonoBehaviour
 {
-    
-    float currentTime = 0f;
-    Vector3 moveDirection = Vector3.right;
-    public Renderer belt;
+    public static ConveyorManager Instance;
 
-    public float CurrentSpeed { get; private set; }
+    [Header("Movement")]
+    [SerializeField] private Vector3 moveDirection = Vector3.back;
+    [SerializeField] private float currentSpeed = 0f;
+    private float maxSpeed = 5f;
+    private float acceleration = 1f;
 
+    [Header("Material Scrolling")]
+    [SerializeField] private Renderer beltRenderer;
+    [SerializeField] private float uvMultiplier = 0.25f;
 
-    private void Start()
+    private Material beltMaterial;
+    private bool conveyorRunning = false;
+
+    private void Awake()
     {
-        
-        belt = gameObject.GetComponent<Renderer>(); 
-    }
-    void Update()
-    {
-        var diff = GameManager.Instance.ActiveDifficulty;
-        if (diff == null) return;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
 
-        currentTime += Time.deltaTime;
-
-        float t = Mathf.Clamp01(currentTime / diff.speedRampTime);
-        float curveValue = diff.rampCurve.Evaluate(t);
-
-        CurrentSpeed = Mathf.Lerp(diff.minConveyorSpeed, diff.maxConveyorSpeed, curveValue);
-
-        // Apply to shader
-        float conveyorSpeed = CurrentSpeed / 50f;
-        belt.material.SetFloat("_Speed", conveyorSpeed);
+        if (beltRenderer != null)
+            beltMaterial = beltRenderer.material;
     }
 
-    void OnTriggerStay(Collider other)
+    private void Update()
     {
+        if (!conveyorRunning) return;
+
+        // Smooth acceleration up to max speed
+        if (currentSpeed < maxSpeed)
+        {
+            currentSpeed += acceleration * Time.deltaTime;
+            currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
+        }
+
+        // Belt UV scrolling effect
+        if (beltMaterial != null)
+        {
+            float offset = Time.time * currentSpeed * uvMultiplier;
+
+            if (beltMaterial.HasProperty("_BaseMap"))
+                beltMaterial.SetTextureOffset("_BaseMap", new Vector2(0, offset));
+            else if (beltMaterial.HasProperty("_MainTex"))
+                beltMaterial.SetTextureOffset("_MainTex", new Vector2(0, offset));
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!conveyorRunning) return;
+
         Rigidbody rb = other.attachedRigidbody;
-        if (rb != null)
-            rb.linearVelocity = moveDirection * CurrentSpeed;
+        if (rb != null && !rb.isKinematic)
+        {
+            Vector3 displacement =
+                moveDirection.normalized * currentSpeed * Time.fixedDeltaTime;
+
+            rb.MovePosition(rb.position + displacement);
+        }
+    }
+
+    // ---------------------------------------------------------
+    // PUBLIC API — matches GameManager requirements
+    // ---------------------------------------------------------
+
+    /// <summary>
+    /// Sets start speed, max speed, and acceleration based on difficulty.
+    /// </summary>
+    public void SetDifficulty(float startSpeed, float maxSpeed, float accel)
+    {
+        this.currentSpeed = Mathf.Max(0f, startSpeed);
+        this.maxSpeed = Mathf.Max(0f, maxSpeed);
+        this.acceleration = Mathf.Max(0f, accel);
+    }
+
+    /// <summary>
+    /// Starts conveyor motion (with ramping).
+    /// </summary>
+    public void StartConveyor()
+    {
+        conveyorRunning = true;
+    }
+
+    /// <summary>
+    /// Stops conveyor. Optionally resets speed to zero.
+    /// </summary>
+    public void StopConveyor(bool resetSpeed = false)
+    {
+        conveyorRunning = false;
+
+        if (resetSpeed)
+            currentSpeed = 0f;
+    }
+
+    public void ResetConveyor()
+    {
+        currentSpeed = 0f;
+        conveyorRunning = false;
     }
 }

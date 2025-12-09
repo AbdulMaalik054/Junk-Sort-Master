@@ -1,95 +1,120 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    
-    //--------General Buttons-------
-    public Button startButton;
-    public Button backButton;
+    public static UIManager Instance;
 
-    //------Diffuclties-------------
+    [Header("Panels")]
+    [SerializeField] private GameObject mainMenuPanel;
+    [SerializeField] private GameObject difficultyPanel;
+    [SerializeField] private GameObject gameplayPanel;
+    [SerializeField] private GameObject gameOverPanel;
 
-    public Button easy;
-    public Button medium;
-    public Button hard;
-    public Button endless;
+    [Header("UI Elements")]
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI comboText;
+    [SerializeField] private TextMeshProUGUI finalScoreText;
 
-    //--------------------------------
-
-    public GameObject difficultyMenu;
-    public GameObject timer;
-    public GameObject scoreMenu;
-    
-
-
-    void Start()
+    private void Awake()
     {
-       
-        difficultyMenu.SetActive(false);
-        backButton.gameObject.SetActive(false);
-        timer.gameObject.SetActive(false);
-        scoreMenu.gameObject.SetActive(false);
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
- 
-
-    public void StartGame()
+    private void Start()
     {
+        ShowMainMenu();
+    }
+
+    // -------------------------------------------------------------------
+    // PANEL MANAGEMENT
+    // -------------------------------------------------------------------
+
+    public void ShowMainMenu()
+    {
+        mainMenuPanel.SetActive(true);
+        difficultyPanel.SetActive(false);
+        gameplayPanel.SetActive(false);
+        gameOverPanel.SetActive(false);
+    }
+
+    public void ShowDifficultyMenu()
+    {
+        mainMenuPanel.SetActive(false);
+        difficultyPanel.SetActive(true);
+        gameplayPanel.SetActive(false);
+        gameOverPanel.SetActive(false);
+    }
+
+    public void ShowGameplayUI()
+    {
+        mainMenuPanel.SetActive(false);
+        difficultyPanel.SetActive(false);
+        gameplayPanel.SetActive(true);
+        gameOverPanel.SetActive(false);
+    }
+
+    public void ShowGameOverUI()
+    {
+        mainMenuPanel.SetActive(false);
+        difficultyPanel.SetActive(false);
+        gameplayPanel.SetActive(false);
+        gameOverPanel.SetActive(true);
+
+        finalScoreText.text = "Final Score: " + ScoreManager.Instance.Score;
+    }
+
+    // -------------------------------------------------------------------
+    // UI UPDATES
+    // -------------------------------------------------------------------
+
+    public void UpdateScoreUI(int score)
+    {
+        scoreText.text = "Score: " + score;
+    }
+
+    public void UpdateTimerUI(float timeRemaining)
+    {
+        int seconds = Mathf.CeilToInt(timeRemaining);
+        timerText.text = "Time: " + seconds;
+    }
+
+    public void UpdateComboUI(int multiplier)
+    {
+        comboText.text = "Combo: " + multiplier;
+    }
+
+    // -------------------------------------------------------------------
+    // BUTTON EVENTS
+    // -------------------------------------------------------------------
+
+    public void OnPlayButton()
+    {
+        ShowDifficultyMenu();
+    }
+
+    public void OnDifficultySelected(int difficultyIndex)
+    {
+        GameManager.Instance.SelectDifficulty(difficultyIndex);
+        GameManager.Instance.StartGame();
+    }
+
+    public void OnRetryButton()
+    {
+        GameManager.Instance.StartGame();
+    }
+
+    public void OnMainMenuButton()
+    {
+        ShowMainMenu();
+    }
+
+    public void onRestartButton()
+    {
+
         
-        startButton.gameObject.SetActive(false);
-        backButton.gameObject.SetActive(true);
-        difficultyMenu.SetActive(true);
-        GameManager.Instance.isGameStarted = true;
-
     }
-
-    public void BackButton()
-    {
-        
-        difficultyMenu.SetActive(false);
-        startButton.gameObject.SetActive(true);
-        backButton.gameObject.SetActive(false);
-
-    }
-
-    public void SetEasyDifficulty()
-    {
-        ActivateDifficulty("Easy");
-
-        Debug.Log("Easy is activated");
-    }
-
-    public void SetMediumDifficulty()
-    {
-        ActivateDifficulty("Medium");
-        Debug.Log("Medium is activated");
-    }
-    public void SetHardDifficulty()
-    {
-        ActivateDifficulty("Hard");
-        Debug.Log("Hard is activated");
-    }
-    public void SetEndlessDifficulty()
-    {
-        ActivateDifficulty("Endless");
-        Debug.Log("Endless is activated");
-    }
-
-
-    void ActivateDifficulty(string currentdifficulty)
-    {
-        difficultyMenu.SetActive(false);
-        backButton.gameObject.SetActive(false);
-        string difficulty = currentdifficulty;
-        GameManager.Instance.isGameStarted = true;
-        GameManager.Instance.SetDifficulty(difficulty);
-        scoreMenu.gameObject.SetActive(true);
-
-    }
-
-    
-
 }

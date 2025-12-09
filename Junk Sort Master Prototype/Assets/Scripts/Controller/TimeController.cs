@@ -1,57 +1,70 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class TimeController : MonoBehaviour
 {
-    
-    public TextMeshProUGUI timerText;
-    public float startTime;
-    float curretTime;
-    public bool startGame = false;
-    void Start()
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI timerText;
+
+    private float currentTime = 0f;
+    private bool running = false;
+
+    /// <summary>
+    /// Invoked when timer reaches zero.
+    /// </summary>
+    public event Action OnTimerExpired;
+
+    /// <summary>
+    /// Initializes and starts the timer.
+    /// </summary>
+    public void InitializeTimer(float seconds)
     {
-
-        
-
-
-
+        currentTime = Mathf.Max(0f, seconds);
+        running = currentTime > 0f;
+        UpdateTimerDisplay(currentTime);
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Stops the timer (pauses).
+    /// </summary>
+    public void StopTimer()
     {
-        
-        if (curretTime > 0 && startGame == true)
+        running = false;
+    }
+
+    /// <summary>
+    /// Resume the timer if it has time left.
+    /// </summary>
+    public void ResumeTimer()
+    {
+        if (currentTime > 0f) running = true;
+    }
+
+    private void Update()
+    {
+        if (!running) return;
+
+        currentTime -= Time.deltaTime;
+
+        if (currentTime <= 0f)
         {
-            curretTime -= Time.deltaTime;
-            UpdateTimerDisplay(curretTime);
-            
-
+            currentTime = 0f;
+            running = false;
+            UpdateTimerDisplay(currentTime);
+            OnTimerExpired?.Invoke();
+            return;
         }
-        else
-        {
 
-            curretTime = 0;
-            UpdateTimerDisplay(curretTime) ;
-
-        }
+        UpdateTimerDisplay(currentTime);
     }
 
-    void UpdateTimerDisplay(float time)
+    private void UpdateTimerDisplay(float time)
     {
+        if (timerText == null) return;
 
-        int min = Mathf.FloorToInt(time / 60.0f);
-        int sec = Mathf.FloorToInt(time % 60.0f);
-        timerText.text = string.Format("{0:00}: {1:00}" , min , sec);
-
+        int min = Mathf.FloorToInt(time / 60f);
+        int sec = Mathf.FloorToInt(time % 60f);
+        timerText.text = string.Format("{0:00}:{1:00}", min, sec);
     }
-
-    public void InitializeTimer(float time)
-    {
-        curretTime = time;
-        startGame = true;
-        UpdateTimerDisplay(curretTime);
-    }
-
-
 }
