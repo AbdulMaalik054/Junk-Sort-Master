@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
         {
             case Difficulty.Easy:
                 currentTime = easyTime;
-                conveyor.SetDifficulty(1f, 3f, 10f);
+                conveyor.SetDifficulty(.5f, 2f, .05f);
                 spawner.SetSpawnRates(4f, 7f);
                 break;
 

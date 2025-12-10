@@ -16,8 +16,8 @@ MonoBehaviour:
   baseScore: 1
   wrongPenalty: -1
   overflowPenalty: -2
-  minConveyorSpeed: 2
-  maxConveyorSpeed: 5
+  minConveyorSpeed: 0.5
+  maxConveyorSpeed: 3
   speedRampTime: 30
   rampCurve:
     serializedVersion: 2
