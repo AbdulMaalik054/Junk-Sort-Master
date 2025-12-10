@@ -125,13 +125,13 @@ public class GameManager : MonoBehaviour
     {
         ScoreManager.Instance.AddCorrectScore(amount , objectPosition);
 
-        UIManager.Instance.UpdateScoreUI(ScoreManager.Instance.Score);
+        
     }
 
     public void WrongSortingPenalty(int amount , Vector3 objectPosition)
     {
-        ScoreManager.Instance.AddWrongPenalty(amount , objectPosition);
-        UIManager.Instance.UpdateScoreUI(ScoreManager.Instance.Score);
+        // penaltyAmount MUST be positive
+        ScoreManager.Instance.AddWrongPenalty(amount, objectPosition);
 
         // Optional time penalty
         currentTime -= 2f;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class OverflowDetector : MonoBehaviour
 {
-    public ScoreManager scoreManager;
+    
 
     private void OnTriggerEnter(Collider other)
     {
@@ -13,9 +13,9 @@ public class OverflowDetector : MonoBehaviour
 
         // Overflow = penalty
         
-        scoreManager.AddOverflowPenalty(5 , transform.position);
+        ScoreManager.Instance.AddOverflowPenalty(5 , transform.position);
 
-        Debug.Log("Overflow! -1 score");
+        Debug.Log("Overflow! -5 score");
 
         other.gameObject.SetActive(false);
     }

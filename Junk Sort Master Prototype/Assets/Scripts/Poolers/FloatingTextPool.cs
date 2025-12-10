@@ -1,59 +1,94 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class FloatingTextPool : MonoBehaviour
 {
     public static FloatingTextPool Instance;
 
-    [Header("Pool")]
-    [SerializeField] private FloatingText prefab;
-    [SerializeField] private int initialSize = 10;
+    [Header("References (Assign Manually)")]
+    public FloatingText floatingTextPrefab;     // prefab with RectTransform + CanvasGroup + TMP
+    public RectTransform canvasParent;          // your main UI canvas RectTransform
 
-    // Parent rect (assign your UI Canvas transform here)
-    [SerializeField] public RectTransform floatingTextParent;
+    [Header("Pool Settings")]
+    public int poolSize = 10;
 
     private Queue<FloatingText> pool = new Queue<FloatingText>();
+    private Camera mainCam;
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        Instance = this;
+    }
 
-        if (floatingTextParent == null)
+    private void Start()
+    {
+        mainCam = Camera.main;
+
+        if (canvasParent == null)
         {
-            // try to find Canvas in scene
-            Canvas canvas = FindFirstObjectByType<Canvas>();
-            if (canvas != null) floatingTextParent = canvas.transform as RectTransform;
+            Debug.LogError("[FloatingTextPool] ERROR: Canvas Parent is NOT assigned!");
+            return;
         }
 
-        for (int i = 0; i < initialSize; i++)
+        if (floatingTextPrefab == null)
         {
-            var t = Instantiate(prefab, floatingTextParent);
-            t.gameObject.SetActive(false);
-            pool.Enqueue(t);
+            Debug.LogError("[FloatingTextPool] ERROR: Floating Text Prefab is NOT assigned!");
+            return;
+        }
+
+        // Pre-populate pool
+        for (int i = 0; i < poolSize; i++)
+        {
+            var ft = Instantiate(floatingTextPrefab, transform);
+            ft.gameObject.SetActive(false);
+            pool.Enqueue(ft);
         }
     }
 
-    public FloatingText Get()
+    private FloatingText GetFromPool()
     {
-        FloatingText ft;
         if (pool.Count > 0)
         {
-            ft = pool.Dequeue();
-        }
-        else
-        {
-            ft = Instantiate(prefab, floatingTextParent);
+            var ft = pool.Dequeue();
+            ft.gameObject.SetActive(true);
+            return ft;
         }
 
-        ft.transform.SetParent(floatingTextParent, false);
-        ft.gameObject.SetActive(true);
-        return ft;
+        // Expand pool if necessary
+        return Instantiate(floatingTextPrefab, canvasParent);
     }
 
     public void ReturnToPool(FloatingText ft)
     {
         ft.gameObject.SetActive(false);
         pool.Enqueue(ft);
+    }
+
+    // ------------------------------------------------------------
+    // PUBLIC: SPAWN FLOATING TEXT AT WORLD POSITION
+    // ------------------------------------------------------------
+    public void SpawnFloatingText(string message, Color color, Vector3 worldPos)
+    {
+        if (mainCam == null) mainCam = Camera.main;
+
+        FloatingText ft = GetFromPool();
+
+        // convert world → screen
+        Vector3 screenPos = mainCam.WorldToScreenPoint(worldPos);
+
+        // convert screen → anchored canvas pos
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasParent,
+            screenPos,
+            mainCam,
+            out Vector2 anchoredPos
+        );
+
+        // assign position
+        ft.rect.anchoredPosition = anchoredPos;
+
+        // set text and animate
+        ft.Init(message, color);
+        ft.Play();
     }
 }

@@ -1,61 +1,66 @@
-using System.Collections;
-using TMPro;
 using UnityEngine;
+using TMPro;
+using System.Collections;
 
 public class FloatingText : MonoBehaviour
 {
-    public RectTransform rectTransform;
-    public TextMeshProUGUI tmp;
-    public CanvasGroup canvasGroup;
+    [Header("Refs")]
+    [SerializeField] private TMP_Text text;
 
     [Header("Animation")]
-    public float lifetime = 0.8f;
-    public float floatDistance = 60f;
+    [SerializeField] private float lifetime = 1f;
+    [SerializeField] private float riseAmount = 40f;
 
-    private Coroutine playRoutine;
+    [HideInInspector] public RectTransform rect;
+
+    private Color originalColor;
 
     private void Awake()
     {
-        if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
-        if (tmp == null) tmp = GetComponentInChildren<TextMeshProUGUI>();
-        if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
+        rect = GetComponent<RectTransform>();
+        originalColor = text.color;
     }
 
-    public void Init(string text, Color color)
+    // Called once when taken from pool
+    public void Init(string value, Color color)
     {
-        tmp.text = text;
-        tmp.color = color;
+        text.text = value;
+        text.color = color;
+        text.alpha = 1f;
     }
 
+    // Start floating animation
     public void Play()
     {
         gameObject.SetActive(true);
-        if (playRoutine != null) StopCoroutine(playRoutine);
-        playRoutine = StartCoroutine(PlayRoutine());
+        StopAllCoroutines();
+        StartCoroutine(PlayRoutine());
     }
 
     private IEnumerator PlayRoutine()
     {
         float t = 0f;
-        canvasGroup.alpha = 1f;
-        Vector2 startPos = rectTransform.anchoredPosition;
-        Vector2 endPos = startPos + Vector2.up * floatDistance;
+        Vector2 start = rect.anchoredPosition;
 
         while (t < lifetime)
         {
             t += Time.deltaTime;
-            float normalized = t / lifetime;
+            float progress = t / lifetime;
 
-            // position + fade
-            rectTransform.anchoredPosition = Vector2.Lerp(startPos, endPos, normalized);
-            canvasGroup.alpha = 1f - normalized;
+            // Rise upward
+            rect.anchoredPosition = start + new Vector2(0, riseAmount * progress);
+
+            // Fade out
+            text.alpha = 1f - progress;
 
             yield return null;
         }
 
-        // cleanup
-        canvasGroup.alpha = 0f;
-        playRoutine = null;
+        // Reset alpha for next use
+        text.alpha = 1f;
+
+        // Return to pool
+        gameObject.SetActive(false);
         FloatingTextPool.Instance.ReturnToPool(this);
     }
 }
