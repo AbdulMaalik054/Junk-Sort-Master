@@ -1,123 +1,108 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
+using TMPro;
+using UnityEngine.UI;
+[DefaultExecutionOrder(-50)]
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    [Header("Panels")]
-    [SerializeField] private GameObject mainMenuPanel;
-    [SerializeField] private GameObject difficultyPanel;
-    [SerializeField] private GameObject gameplayPanel;
-    [SerializeField] private GameObject gameOverPanel;
-
-    [Header("UI Elements")]
+    [Header("Top Bar")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI timerText;
+
+    [Header("Combo Popup")]
+    [SerializeField] private CanvasGroup comboGroup;
     [SerializeField] private TextMeshProUGUI comboText;
+
+    [Header("Transition Panel")]
+    [SerializeField] private CanvasGroup transitionPanel;
+    [SerializeField] private TextMeshProUGUI transitionMessage;
+
+    [Header("Game Over Panel")]
+    [SerializeField] private CanvasGroup gameOverPanel;
     [SerializeField] private TextMeshProUGUI finalScoreText;
+    [SerializeField] private TextMeshProUGUI bestScoreText;
+    [SerializeField] private Button retryButton;
+    [SerializeField] private Button homeButton;
+
+    [Header("Pause Panel")]
+    [SerializeField] private CanvasGroup pausePanel;
+    [SerializeField] private Button resumeButton;
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        Instance = this;
+
+        InitPanel(transitionPanel);
+        InitPanel(gameOverPanel);
+        InitPanel(pausePanel);
+
+        comboGroup.alpha = 0;
+
+        WireButtons();
     }
 
-    private void Start()
+    private void InitPanel(CanvasGroup panel)
     {
-        ShowMainMenu();
+        panel.alpha = 0;
+        panel.interactable = false;
+        panel.blocksRaycasts = false;
+        panel.gameObject.SetActive(true);  // keep active now
     }
 
-    // -------------------------------------------------------------------
-    // PANEL MANAGEMENT
-    // -------------------------------------------------------------------
-
-    public void ShowMainMenu()
+    private void WireButtons()
     {
-        mainMenuPanel.SetActive(true);
-        difficultyPanel.SetActive(false);
-        gameplayPanel.SetActive(false);
-        gameOverPanel.SetActive(false);
+        retryButton?.onClick.AddListener(() => GameManager.Instance.RestartGame());
+        homeButton?.onClick.AddListener(() => GameManager.Instance.ReturnToMenu());
+        resumeButton?.onClick.AddListener(() => GameManager.Instance.TogglePause());
     }
 
-    public void ShowDifficultyMenu()
+    // SCORE UI ----------------------------------------------------
+    public void UpdateScoreUI(int score) => UpdateScore(score);
+    public void UpdateScore(int score)
     {
-        mainMenuPanel.SetActive(false);
-        difficultyPanel.SetActive(true);
-        gameplayPanel.SetActive(false);
-        gameOverPanel.SetActive(false);
+        scoreText.text = score.ToString();
+        UIAnimator.PunchScale(scoreText.transform, 1.1f, 0.15f);
     }
 
-    public void ShowGameplayUI()
+    public void UpdateTimer(float timeLeft)
     {
-        mainMenuPanel.SetActive(false);
-        difficultyPanel.SetActive(false);
-        gameplayPanel.SetActive(true);
-        gameOverPanel.SetActive(false);
+        timerText.text = Mathf.CeilToInt(timeLeft).ToString();
     }
 
-    public void ShowGameOverUI()
+    // COMBO UI -----------------------------------------------------
+    
+    public void UpdateComboUI(int combo) => ShowCombo(combo);
+    public void ShowCombo(int combo)
     {
-        mainMenuPanel.SetActive(false);
-        difficultyPanel.SetActive(false);
-        gameplayPanel.SetActive(false);
-        gameOverPanel.SetActive(true);
+        comboText.text = $"Combo x{combo}";
 
-        finalScoreText.text = "Final Score: " + ScoreManager.Instance.Score;
+        UIAnimator.FadeIn(comboGroup, 0.15f);
+        UIAnimator.PunchScale(comboText.transform, 1.15f, 0.2f);
+        UIAnimator.FadeOut(comboGroup, 0.25f, 0.5f);
     }
 
-    // -------------------------------------------------------------------
-    // UI UPDATES
-    // -------------------------------------------------------------------
-
-    public void UpdateScoreUI(int score)
+    // TRANSITION ---------------------------------------------------
+    public void ShowTransition(string msg, float duration = 1f)
     {
-        scoreText.text = "Score: " + score;
+        transitionMessage.text = msg;
+        UIAnimator.FadeIn(transitionPanel, 0.35f);
+        UIAnimator.FadeOut(transitionPanel, 0.35f, duration);
     }
 
-    public void UpdateTimerUI(float timeRemaining)
+    // PAUSE --------------------------------------------------------
+    public void ShowPauseMenu() => UIAnimator.FadeIn(pausePanel, 0.2f);
+    public void HidePauseMenu() => UIAnimator.FadeOut(pausePanel, 0.2f);
+
+    // GAME OVER ----------------------------------------------------
+    public void ShowGameOver(int finalScore, int bestScore)
     {
-        int seconds = Mathf.CeilToInt(timeRemaining);
-        timerText.text = "Time: " + seconds;
+        finalScoreText.text = $"Score: {finalScore}";
+        bestScoreText.text = $"Best: {bestScore}";
+
+        UIAnimator.FadeIn(gameOverPanel, 0.35f);
+        UIAnimator.PunchScale(finalScoreText.transform, 1.2f, 0.22f);
     }
 
-    public void UpdateComboUI(int multiplier)
-    {
-        comboText.text = "Combo: " + multiplier;
-    }
-
-    // -------------------------------------------------------------------
-    // BUTTON EVENTS
-    // -------------------------------------------------------------------
-
-    public void OnPlayButton()
-    {
-        ShowDifficultyMenu();
-    }
-
-    public void OnDifficultySelected(int difficultyIndex)
-    {
-        GameManager.Instance.SelectDifficulty(difficultyIndex);
-        GameManager.Instance.StartGame();
-    }
-
-    public void OnRetryButton()
-    {
-        GameManager.Instance.StartGame();
-    }
-
-    public void OnMainMenuButton()
-    {
-        ShowMainMenu();
-    }
-
-    public void ShowGameOverPanel(int score, int streak, int multiplier)
-    {
-        gameOverPanel.SetActive(true);
-
-        finalScoreText.text = "Final Score: " + score;
-        
-    }
-
+    public void HideGameOver() => UIAnimator.FadeOut(gameOverPanel, 0.2f);
 }

@@ -34,13 +34,7 @@ public class GameOverManager : MonoBehaviour
 
        
 
-        // Update UI
-        UIManager.Instance.ShowGameOverPanel(
-            ScoreManager.Instance.Score,
-            ScoreManager.Instance.GetStreak(),
-            ScoreManager.Instance.GetMultiplier()
-        );
-
+        
     }
 
 }

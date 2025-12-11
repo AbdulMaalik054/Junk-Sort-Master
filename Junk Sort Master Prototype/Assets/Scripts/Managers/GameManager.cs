@@ -1,20 +1,20 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+[DefaultExecutionOrder(0)]
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [Header("Difficulty Settings")]
+    [Header("Difficulty")]
     public Difficulty currentDifficulty;
     public float easyTime = 60f;
     public float mediumTime = 45f;
     public float hardTime = 30f;
 
-    [Header("Runtime Timer")]
     public float currentTime;
     private bool gameRunning;
-    
+    private bool paused;
 
     [Header("References")]
     [SerializeField] private Spawner spawner;
@@ -22,20 +22,17 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        Instance = this;
     }
 
     private void Start()
     {
-        UIManager.Instance.ShowMainMenu();
+
+        UIManager.Instance.ShowTransition("LOADING", 0.8f);
+        MenuController.Instance.ReturnToMainMenu();
     }
 
-    
-
-    // ---------------------------------------------------------
-    // PUBLIC METHODS CALLED FROM UI
-    // ---------------------------------------------------------
+    // MENU FLOW -------------------------------------------------------
     public void SelectDifficulty(int index)
     {
         currentDifficulty = (Difficulty)index;
@@ -44,35 +41,74 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         ApplyDifficulty();
-        ResetSystems();
-
-        UIManager.Instance.ShowGameplayUI();
+        RestartGame();
 
         gameRunning = true;
+        paused = false;
         DragController.DisableDrag = false;
+
+        UIManager.Instance.ShowTransition("GO!", 0.5f);
         StartCoroutine(GameTimer());
     }
 
-    public void GameOver()
+    public void ReturnToMenu()
     {
-        gameRunning = false;
+        DragController.DisableDrag = true;
+
         spawner.StopSpawning();
         conveyor.StopConveyor(false);
-        DragController.DisableDrag = true; // disable interaction
 
-        UIManager.Instance.ShowGameOverUI();
+        UIManager.Instance.HideGameOver();
+        MenuController.Instance.ReturnToMainMenu();
     }
 
-    // ---------------------------------------------------------
-    // DIFFICULTY HANDLING
-    // ---------------------------------------------------------
+    // PAUSE -----------------------------------------------------------
+    public void TogglePause()
+    {
+        if (!paused)
+        {
+            paused = true;
+            Time.timeScale = 0;
+            UIManager.Instance.ShowPauseMenu();
+        }
+        else
+        {
+            paused = false;
+            Time.timeScale = 1;
+            UIManager.Instance.HidePauseMenu();
+        }
+    }
+
+    // GAME OVER -------------------------------------------------------
+    public void GameOver()
+    {
+        if (!gameRunning) return;
+
+        gameRunning = false;
+        paused = false;
+        Time.timeScale = 1;
+
+        spawner.StopSpawning();
+        conveyor.StopConveyor(false);
+        DragController.DisableDrag = true;
+
+        int finalScore = ScoreManager.Instance.Score;
+        int best = PlayerPrefs.GetInt("BestScore", 0);
+
+        if (finalScore > best)
+            PlayerPrefs.SetInt("BestScore", finalScore);
+
+        UIManager.Instance.ShowGameOver(finalScore, PlayerPrefs.GetInt("BestScore"));
+    }
+
+    // DIFFICULTY ------------------------------------------------------
     private void ApplyDifficulty()
     {
         switch (currentDifficulty)
         {
             case Difficulty.Easy:
                 currentTime = easyTime;
-                conveyor.SetDifficulty(.5f, 2f, .05f);
+                conveyor.SetDifficulty(0.5f, 2f, 0.05f);
                 spawner.SetSpawnRates(4f, 7f);
                 break;
 
@@ -90,55 +126,43 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ---------------------------------------------------------
-    // TIMER SYSTEM
-    // ---------------------------------------------------------
+    // TIMER -----------------------------------------------------------
     private IEnumerator GameTimer()
     {
         while (currentTime > 0 && gameRunning)
         {
-            currentTime -= Time.deltaTime;
-            UIManager.Instance.UpdateTimerUI(currentTime);
+            if (!paused)
+            {
+                currentTime -= Time.deltaTime;
+                UIManager.Instance.UpdateTimer(currentTime);
+            }
             yield return null;
         }
 
         GameOver();
     }
 
-    // ---------------------------------------------------------
-    // SYSTEM RESET
-    // ---------------------------------------------------------
-    private void ResetSystems()
+    // RESET -----------------------------------------------------------
+    public void RestartGame()
     {
+        Time.timeScale = 1;
         ScoreManager.Instance.ResetScore();
+
         conveyor.StartConveyor();
-        
         spawner.StartSpawning();
     }
 
-    
-
-    // ---------------------------------------------------------
-    // PUBLIC GAME EVENTS
-    // ---------------------------------------------------------
-    public void AddScore(int amount , Vector3 objectPosition)
+    // SCORE EVENTS ----------------------------------------------------
+    public void AddScore(int amount, Vector3 pos)
     {
-        ScoreManager.Instance.AddCorrectScore(amount , objectPosition);
-
-        
+        ScoreManager.Instance.AddCorrectScore(amount, pos);
     }
 
-    public void WrongSortingPenalty(int amount , Vector3 objectPosition)
+    public void WrongSortingPenalty(int amount, Vector3 pos)
     {
-        // penaltyAmount MUST be positive
-        ScoreManager.Instance.AddWrongPenalty(amount, objectPosition);
-
-        // Optional time penalty
+        ScoreManager.Instance.AddWrongPenalty(amount, pos);
         currentTime -= 2f;
     }
 }
 
-// ---------------------------------------------------------
-// DIFFICULTY ENUM
-// ---------------------------------------------------------
 public enum Difficulty { Easy, Medium, Hard }
