@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
 
-        UIManager.Instance.ShowTransition("LOADING", 0.8f);
+        UIManager.Instance.ShowLoadingTransition("LOADING", 2.0f);
         MenuController.Instance.ReturnToMainMenu();
     }
 
@@ -41,14 +41,20 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         ApplyDifficulty();
-        RestartGame();
+       
 
         gameRunning = true;
         paused = false;
         DragController.DisableDrag = false;
 
-        UIManager.Instance.ShowTransition("GO!", 0.5f);
-        StartCoroutine(GameTimer());
+        UIManager.Instance.ShowStartTransition("GO!", 2.0f);
+        UIManager.Instance.ShowtopBarGroup();
+        ScoreManager.Instance.ResetScore();
+        Invoke(nameof(StartDelayedCoroutine), 1.8f);
+        
+
+        conveyor.StartConveyor();
+        spawner.StartSpawning();
     }
 
     public void ReturnToMenu()
@@ -109,26 +115,32 @@ public class GameManager : MonoBehaviour
             case Difficulty.Easy:
                 currentTime = easyTime;
                 conveyor.SetDifficulty(0.5f, 2f, 0.05f);
-                spawner.SetSpawnRates(4f, 7f);
+                spawner.SetSpawnRates(4f);
                 break;
 
             case Difficulty.Medium:
                 currentTime = mediumTime;
                 conveyor.SetDifficulty(2f, 5f, 12f);
-                spawner.SetSpawnRates(3f, 6f);
+                spawner.SetSpawnRates(3f);
                 break;
 
             case Difficulty.Hard:
                 currentTime = hardTime;
                 conveyor.SetDifficulty(3f, 7f, 15f);
-                spawner.SetSpawnRates(2f, 4f);
+                spawner.SetSpawnRates(2f);
                 break;
         }
     }
 
     // TIMER -----------------------------------------------------------
+
+    public void StartDelayedCoroutine()
+    {
+        StartCoroutine(GameTimer());
+    }
     private IEnumerator GameTimer()
     {
+        
         while (currentTime > 0 && gameRunning)
         {
             if (!paused)
@@ -147,9 +159,9 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         ScoreManager.Instance.ResetScore();
-
-        conveyor.StartConveyor();
-        spawner.StartSpawning();
+        UIManager.Instance.HideGameOver();
+        StartGame();
+       
     }
 
     // SCORE EVENTS ----------------------------------------------------

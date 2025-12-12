@@ -86,6 +86,8 @@ public class FloatingTextPool : MonoBehaviour
 
         // assign position
         ft.rect.anchoredPosition = anchoredPos;
+        Debug.Log("ScreenPos: " + screenPos + " | Anchored : " + anchoredPos );
+
 
         // set text and animate
         ft.Init(message, color);

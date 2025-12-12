@@ -4,6 +4,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public static Spawner Instance;
+    
+
 
     [Header("Spawn Intervals")]
     public float plasticInterval = 3f;
@@ -13,6 +15,11 @@ public class Spawner : MonoBehaviour
     [SerializeField] float minZOffset = -1f;
     [SerializeField] float maxZOffset = 1f;
 
+    
+
+    public JunkType[] junkTypes;
+    
+
     private Coroutine spawnRoutine;
 
     private void Awake()
@@ -20,6 +27,16 @@ public class Spawner : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
+
+    void Start()
+    {
+        foreach (var type in junkTypes)
+        {
+            PoolManager.Instance.CreatePool(type, type.initialSize);
+        }
+    }
+
+
 
     // Called by GameManager when game starts
     public void StartSpawning()
@@ -36,24 +53,20 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator SpawnLoop()
     {
-        float plasticTimer = 0f;
-        float paperTimer = 0f;
+        
+        float spawnTimer = 0f;
 
         while (true)
         {
-            plasticTimer += Time.deltaTime;
-            paperTimer += Time.deltaTime;
+            
+            spawnTimer += Time.deltaTime;
 
-            if (plasticTimer >= plasticInterval)
-            {
-                SpawnPlastic();
-                plasticTimer = 0f;
-            }
+           
 
-            if (paperTimer >= paperInterval)
+            if (spawnTimer >= paperInterval)
             {
-                SpawnPaper();
-                paperTimer = 0f;
+                SpawnTypeObjects();
+                spawnTimer = 0f;
             }
 
             yield return null;
@@ -67,29 +80,20 @@ public class Spawner : MonoBehaviour
     }
 
     // <summary>Adjust spawn intervals at runtime (called by GameManager.ApplyDifficulty)</summary>
-    public void SetSpawnRates(float plasticInterval, float paperInterval)
+    public void SetSpawnRates(float spawnInterval)
     {
         // clamp to safe, non-zero values
-        plasticInterval = Mathf.Max(0.05f, plasticInterval);
-        paperInterval = Mathf.Max(0.05f, paperInterval);
-
-        this.plasticInterval = plasticInterval;
-        this.paperInterval = paperInterval;
+        spawnInterval = Mathf.Max(0.05f, spawnInterval);
     }
-
-    private void SpawnPlastic()
+        private void SpawnTypeObjects()
     {
-        GameObject obj = PlasticPooler.Instance.GetPooledObject();
+        JunkType JunKObject = junkTypes[Random.Range(0, junkTypes.Length)];
+        Debug.Log(JunKObject.ToString());
+        GameObject obj = PoolManager.Instance.GetFromPool(JunKObject);
         obj.transform.position = transform.position + GetRandomOffset();
         obj.transform.rotation = Quaternion.identity;
         obj.SetActive(true);
     }
+       
 
-    private void SpawnPaper()
-    {
-        GameObject obj = PaperPooler.Instance.GetPooledObject();
-        obj.transform.position = transform.position + GetRandomOffset();
-        obj.transform.rotation = Quaternion.identity;
-        obj.SetActive(true);
-    }
 }

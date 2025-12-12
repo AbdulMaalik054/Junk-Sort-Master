@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2513191689817807480}
   - component: {fileID: 4945637085042857126}
   - component: {fileID: -3699432737506625438}
-  - component: {fileID: -1332503352680032614}
+  - component: {fileID: -5589065509005276922}
   - component: {fileID: -2192270571305597672}
   - component: {fileID: -3728487105979683557}
   m_Layer: 0
@@ -121,7 +121,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &-1332503352680032614
+--- !u!114 &-5589065509005276922
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,9 +130,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4290816898541943761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f010ddd8e6cb7c94c917ceb15ba2ff1e, type: 3}
+  m_Script: {fileID: 11500000, guid: 899f7868f41405a4f9609b10aac373ea, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Junk
+  m_EditorClassIdentifier: Assembly-CSharp::JunkItem
   junkType: {fileID: 11400000, guid: d3dda4f0e0811ff4c9e01f43cbf85aa3, type: 2}
 --- !u!114 &-2192270571305597672
 MonoBehaviour:
