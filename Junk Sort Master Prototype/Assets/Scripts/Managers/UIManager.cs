@@ -28,12 +28,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CanvasGroup gameOverPanel;
     [SerializeField] private TextMeshProUGUI finalScoreText;
     [SerializeField] private TextMeshProUGUI bestScoreText;
-    [SerializeField] private Button retryButton;
-    [SerializeField] private Button homeButton;
+    
 
     [Header("Pause Panel")]
     [SerializeField] private CanvasGroup pausePanel;
-    [SerializeField] private Button resumeButton;
+    [SerializeField] public Button pauseButton;
 
     private void Awake()
     {
@@ -45,7 +44,7 @@ public class UIManager : MonoBehaviour
 
         comboGroup.alpha = 0;
 
-        WireButtons();
+        
     }
 
     private void InitPanel(CanvasGroup panel)
@@ -56,24 +55,19 @@ public class UIManager : MonoBehaviour
         panel.gameObject.SetActive(true);  // keep active now
     }
 
-    private void WireButtons()
-    {
-        retryButton?.onClick.AddListener(() => GameManager.Instance.RestartGame());
-        homeButton?.onClick.AddListener(() => GameManager.Instance.ReturnToMenu());
-        resumeButton?.onClick.AddListener(() => GameManager.Instance.TogglePause());
-    }
+   
 
     // SCORE UI ----------------------------------------------------
     public void UpdateScoreUI(int score) => UpdateScore(score);
     public void UpdateScore(int score)
     {
-        scoreText.text = score.ToString();
+        scoreText.text = "Score: " + score.ToString();
         UIAnimator.PunchScale(scoreText.transform, 1.1f, 0.15f);
     }
 
     public void UpdateTimer(float timeLeft)
     {
-        timerText.text = Mathf.CeilToInt(timeLeft).ToString();
+        timerText.text = "Time: " + Mathf.CeilToInt(timeLeft).ToString();
     }
 
     // COMBO UI -----------------------------------------------------
@@ -105,8 +99,16 @@ public class UIManager : MonoBehaviour
     }
 
     // PAUSE --------------------------------------------------------
-    public void ShowPauseMenu() => UIAnimator.FadeIn(pausePanel, 0.2f);
-    public void HidePauseMenu() => UIAnimator.FadeOut(pausePanel, 0.2f);
+    public void ShowPauseMenu()
+    {
+        pauseButton.gameObject.SetActive(false);
+        UIAnimator.FadeIn(pausePanel, 0.2f);
+    }
+    public void HidePauseMenu()
+    {
+        UIAnimator.FadeOut(pausePanel, 0.2f);
+        pauseButton.gameObject.SetActive(true);
+    }
 
     // GAME OVER ----------------------------------------------------
     public void ShowGameOver(int finalScore, int bestScore)

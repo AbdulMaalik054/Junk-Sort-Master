@@ -41,21 +41,22 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         ApplyDifficulty();
-       
-
         gameRunning = true;
         paused = false;
         DragController.DisableDrag = false;
-
         UIManager.Instance.ShowStartTransition("GO!", 2.0f);
         UIManager.Instance.ShowtopBarGroup();
+        UIManager.Instance.pauseButton.gameObject.SetActive(true);
         ScoreManager.Instance.ResetScore();
         Invoke(nameof(StartDelayedCoroutine), 1.8f);
-        
-
         conveyor.StartConveyor();
         spawner.StartSpawning();
     }
+
+
+
+       
+        
 
     public void ReturnToMenu()
     {
@@ -173,7 +174,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         CleanupGameplay();
         UIManager.Instance.HideGameOver();
-        
+        UIManager.Instance.HidePauseMenu();
         StartGame();
        
     }
