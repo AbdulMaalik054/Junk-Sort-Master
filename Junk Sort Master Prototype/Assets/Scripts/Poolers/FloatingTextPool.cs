@@ -10,7 +10,7 @@ public class FloatingTextPool : MonoBehaviour
     public RectTransform canvasParent;          // your main UI canvas RectTransform
 
     [Header("Pool Settings")]
-    public int poolSize = 10;
+    public int poolSize = 5;
 
     private Queue<FloatingText> pool = new Queue<FloatingText>();
     private Camera mainCam;
@@ -86,7 +86,7 @@ public class FloatingTextPool : MonoBehaviour
 
         // assign position
         ft.rect.anchoredPosition = anchoredPos;
-        Debug.Log("ScreenPos: " + screenPos + " | Anchored : " + anchoredPos );
+        
 
 
         // set text and animate

@@ -110,7 +110,8 @@ public class UIManager : MonoBehaviour
 
     // GAME OVER ----------------------------------------------------
     public void ShowGameOver(int finalScore, int bestScore)
-    {
+    {   
+        
         finalScoreText.text = $"Score: {finalScore}";
         bestScoreText.text = $"Best: {bestScore}";
         HideTopBarGroup();

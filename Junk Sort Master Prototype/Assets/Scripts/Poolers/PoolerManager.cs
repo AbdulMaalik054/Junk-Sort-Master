@@ -54,4 +54,40 @@ public class PoolManager : MonoBehaviour
     {
         return type.typeName + "_" + index;
     }
-}
+    // -----------------------------------------------------------
+    // 🔥 NEW METHOD: Reset all pooled objects when restarting game
+    // -----------------------------------------------------------
+    public void ResetAllObjects()
+    {
+        foreach (var kvp in poolDict)
+        {
+            Queue<GameObject> pool = kvp.Value;
+
+            foreach (GameObject obj in pool)
+            {
+                if (obj == null) continue;
+
+                // Deactivate
+                obj.SetActive(false);
+
+                // Reset physics
+                Rigidbody rb = obj.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+
+                // Reset rotation (optional)
+                obj.transform.localRotation = Quaternion.identity;
+
+                // If JunkItem has any custom reset logic, call it
+                JunkItem item = obj.GetComponent<JunkItem>();
+                if (item != null)
+                {
+                    item.ResetState();   // We'll create this method if needed
+                }
+            }
+        }
+        }
+    }

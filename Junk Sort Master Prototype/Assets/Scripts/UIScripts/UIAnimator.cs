@@ -45,7 +45,7 @@ public static class UIAnimator
 
         while (t < duration)
         {
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             g.alpha = Mathf.Lerp(start, end, t / duration);
             yield return null;
         }

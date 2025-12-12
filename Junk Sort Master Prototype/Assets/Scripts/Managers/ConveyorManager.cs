@@ -90,6 +90,7 @@ public class ConveyorManager : MonoBehaviour
     public void StartConveyor()
     {
         conveyorRunning = true;
+        Time.timeScale = 1;
     }
 
     /// <summary>
@@ -98,7 +99,7 @@ public class ConveyorManager : MonoBehaviour
     public void StopConveyor(bool resetSpeed)
     {
         conveyorRunning = false;
-
+        Time.timeScale = 0;
         if (resetSpeed)
             currentSpeed = 0f;
     }

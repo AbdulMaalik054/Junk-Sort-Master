@@ -61,12 +61,24 @@ public class GameManager : MonoBehaviour
     {
         DragController.DisableDrag = true;
 
-        spawner.StopSpawning();
-        conveyor.StopConveyor(false);
+
+        CleanupGameplay();
 
         UIManager.Instance.HideGameOver();
         MenuController.Instance.ReturnToMainMenu();
     }
+
+    // CLEAR OBJECT POOL------------------------------------------------
+
+    private void CleanupGameplay()
+    {
+        conveyor.StopConveyor(false);
+        spawner.StopSpawning();
+        PoolManager.Instance.ResetAllObjects();
+        ScoreManager.Instance.ResetScore();
+        
+    }
+
 
     // PAUSE -----------------------------------------------------------
     public void TogglePause()
@@ -145,7 +157,7 @@ public class GameManager : MonoBehaviour
         {
             if (!paused)
             {
-                currentTime -= Time.deltaTime;
+                currentTime -= Time.unscaledDeltaTime;
                 UIManager.Instance.UpdateTimer(currentTime);
             }
             yield return null;
@@ -157,9 +169,11 @@ public class GameManager : MonoBehaviour
     // RESET -----------------------------------------------------------
     public void RestartGame()
     {
+        
         Time.timeScale = 1;
-        ScoreManager.Instance.ResetScore();
+        CleanupGameplay();
         UIManager.Instance.HideGameOver();
+        
         StartGame();
        
     }
