@@ -514,6 +514,7 @@ GameObject:
   - component: {fileID: 262045862}
   - component: {fileID: 262045861}
   - component: {fileID: 262045860}
+  - component: {fileID: 262045863}
   m_Layer: 5
   m_Name: Hard
   m_TagString: Untagged
@@ -584,19 +585,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 262045861}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1074847252}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnDifficultySelected
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &262045861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,6 +624,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262045858}
   m_CullTransparentMesh: 1
+--- !u!114 &262045863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262045858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d734729e38aff8849ab11d866bcc273d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIActionButton
+  CurrentMode: 1
+  action: 0
+  difficulty: 2
 --- !u!1 &294098551
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,6 +759,10 @@ PrefabInstance:
     - target: {fileID: 79596915072347707, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1790342799693961365, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
+      propertyPath: action
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5068313907048810473, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
       propertyPath: m_Name
@@ -920,6 +928,7 @@ GameObject:
   - component: {fileID: 346824845}
   - component: {fileID: 346824844}
   - component: {fileID: 346824843}
+  - component: {fileID: 346824846}
   m_Layer: 5
   m_Name: Easy
   m_TagString: Untagged
@@ -990,19 +999,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 346824844}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1074847252}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnDifficultySelected
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &346824844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1041,6 +1038,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 346824841}
   m_CullTransparentMesh: 1
+--- !u!114 &346824846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346824841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d734729e38aff8849ab11d866bcc273d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIActionButton
+  CurrentMode: 1
+  action: 0
+  difficulty: 0
 --- !u!1 &357116853
 GameObject:
   m_ObjectHideFlags: 0
@@ -1810,7 +1822,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2464071590242956052, guid: 9fe8b3fd4176dfa45a7c52d04f5f2824, type: 3}
       propertyPath: action
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1096626009017536325, guid: 9fe8b3fd4176dfa45a7c52d04f5f2824, type: 3}
       propertyPath: m_Pivot.x
@@ -2180,7 +2192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1790342799693961365, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
       propertyPath: action
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4991258597105143646, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
       propertyPath: m_text
@@ -2610,6 +2622,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8803834}
     m_Modifications:
+    - target: {fileID: -2464071590242956052, guid: 9fe8b3fd4176dfa45a7c52d04f5f2824, type: 3}
+      propertyPath: action
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1096626009017536325, guid: 9fe8b3fd4176dfa45a7c52d04f5f2824, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2976,6 +2992,7 @@ GameObject:
   - component: {fileID: 843299169}
   - component: {fileID: 843299168}
   - component: {fileID: 843299167}
+  - component: {fileID: 843299170}
   m_Layer: 5
   m_Name: Medium
   m_TagString: Untagged
@@ -3046,19 +3063,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 843299168}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1074847252}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnDifficultySelected
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &843299168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3097,6 +3102,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 843299165}
   m_CullTransparentMesh: 1
+--- !u!114 &843299170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843299165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d734729e38aff8849ab11d866bcc273d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIActionButton
+  CurrentMode: 1
+  action: 0
+  difficulty: 1
 --- !u!1001 &872663150
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3872,7 +3892,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1790342799693961365, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
       propertyPath: action
-      value: 3
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1790342799693961365, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
+      propertyPath: difficulty
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1790342799693961365, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
+      propertyPath: CurrentMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4991258597105143646, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
       propertyPath: m_text
@@ -4140,6 +4168,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1329097359}
     m_Modifications:
+    - target: {fileID: -2464071590242956052, guid: 9fe8b3fd4176dfa45a7c52d04f5f2824, type: 3}
+      propertyPath: action
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1096626009017536325, guid: 9fe8b3fd4176dfa45a7c52d04f5f2824, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4246,6 +4278,7 @@ GameObject:
   - component: {fileID: 1280698769}
   - component: {fileID: 1280698768}
   - component: {fileID: 1280698767}
+  - component: {fileID: 1280698770}
   m_Layer: 5
   m_Name: Start
   m_TagString: Untagged
@@ -4316,19 +4349,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1280698768}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1074847252}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnPlayButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1280698768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4367,6 +4388,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1280698765}
   m_CullTransparentMesh: 1
+--- !u!114 &1280698770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280698765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d734729e38aff8849ab11d866bcc273d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIActionButton
+  CurrentMode: 0
+  action: 0
+  difficulty: 0
 --- !u!1 &1295201216
 GameObject:
   m_ObjectHideFlags: 0
@@ -5143,8 +5179,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   currentDifficulty: 0
   easyTime: 20
-  mediumTime: 9
-  hardTime: 8
+  mediumTime: 30
+  hardTime: 45
+  endlessTime: 3600
   currentTime: 0
   spawner: {fileID: 1934463785}
   conveyor: {fileID: 5203313832578762333}
@@ -5236,6 +5273,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1790342799693961365, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
+      propertyPath: action
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5068313907048810473, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
       propertyPath: m_Name
       value: Home
@@ -5262,6 +5303,7 @@ GameObject:
   - component: {fileID: 1584842032}
   - component: {fileID: 1584842031}
   - component: {fileID: 1584842030}
+  - component: {fileID: 1584842033}
   m_Layer: 5
   m_Name: Endless
   m_TagString: Untagged
@@ -5332,19 +5374,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1584842031}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1074847252}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnDifficultySelected
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1584842031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5383,6 +5413,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1584842028}
   m_CullTransparentMesh: 1
+--- !u!114 &1584842033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584842028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d734729e38aff8849ab11d866bcc273d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIActionButton
+  CurrentMode: 1
+  action: 0
+  difficulty: 3
 --- !u!1 &1586351823
 GameObject:
   m_ObjectHideFlags: 0

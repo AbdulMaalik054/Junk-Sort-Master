@@ -39,7 +39,7 @@ public class ConveyorManager : MonoBehaviour
         {
             currentSpeed += acceleration * Time.deltaTime;
             currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
-            
+            Debug.Log(currentSpeed);
         }
 
         // Apply UV scrolling

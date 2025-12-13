@@ -1,30 +1,82 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum UIButtonAction
-{
-    Restart,
-    Home,
-    Resume,
-    Pause,
-    BackToMenu,
-    BackToPause,
-    BackOnePanel
-}
 
 public class UIActionButton : MonoBehaviour
 {
-    [SerializeField] private UIButtonAction action;
-
-    private void Awake()
+    public enum UIButtonAction
     {
-        GetComponent<Button>().onClick.AddListener(InvokeAction);
+        Start,
+        Restart,
+        Home,
+        Resume,
+        Pause,
+        BackToMenu,
+        BackToPause,
+        BackOnePanel
     }
 
-    private void InvokeAction()
+    public enum DifficultyButtons
+    {
+        Easy,
+        Medium,
+        Hard,
+        Endless
+    }
+
+    public enum ButtonModes
+    {
+        UIButtonAction,
+        DifficultyButtons
+    }
+
+
+    [Header("Configuration")]
+    public ButtonModes CurrentMode;
+
+    [HideInInspector]
+    [Header("Action Buttons")]
+    public UIButtonAction action;
+
+    [HideInInspector]
+    [Header("Difficulty Buttons")]
+    public DifficultyButtons difficulty;
+
+    private Button uiButton;
+    private void Awake()
+    {
+        uiButton = GetComponent<Button>();
+        if (uiButton != null)
+        {
+            // Assign the main handler method to the button's click event
+            uiButton.onClick.AddListener(HandleButtonClick);
+        }
+        
+    }
+
+    public void HandleButtonClick()
+    {
+        switch (CurrentMode)
+        {
+
+            case ButtonModes.UIButtonAction:
+                InvokeAction(action);
+                break;
+            case ButtonModes.DifficultyButtons:
+                SelectDifficulty(difficulty);
+                break;
+        }
+
+
+    }
+    private void InvokeAction(UIButtonAction action)
     {
         switch (action)
         {
+            case UIButtonAction.Start:
+                MenuController.Instance.ShowDifficultyMenu();
+                break;
+
             case UIButtonAction.Restart:
                 GameManager.Instance.RestartGame();
                 break;
@@ -49,9 +101,36 @@ public class UIActionButton : MonoBehaviour
                 UIManager.Instance.ShowPauseMenu();
                 break;
 
+            
+
             //case UIButtonAction.BackOnePanel:
             //    UIManager.Instance.GoBackOnePanel();
             //    break;
+            default:
+
+                break;
+        }
+    }
+
+    private void SelectDifficulty(DifficultyButtons difficulty)
+    {
+        switch(difficulty)
+        {
+            case DifficultyButtons.Easy:
+                MenuController.Instance.SelectDifficulty(0);
+                break;
+
+            case DifficultyButtons.Medium:
+                MenuController.Instance.SelectDifficulty(1);
+                break;
+
+            case DifficultyButtons.Hard:
+                MenuController.Instance.SelectDifficulty(2);
+                break;
+
+            case DifficultyButtons.Endless:
+                MenuController.Instance.SelectDifficulty(3);
+                break;
         }
     }
 }

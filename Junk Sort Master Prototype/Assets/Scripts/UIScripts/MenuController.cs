@@ -22,16 +22,16 @@ public class MenuController : MonoBehaviour
         ShowPanel(mainMenuPanel);
         HidePanel(difficultyPanel);
 
-        WireButtons();
+        //WireButtons();
     }
 
-    private void WireButtons()
-    {
-        playButton?.onClick.AddListener(ShowDifficultyMenu);
-        easyButton?.onClick.AddListener(() => SelectDifficulty(0));
-        mediumButton?.onClick.AddListener(() => SelectDifficulty(1));
-        hardButton?.onClick.AddListener(() => SelectDifficulty(2));
-    }
+    //private void WireButtons()
+    //{
+    //    playButton?.onClick.AddListener(ShowDifficultyMenu);
+    //    easyButton?.onClick.AddListener(() => SelectDifficulty(0));
+    //    mediumButton?.onClick.AddListener(() => SelectDifficulty(1));
+    //    hardButton?.onClick.AddListener(() => SelectDifficulty(2));
+    //}
 
     // ----------------------------------------------------
     // PANEL LOGIC

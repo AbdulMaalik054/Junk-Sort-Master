@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public float easyTime = 60f;
     public float mediumTime = 45f;
     public float hardTime = 30f;
+    public float endlessTime = 3600f;
 
     public float currentTime;
     private bool gameRunning;
@@ -54,10 +55,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-
-       
-        
-
     public void ReturnToMenu()
     {
         DragController.DisableDrag = true;
@@ -66,6 +63,7 @@ public class GameManager : MonoBehaviour
         CleanupGameplay();
 
         UIManager.Instance.HideGameOver();
+        UIManager.Instance.HidePauseMenu();
         MenuController.Instance.ReturnToMainMenu();
     }
 
@@ -117,6 +115,7 @@ public class GameManager : MonoBehaviour
         if (finalScore > best)
             PlayerPrefs.SetInt("BestScore", finalScore);
 
+        UIManager.Instance.pauseButton.gameObject.SetActive(false);
         UIManager.Instance.ShowGameOver(finalScore, PlayerPrefs.GetInt("BestScore"));
     }
 
@@ -133,13 +132,18 @@ public class GameManager : MonoBehaviour
 
             case Difficulty.Medium:
                 currentTime = mediumTime;
-                conveyor.SetDifficulty(2f, 5f, 12f);
+                conveyor.SetDifficulty(1.5f, 2.75f, 0.05f);
                 spawner.SetSpawnRates(3f);
                 break;
 
             case Difficulty.Hard:
                 currentTime = hardTime;
-                conveyor.SetDifficulty(3f, 7f, 15f);
+                conveyor.SetDifficulty(2.25f, 3.25f, 0.05f);
+                spawner.SetSpawnRates(2f);
+                break;
+            case Difficulty.Endless:
+                currentTime = endlessTime;
+                conveyor.SetDifficulty(1.75f, 3.75f, 0.05f);
                 spawner.SetSpawnRates(2f);
                 break;
         }
@@ -192,4 +196,4 @@ public class GameManager : MonoBehaviour
     }
 }
 
-public enum Difficulty { Easy, Medium, Hard }
+public enum Difficulty { Easy, Medium, Hard , Endless }
