@@ -8,8 +8,10 @@ public class Spawner : MonoBehaviour
 
 
     [Header("Spawn Intervals")]
-    public float plasticInterval = 3f;
-    public float paperInterval = 5f;
+
+    public float spawnObjectInterval = 1.0f;
+    //public float plasticInterval = 3f;
+    //public float paperInterval = 5f;
 
     [Header("Spawn Range")]
     [SerializeField] float minZOffset = -1f;
@@ -63,7 +65,7 @@ public class Spawner : MonoBehaviour
 
            
 
-            if (spawnTimer >= paperInterval)
+            if (spawnTimer >= spawnObjectInterval)
             {
                 SpawnTypeObjects();
                 spawnTimer = 0f;
@@ -83,7 +85,8 @@ public class Spawner : MonoBehaviour
     public void SetSpawnRates(float spawnInterval)
     {
         // clamp to safe, non-zero values
-        spawnInterval = Mathf.Max(0.05f, spawnInterval);
+        spawnObjectInterval = Mathf.Max(0.001f, spawnInterval);
+        Debug.Log($"[Spawner] Spawn interval set to {spawnObjectInterval}");
     }
     private void SpawnTypeObjects()
     {

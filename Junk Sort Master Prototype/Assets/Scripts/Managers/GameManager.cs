@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 [DefaultExecutionOrder(0)]
@@ -205,6 +206,15 @@ public class GameManager : MonoBehaviour
     {
         ScoreManager.Instance.AddWrongPenalty(amount, pos);
         currentTime -= 2f;
+    }
+
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
     }
 }
 

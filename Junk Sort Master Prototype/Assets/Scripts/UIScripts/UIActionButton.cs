@@ -7,6 +7,7 @@ public class UIActionButton : MonoBehaviour
     public enum UIButtonAction
     {
         Start,
+        Exit,
         Restart,
         Home,
         Resume,
@@ -75,6 +76,10 @@ public class UIActionButton : MonoBehaviour
         {
             case UIButtonAction.Start:
                 MenuController.Instance.ShowDifficultyMenu();
+                break;
+
+            case UIButtonAction.Exit:
+                GameManager.Instance.Quit();
                 break;
 
             case UIButtonAction.Restart:

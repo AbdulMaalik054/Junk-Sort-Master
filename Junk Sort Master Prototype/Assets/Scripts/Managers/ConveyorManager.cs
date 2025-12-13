@@ -7,12 +7,15 @@ public class ConveyorManager : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private Vector3 moveDirection = Vector3.back;
     [SerializeField] private float currentSpeed = 0f;
+    
+
     private float maxSpeed = 5f;
     private float acceleration = 1f;
+    private bool isPaused = false;
 
     [Header("Material Scrolling")]
     [SerializeField] private Renderer beltRenderer;
-    [SerializeField] private float uvMultiplier = 0.25f;
+    [SerializeField] private float uvMultiplier = .04f;
 
     private Material beltMaterial;
     private bool conveyorRunning = false;
@@ -28,8 +31,7 @@ public class ConveyorManager : MonoBehaviour
             beltMaterial = beltRenderer.material;
         }
     }
-
-    private void Update()
+    private void FixedUpdate()
     {
         if (!conveyorRunning)
             return;
@@ -39,20 +41,20 @@ public class ConveyorManager : MonoBehaviour
         {
             currentSpeed += acceleration * Time.deltaTime;
             currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
-            
-        }
 
-        // Apply UV scrolling
-        if (beltMaterial != null)
-        {
-            float offset = Time.time * currentSpeed * uvMultiplier;
-
-            // URP Lit uses _BaseMap, Standard shader uses _MainTex
-            if (beltMaterial.HasProperty("_BaseMap"))
-                beltMaterial.SetTextureOffset("_BaseMap", new Vector2(0, offset));
-            else if (beltMaterial.HasProperty("_MainTex"))
-                beltMaterial.SetTextureOffset("_MainTex", new Vector2(0, offset));
         }
+    }
+
+
+    private void Update()
+    {
+
+
+        if (!conveyorRunning || beltMaterial == null)
+            return;
+        beltMaterial.SetFloat("_Speed", currentSpeed * uvMultiplier);
+        
+
     }
 
     private void OnTriggerStay(Collider other)
@@ -110,7 +112,7 @@ public class ConveyorManager : MonoBehaviour
     public void StartConveyor()
     {
         conveyorRunning = true;
-        Time.timeScale = 1;
+        
     }
 
     /// <summary>
@@ -119,7 +121,7 @@ public class ConveyorManager : MonoBehaviour
     public void StopConveyor(bool resetSpeed)
     {
         conveyorRunning = false;
-        Time.timeScale = 0;
+        
         if (resetSpeed)
             currentSpeed = 0f;
     }
@@ -132,4 +134,6 @@ public class ConveyorManager : MonoBehaviour
         currentSpeed = 0f;
         conveyorRunning = false;
     }
+
+    
 }
