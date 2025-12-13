@@ -17,6 +17,10 @@ public class GameManager : MonoBehaviour
     private bool gameRunning;
     private bool paused;
 
+    [Header("Progresseion Controller")]
+
+    [SerializeField] private ProgressionController progression;
+
     [Header("References")]
     [SerializeField] private Spawner spawner;
     [SerializeField] private ConveyorManager conveyor;
@@ -26,9 +30,11 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
+    // Replace all calls to progression.StartProgression() with progression.Initialize(currentDifficulty);
+    // and progression.StartProgression() with progression.ApplyTier(0); if you want to start the first tier.
+
     private void Start()
     {
-
         UIManager.Instance.ShowLoadingTransition("LOADING", 2.0f);
         MenuController.Instance.ReturnToMainMenu();
     }
@@ -42,6 +48,10 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         ApplyDifficulty();
+        //-----------------Progressions Parameters
+
+        progression.Initialize(currentDifficulty);
+        progression.ApplyTier(0); // Start the first tier
         gameRunning = true;
         paused = false;
         DragController.DisableDrag = false;
@@ -59,11 +69,12 @@ public class GameManager : MonoBehaviour
     {
         DragController.DisableDrag = true;
 
-
         CleanupGameplay();
 
         UIManager.Instance.HideGameOver();
         UIManager.Instance.HidePauseMenu();
+        progression.Initialize(currentDifficulty); // Re-initialize progression
+        progression.ApplyTier(0); // Start the first tier
         MenuController.Instance.ReturnToMainMenu();
     }
 
@@ -105,6 +116,7 @@ public class GameManager : MonoBehaviour
         paused = false;
         Time.timeScale = 1;
 
+        progression.Initialize(currentDifficulty); // Re-initialize progression to stop/cleanup
         spawner.StopSpawning();
         conveyor.StopConveyor(false);
         DragController.DisableDrag = true;

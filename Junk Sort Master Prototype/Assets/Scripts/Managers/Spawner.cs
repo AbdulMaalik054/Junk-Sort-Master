@@ -85,7 +85,7 @@ public class Spawner : MonoBehaviour
         // clamp to safe, non-zero values
         spawnInterval = Mathf.Max(0.05f, spawnInterval);
     }
-        private void SpawnTypeObjects()
+    private void SpawnTypeObjects()
     {
         JunkType JunKObject = junkTypes[Random.Range(0, junkTypes.Length)];
         GameObject obj = PoolManager.Instance.GetFromPool(JunKObject);

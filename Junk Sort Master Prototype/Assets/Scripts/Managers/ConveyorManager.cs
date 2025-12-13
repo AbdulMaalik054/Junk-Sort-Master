@@ -39,7 +39,7 @@ public class ConveyorManager : MonoBehaviour
         {
             currentSpeed += acceleration * Time.deltaTime;
             currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
-            Debug.Log(currentSpeed);
+            
         }
 
         // Apply UV scrolling
@@ -83,6 +83,26 @@ public class ConveyorManager : MonoBehaviour
         this.maxSpeed = Mathf.Max(0f, maxSpeed);
         this.acceleration = Mathf.Max(0f, accel);
     }
+
+    // ---------------------------------------------------------
+    // UPDATING CONVEYOR
+    // ---------------------------------------------------------
+
+    public void UpdateMaxSpeed(float newMaxSpeed)
+    {
+        maxSpeed = Mathf.Max(0f, newMaxSpeed);
+    }
+
+    public void UpdateAcceleration(float newAcceleration)
+    {
+        acceleration = Mathf.Max(0f, newAcceleration);
+    }
+
+
+
+    // ---------------------------------------------------------
+    // LINKING GameManager
+    // ---------------------------------------------------------
 
     /// <summary>
     /// Begin conveyor movement
