@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37a31337cd189a74f9179242ac6b7539, type: 3}
+  m_Name: DifficultyConfigDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::DifficultyConfigDatabase
+  easyConfig: {fileID: 11400000, guid: 709d31648e8829046991c7adc70587b9, type: 2}
+  mediumConfig: {fileID: 11400000, guid: 7ac70397a4768aa4f857ef6ded0080bb, type: 2}
+  hardConfig: {fileID: 11400000, guid: 16cc7fa13e743654fa77ead2f16e4039, type: 2}
+  endlessConfig: {fileID: 11400000, guid: 15a5247407af8304cbdce7cd89f0b404, type: 2}

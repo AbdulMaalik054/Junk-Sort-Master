@@ -3,23 +3,28 @@ using UnityEngine;
 public class UnifiedDragManager : MonoBehaviour
 {
     [Header("Snap Settings")]
-    public float snapDistance = 1.0f;           // Distance threshold for snapping
-    public LayerMask binLayerMask;              // Layer for bins
-    public ParticleSystem correctParticle;      // Optional particle for correct sorting
-    public ParticleSystem incorrectParticle;    // Optional particle for incorrect sorting
-    public AudioSource audioSource;             // Optional audio source
+    public float snapDistance = 1.0f;
+
+    [Header("Optional Feedback")]
+    public ParticleSystem correctParticle;
+    public ParticleSystem incorrectParticle;
+    public AudioSource audioSource;
     public AudioClip correctSFX;
     public AudioClip incorrectSFX;
 
     private DragController currentDrag;
     private Camera mainCamera;
+    private BinMarker[] allBins;
 
-    void Awake()
+    private void Awake()
     {
         mainCamera = Camera.main;
+
+        // Automatically find all bins in the scene
+        allBins = FindObjectsByType<BinMarker>(FindObjectsSortMode.None);
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.touchSupported && Input.touchCount > 0)
         {
@@ -42,16 +47,17 @@ public class UnifiedDragManager : MonoBehaviour
             case TouchPhase.Began:
                 TryBeginDrag(ray);
                 break;
+
             case TouchPhase.Moved:
             case TouchPhase.Stationary:
-                if (currentDrag != null) currentDrag.Drag(ray);
+                if (currentDrag != null)
+                    currentDrag.Drag(ray);
                 break;
+
             case TouchPhase.Ended:
             case TouchPhase.Canceled:
                 if (currentDrag != null)
-                {
                     EndDragWithSnap();
-                }
                 break;
         }
     }
@@ -66,91 +72,89 @@ public class UnifiedDragManager : MonoBehaviour
         {
             TryBeginDrag(ray);
         }
-        else if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(0) && currentDrag != null)
         {
-            if (currentDrag != null) currentDrag.Drag(ray);
+            currentDrag.Drag(ray);
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0) && currentDrag != null)
         {
-            if (currentDrag != null)
-            {
-                EndDragWithSnap();
-            }
+            EndDragWithSnap();
         }
     }
     #endregion
 
     private void TryBeginDrag(Ray ray)
     {
-        if (DragController.DisableDrag) return;
+        if (DragController.DisableDrag)
+            return;
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            DragController drag = hit.collider.GetComponent<DragController>();
-            if (drag != null)
+            if (hit.collider.TryGetComponent(out DragController drag))
             {
                 currentDrag = drag;
                 currentDrag.BeginDrag(hit.point);
-                BringToFront(currentDrag.gameObject);
+                BringToFront(currentDrag.transform);
             }
         }
     }
 
     private void EndDragWithSnap()
     {
-        // First end the drag
         currentDrag.EndDrag();
 
-        // Check for nearby bins
-        Collider[] bins = Physics.OverlapSphere(currentDrag.transform.position, snapDistance, binLayerMask);
-        bool snapped = false;
+        BinMarker nearestBin = null;
+        float closestDistance = snapDistance;
 
-        foreach (Collider bin in bins)
+        foreach (var bin in allBins)
         {
-            // Optionally, you could verify bin type here
-            float distance = Vector3.Distance(currentDrag.transform.position, bin.transform.position);
-            if (distance <= snapDistance)
+            float dist = Vector3.Distance(currentDrag.transform.position, bin.transform.position);
+            if (dist <= closestDistance)
             {
-                currentDrag.transform.position = bin.transform.position; // Snap
-                snapped = true;
-
-                // Trigger correct particle + SFX hook
-                if (correctParticle != null)
-                {
-                    ParticleSystem p = Instantiate(correctParticle, bin.transform.position, Quaternion.identity);
-                    p.Play();
-                }
-                if (audioSource != null && correctSFX != null)
-                {
-                    audioSource.PlayOneShot(correctSFX);
-                }
-
-                break; // Snap only to the first bin in range
+                closestDistance = dist;
+                nearestBin = bin;
             }
         }
 
-        if (!snapped)
+        if (nearestBin != null)
         {
-            // Optional: trigger incorrect particle + SFX
-            if (incorrectParticle != null)
-            {
-                ParticleSystem p = Instantiate(incorrectParticle, currentDrag.transform.position, Quaternion.identity);
-                p.Play();
-            }
-            if (audioSource != null && incorrectSFX != null)
-            {
-                audioSource.PlayOneShot(incorrectSFX);
-            }
+            // Snap to bin center
+            currentDrag.transform.position = nearestBin.transform.position;
+
+            PlayCorrectFeedback(nearestBin.transform.position);
+        }
+        else
+        {
+            PlayIncorrectFeedback(currentDrag.transform.position);
         }
 
-        currentDrag = null; // Reset
+        currentDrag = null;
     }
 
-    private void BringToFront(GameObject go)
+    private void BringToFront(Transform target)
     {
-        // Optional: raise Z or sorting order so dragged object is visually on top
-        Vector3 pos = go.transform.position;
-        pos.z = -5f; // adjust based on your camera setup
-        go.transform.position = pos;
+        Vector3 pos = target.position;
+        pos.z = -5f; // adjust for your camera
+        target.position = pos;
     }
+
+    #region Feedback
+    private void PlayCorrectFeedback(Vector3 position)
+    {
+        if (correctParticle != null)
+            Instantiate(correctParticle, position, Quaternion.identity);
+
+        if (audioSource != null && correctSFX != null)
+            audioSource.PlayOneShot(correctSFX);
+    }
+
+    private void PlayIncorrectFeedback(Vector3 position)
+    {
+        if (incorrectParticle != null)
+            Instantiate(incorrectParticle, position, Quaternion.identity);
+
+        if (audioSource != null && incorrectSFX != null)
+            audioSource.PlayOneShot(incorrectSFX);
+    }
+    #endregion
 }

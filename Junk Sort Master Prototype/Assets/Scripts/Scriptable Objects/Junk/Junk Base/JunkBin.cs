@@ -7,18 +7,19 @@ public class JunkBin : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        JunkItem junk = other.GetComponent<JunkItem>();
+        JunkItem junk = other.GetComponentInChildren<JunkItem>();
         if (junk == null) return;
 
+        Debug.Log(other.name);
         // Check if the items list contains the correct junk type
         bool isCorrect = junk.junkType == correctType;
         if (isCorrect)
         {
-            GameManager.Instance.AddScore(1, transform.position);
+            ScoreManager.Instance.AddCorrectScore(1,junk.transform.position);
         }
         else
         {
-            GameManager.Instance.WrongSortingPenalty(2, transform.position);
+            ScoreManager.Instance.AddWrongPenalty(2, junk.transform.position);
         }
 
         other.gameObject.SetActive(false);

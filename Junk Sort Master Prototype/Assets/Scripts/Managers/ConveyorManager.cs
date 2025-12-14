@@ -11,7 +11,7 @@ public class ConveyorManager : MonoBehaviour
 
     private float maxSpeed = 5f;
     private float acceleration = 1f;
-    private bool isPaused = false;
+    
 
     [Header("Material Scrolling")]
     [SerializeField] private Renderer beltRenderer;

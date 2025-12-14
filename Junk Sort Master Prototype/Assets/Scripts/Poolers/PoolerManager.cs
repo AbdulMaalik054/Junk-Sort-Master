@@ -29,7 +29,7 @@ public class PoolManager : MonoBehaviour
                 obj.SetActive(false);
 
                 // Assign junk type to each variant
-                obj.GetComponent<JunkItem>().junkType = type;
+                obj.GetComponentInChildren<JunkItem>().junkType = type;
 
                 newQueue.Enqueue(obj);
             }

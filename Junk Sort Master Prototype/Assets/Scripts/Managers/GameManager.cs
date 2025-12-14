@@ -196,17 +196,17 @@ public class GameManager : MonoBehaviour
        
     }
 
-    // SCORE EVENTS ----------------------------------------------------
-    public void AddScore(int amount, Vector3 pos)
-    {
-        ScoreManager.Instance.AddCorrectScore(amount, pos);
-    }
+    //// SCORE EVENTS ----------------------------------------------------
+    //public void AddScore(int amount, Vector3 pos)
+    //{
+    //    ScoreManager.Instance.AddCorrectScore(amount, pos);
+    //}
 
-    public void WrongSortingPenalty(int amount, Vector3 pos)
-    {
-        ScoreManager.Instance.AddWrongPenalty(amount, pos);
-        currentTime -= 2f;
-    }
+    //public void WrongSortingPenalty(int amount, Vector3 pos)
+    //{
+    //    ScoreManager.Instance.AddWrongPenalty(amount, pos);
+    //    currentTime -= 2f;
+    //}
 
     public void Quit()
     {

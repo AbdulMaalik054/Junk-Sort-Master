@@ -14,13 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DifficultyTierConfig
   difficulty: 0
   tiers:
-  - unlockTime: 120
+  - unlockTime: 0
     startSpeed: 2
     maxSpeed: 3
     acceleration: 0.01
-    spawnInterval: 0.1
+    spawnInterval: 3
   - unlockTime: 60
     startSpeed: 3
     maxSpeed: 3.5
     acceleration: 0.02
-    spawnInterval: 0.25
+    spawnInterval: 2.5
+  - unlockTime: 90
+    startSpeed: 3.5
+    maxSpeed: 3.75
+    acceleration: 0.02
+    spawnInterval: 2.25

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class FloatingTextPool : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class FloatingTextPool : MonoBehaviour
 
     private Queue<FloatingText> pool = new Queue<FloatingText>();
     private Camera mainCam;
+    private Camera uiCam;
 
     private void Awake()
     {
@@ -35,7 +37,15 @@ public class FloatingTextPool : MonoBehaviour
             Debug.LogError("[FloatingTextPool] ERROR: Floating Text Prefab is NOT assigned!");
             return;
         }
+        
 
+        Canvas canvas = canvasParent.GetComponentInParent<Canvas>();
+        uiCam = canvas.worldCamera;
+
+        if (uiCam == null)
+        {
+            Debug.LogError("[FloatingTextPool] UI Camera is not assigned to the Canvas!");
+        }
         // Pre-populate pool
         for (int i = 0; i < poolSize; i++)
         {
@@ -80,17 +90,17 @@ public class FloatingTextPool : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasParent,
             screenPos,
-            mainCam,
+            uiCam,
             out Vector2 anchoredPos
         );
 
         // assign position
         ft.rect.anchoredPosition = anchoredPos;
         
-
-
         // set text and animate
         ft.Init(message, color);
         ft.Play();
     }
 }
+
+

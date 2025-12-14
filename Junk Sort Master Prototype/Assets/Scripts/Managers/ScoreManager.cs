@@ -39,6 +39,7 @@ public class ScoreManager : MonoBehaviour
 
         // Floating score
         FloatingTextPool.Instance.SpawnFloatingText("+" + amount, Color.green, worldPos);
+        Debug.Log("Correct Score position: " + worldPos);
 
         IncreaseStreak(worldPos);
     }
@@ -56,6 +57,7 @@ public class ScoreManager : MonoBehaviour
         // Floating red penalty
         FloatingTextPool.Instance.SpawnFloatingText("-" + penaltyAmount, Color.red, worldPos);
 
+        Debug.Log("Wrong Score position: " + worldPos);
         ResetStreak(worldPos);
     }
 
@@ -68,7 +70,7 @@ public class ScoreManager : MonoBehaviour
 
         // Floating red penalty
         FloatingTextPool.Instance.SpawnFloatingText("-" + penaltyAmount, Color.red, worldPos);
-
+        Debug.Log("Overflow Score position: " + worldPos);
         ResetStreak(worldPos);
     }
 

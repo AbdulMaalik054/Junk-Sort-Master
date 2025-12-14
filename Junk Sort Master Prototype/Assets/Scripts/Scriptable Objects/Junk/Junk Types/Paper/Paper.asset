@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d53cc66e2c1f19241adfcea8df3101b7, type: 3}
+  m_Name: Paper
+  m_EditorClassIdentifier: Assembly-CSharp::JunkType
+  typeName: Paper
+  prefabVariants:
+  - {fileID: 1440500669373584903, guid: 81038d8788802414cb8f1d782e75a388, type: 3}
+  - {fileID: 4290816898541943761, guid: 79c4108dfdba4d14c9d56534587433ed, type: 3}
+  - {fileID: 2156755629658009254, guid: c93f042112daf30438b318d97d0c956b, type: 3}
+  - {fileID: 7109442650169587628, guid: 3309b61234b40374d9df6f2fa934765e, type: 3}
+  - {fileID: 2175707745840151296, guid: b0d54b565729e0641a1e54a1dca8ffcc, type: 3}
+  - {fileID: 334958131749485062, guid: 74e99a477c7274d4081e2da1cbc0c8eb, type: 3}
+  - {fileID: 4118886047998292207, guid: cb6d9ae6202b44f418ea8d114231b983, type: 3}
+  - {fileID: 3679412719717656970, guid: 6b3828ec00580a94e91a8acfe02f7b84, type: 3}
+  initialSize: 2

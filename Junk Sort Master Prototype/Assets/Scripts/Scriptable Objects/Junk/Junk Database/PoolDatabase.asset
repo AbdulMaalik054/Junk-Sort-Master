@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f010ddd8e6cb7c94c917ceb15ba2ff1e, type: 3}
+  m_Name: PoolDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::JunkDatabase
+  items:
+  - {fileID: 11400000, guid: d3dda4f0e0811ff4c9e01f43cbf85aa3, type: 2}
+  - {fileID: 11400000, guid: ee0e925bcfdfaaf4a8f14a571a1d0837, type: 2}
