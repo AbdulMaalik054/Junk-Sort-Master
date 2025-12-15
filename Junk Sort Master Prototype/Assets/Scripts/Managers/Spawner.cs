@@ -90,13 +90,14 @@ public class Spawner : MonoBehaviour
     }
     private void SpawnTypeObjects()
     {
-        JunkType JunKObject = junkTypes[Random.Range(0, junkTypes.Length)];
-        GameObject obj = PoolManager.Instance.GetFromPool(JunKObject);
+        JunkType type = junkTypes[Random.Range(0, junkTypes.Length)];
+        GameObject obj = PoolManager.Instance.GetFromPool(type);
+
         obj.transform.position = transform.position + GetRandomOffset();
         obj.transform.rotation = Quaternion.identity;
-        obj.SetActive(true);
     }
-        
-       
+
+
+
 
 }

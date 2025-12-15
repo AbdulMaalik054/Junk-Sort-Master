@@ -5,89 +5,104 @@ public class PoolManager : MonoBehaviour
 {
     public static PoolManager Instance;
 
-    private Dictionary<string, Queue<GameObject>> poolDict;
+    private readonly Dictionary<string, Queue<GameObject>> pools = new();
 
     private void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
-        poolDict = new Dictionary<string, Queue<GameObject>>();
     }
 
-    public void CreatePool(JunkType type, int amountPerPrefab)
+    // ----------------------------------------------------
+    // Create pools
+    // ----------------------------------------------------
+    public void CreatePool(JunkType type, int initialSize)
     {
         for (int i = 0; i < type.prefabVariants.Length; i++)
         {
-            GameObject prefab = type.prefabVariants[i];
             string poolKey = GetKey(type, i);
 
-            Queue<GameObject> newQueue = new Queue<GameObject>();
-            poolDict.Add(poolKey, newQueue);
+            if (pools.ContainsKey(poolKey))
+                continue;
 
-            for (int j = 0; j < amountPerPrefab; j++)
+            Queue<GameObject> queue = new();
+            pools.Add(poolKey, queue);
+
+            for (int j = 0; j < initialSize; j++)
             {
-                GameObject obj = Instantiate(prefab, transform);
-                obj.SetActive(false);
-
-                // Assign junk type to each variant
-                obj.GetComponentInChildren<JunkItem>().junkType = type;
-
-                newQueue.Enqueue(obj);
+                queue.Enqueue(CreateInstance(type, i, poolKey));
             }
         }
     }
 
+    // ----------------------------------------------------
+    // Spawn
+    // ----------------------------------------------------
     public GameObject GetFromPool(JunkType type)
     {
-        int randomIndex = Random.Range(0, type.prefabVariants.Length);
-        string poolKey = GetKey(type, randomIndex);
+        int index = Random.Range(0, type.prefabVariants.Length);
+        string key = GetKey(type, index);
 
-        Queue<GameObject> pool = poolDict[poolKey];
+        if (!pools.TryGetValue(key, out var queue))
+        {
+            Debug.LogError($"Pool missing for key {key}");
+            return null;
+        }
 
-        GameObject obj = pool.Dequeue();
-        obj.SetActive(true);
-        pool.Enqueue(obj);
+        if (queue.Count == 0)
+        {
+            queue.Enqueue(CreateInstance(type, index, key));
+        }
 
-        return obj;
+        GameObject root = queue.Dequeue();
+        root.SetActive(true);
+        root.GetComponentInChildren<IPoolable>()?.OnSpawn();
+
+        return root;
+    }
+
+    // ----------------------------------------------------
+    // Despawn
+    // ----------------------------------------------------
+    public void ReturnToPool(GameObject root, string poolKey)
+    {
+        if (root == null || !pools.ContainsKey(poolKey))
+            return;
+
+        root.GetComponentInChildren<IPoolable>()?.OnDespawn();
+        root.SetActive(false);
+
+        pools[poolKey].Enqueue(root);
+    }
+
+    // ----------------------------------------------------
+    // Internal creation (NO runtime parents)
+    // ----------------------------------------------------
+    private GameObject CreateInstance(JunkType type, int index, string poolKey)
+    {
+        GameObject prefab = type.prefabVariants[index];
+
+        GameObject root = Instantiate(prefab);
+        root.transform.SetParent(transform, false);
+        root.SetActive(false);
+
+        JunkItem item = root.GetComponentInChildren<JunkItem>(true);
+        if (item == null)
+        {
+            Debug.LogError($"Prefab '{prefab.name}' has no JunkItem.");
+            return root;
+        }
+
+        item.Initialize(root, poolKey, type);
+        return root;
     }
 
     private string GetKey(JunkType type, int index)
     {
-        return type.typeName + "_" + index;
+        return $"{type.typeName}_{index}";
     }
-    // -----------------------------------------------------------
-    // 🔥 NEW METHOD: Reset all pooled objects when restarting game
-    // -----------------------------------------------------------
-    public void ResetAllObjects()
-    {
-        foreach (var kvp in poolDict)
-        {
-            Queue<GameObject> pool = kvp.Value;
-
-            foreach (GameObject obj in pool)
-            {
-                if (obj == null) continue;
-
-                // Deactivate
-                obj.SetActive(false);
-
-                // Reset physics
-                Rigidbody rb = obj.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.linearVelocity = Vector3.zero;
-                    rb.angularVelocity = Vector3.zero;
-                }
-
-                // Reset rotation (optional)
-                obj.transform.localRotation = Quaternion.identity;
-
-                // If JunkItem has any custom reset logic, call it
-                JunkItem item = obj.GetComponent<JunkItem>();
-                if (item != null)
-                {
-                    item.ResetState();   // We'll create this method if needed
-                }
-            }
-        }
-        }
-    }
+}

@@ -40,18 +40,17 @@ public class UnifiedDragManager : MonoBehaviour
     private void HandleTouchInput()
     {
         Touch touch = Input.GetTouch(0);
-        Ray ray = mainCamera.ScreenPointToRay(touch.position);
 
         switch (touch.phase)
         {
             case TouchPhase.Began:
-                TryBeginDrag(ray);
+                TryBeginDrag(touch.position);
                 break;
 
             case TouchPhase.Moved:
             case TouchPhase.Stationary:
                 if (currentDrag != null)
-                    currentDrag.Drag(ray);
+                    currentDrag.Drag(touch.position);
                 break;
 
             case TouchPhase.Ended:
@@ -61,43 +60,47 @@ public class UnifiedDragManager : MonoBehaviour
                 break;
         }
     }
+
     #endregion
 
     #region Mouse Input
     private void HandleMouseInput()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
         if (Input.GetMouseButtonDown(0))
         {
-            TryBeginDrag(ray);
+            TryBeginDrag(Input.mousePosition);
         }
         else if (Input.GetMouseButton(0) && currentDrag != null)
         {
-            currentDrag.Drag(ray);
+            currentDrag.Drag(Input.mousePosition);
         }
         else if (Input.GetMouseButtonUp(0) && currentDrag != null)
         {
             EndDragWithSnap();
         }
     }
-    #endregion
 
-    private void TryBeginDrag(Ray ray)
+#endregion
+
+
+    private void TryBeginDrag(Vector3 screenPosition)
     {
         if (DragController.DisableDrag)
             return;
+
+        Ray ray = mainCamera.ScreenPointToRay(screenPosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             if (hit.collider.TryGetComponent(out DragController drag))
             {
                 currentDrag = drag;
-                currentDrag.BeginDrag(hit.point);
+                currentDrag.BeginDrag(screenPosition);
                 BringToFront(currentDrag.transform);
             }
         }
     }
+
 
     private void EndDragWithSnap()
     {
@@ -133,10 +136,12 @@ public class UnifiedDragManager : MonoBehaviour
 
     private void BringToFront(Transform target)
     {
-        Vector3 pos = target.position;
-        pos.z = -5f; // adjust for your camera
-        target.position = pos;
+        if (target.TryGetComponent(out Renderer r))
+        {
+            r.sortingOrder = 10;
+        }
     }
+
 
     #region Feedback
     private void PlayCorrectFeedback(Vector3 position)

@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
     {
         conveyor.StopConveyor(false);
         spawner.StopSpawning();
-        PoolManager.Instance.ResetAllObjects();
+        //PoolManager.Instance.ResetAllObjects();
         ScoreManager.Instance.ResetScore();
         
     }
