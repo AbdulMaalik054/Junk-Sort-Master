@@ -1735,6 +1735,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 680009425}
     m_Modifications:
     - target: {fileID: -4974463454617903661, guid: 3d41098432c727749bcadc15d6cc02c7, type: 3}
+      propertyPath: correctType
+      value: 
+      objectReference: {fileID: 11400000, guid: ee0e925bcfdfaaf4a8f14a571a1d0837, type: 2}
+    - target: {fileID: -4974463454617903661, guid: 3d41098432c727749bcadc15d6cc02c7, type: 3}
       propertyPath: scoreManager
       value: 
       objectReference: {fileID: 578762588}
@@ -1917,7 +1921,7 @@ GameObject:
   - component: {fileID: 525114543}
   - component: {fileID: 525114544}
   m_Layer: 0
-  m_Name: Input Manager
+  m_Name: Unified Input Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3104,6 +3108,53 @@ MonoBehaviour:
   CurrentMode: 1
   action: 0
   difficulty: 1
+--- !u!1 &857143680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 857143681}
+  - component: {fileID: 857143682}
+  m_Layer: 0
+  m_Name: SortingResolver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &857143681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857143680}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1295201217}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &857143682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857143680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3069234bb61f0fa45bc8183508b389aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SortingResolver
+  correctScore: 1
+  wrongPenalty: 2
+  overflowPenalty: 5
 --- !u!1001 &872663150
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4567,6 +4618,7 @@ Transform:
   - {fileID: 2067971926}
   - {fileID: 1644307437}
   - {fileID: 979195706}
+  - {fileID: 857143681}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1329097358
@@ -4881,7 +4933,7 @@ GameObject:
   - component: {fileID: 1375042128}
   - component: {fileID: 1375042129}
   m_Layer: 0
-  m_Name: Trigger
+  m_Name: OverflowDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6905,7 +6957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JunkBin
   correctType: {fileID: 11400000, guid: 0ab315705edcdd4419f40f170a59ebd7, type: 2}
-  scoreManager: {fileID: 578762588}
+  scoreManager: {fileID: 0}
 --- !u!65 &908424363505604508
 BoxCollider:
   m_ObjectHideFlags: 0

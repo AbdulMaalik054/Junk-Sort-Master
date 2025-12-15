@@ -22,7 +22,7 @@ public class JunkItem : MonoBehaviour, IPoolable
 
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.isKinematic = false;
+        //rb.isKinematic = false;
     }
 
     public void OnDespawn()
@@ -31,7 +31,7 @@ public class JunkItem : MonoBehaviour, IPoolable
 
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.isKinematic = true;
+       // rb.isKinematic = true;
         ResetState();
     }
 

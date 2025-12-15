@@ -14,9 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::JunkType
   typeName: Plastic
   prefabVariants:
-  - {fileID: 5550972594890358376, guid: 625c77d7ae44b944d926afad46b3ce70, type: 3}
-  - {fileID: 8113564092561688742, guid: 8657d299c7122a747a1b322ef8ef2eef, type: 3}
-  - {fileID: 8872922236231028865, guid: f711b28635de91348a4f62b3d0ae357b, type: 3}
-  - {fileID: 3303270859113362543, guid: cddba2d187fb30446a2e6d192f93b226, type: 3}
-  - {fileID: 4943954525011168333, guid: e9d51c378a78c4941bd1f83eb65923f2, type: 3}
+  - {fileID: 745746577645620131, guid: 625c77d7ae44b944d926afad46b3ce70, type: 3}
   initialSize: 2

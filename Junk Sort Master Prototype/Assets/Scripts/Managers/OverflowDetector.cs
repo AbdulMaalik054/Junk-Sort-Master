@@ -10,10 +10,6 @@ public class OverflowDetector : MonoBehaviour
             return;
 
         // Overflow = penalty
-        ScoreManager.Instance.AddOverflowPenalty(5, junk.transform.position + scoreOffset);
-
-        Debug.Log("Overflow! -5 score");
-
-        other.gameObject.SetActive(false);
+        SortingResolver.Instance.Resolve(SortResult.Overflow, junk);
     }
 }
