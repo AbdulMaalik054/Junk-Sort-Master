@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-[DefaultExecutionOrder(0)]
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -48,13 +48,12 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        ApplyDifficulty();
-        //-----------------Progressions Parameters
-
-        progression.Initialize(currentDifficulty);
-        progression.ApplyTier(0); // Start the first tier
         gameRunning = true;
         paused = false;
+        Time.timeScale = 1;
+        ApplyDifficulty();
+        progression.Initialize(currentDifficulty);
+        progression.ApplyTier(0); // Start the first tier
         DragController.DisableDrag = false;
         UIManager.Instance.ShowStartTransition("GO!", 2.0f);
         UIManager.Instance.ShowtopBarGroup();
@@ -64,6 +63,8 @@ public class GameManager : MonoBehaviour
         conveyorController.StartAll();
         spawner.StartSpawning();
     }
+        
+
 
 
     public void ReturnToMenu()
@@ -74,8 +75,7 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.HideGameOver();
         UIManager.Instance.HidePauseMenu();
-        progression.Initialize(currentDifficulty); // Re-initialize progression
-        progression.ApplyTier(0); // Start the first tier
+        
         MenuController.Instance.ReturnToMainMenu();
     }
 
@@ -83,9 +83,14 @@ public class GameManager : MonoBehaviour
 
     private void CleanupGameplay()
     {
+        StopAllCoroutines();   // CRITICAL
+
+        gameRunning = false;
+        paused = false;
+
         conveyorController.StopAll(false);
         spawner.StopSpawning();
-        //PoolManager.Instance.ResetAllObjects();
+        PoolManager.Instance.ResetPools();
         ScoreManager.Instance.ResetScore();
         
     }
@@ -115,7 +120,7 @@ public class GameManager : MonoBehaviour
 
         gameRunning = false;
         paused = false;
-        Time.timeScale = 1;
+        Time.timeScale = 0;
 
         progression.Initialize(currentDifficulty); // Re-initialize progression to stop/cleanup
         spawner.StopSpawning();
@@ -196,17 +201,7 @@ public class GameManager : MonoBehaviour
        
     }
 
-    //// SCORE EVENTS ----------------------------------------------------
-    //public void AddScore(int amount, Vector3 pos)
-    //{
-    //    ScoreManager.Instance.AddCorrectScore(amount, pos);
-    //}
-
-    //public void WrongSortingPenalty(int amount, Vector3 pos)
-    //{
-    //    ScoreManager.Instance.AddWrongPenalty(amount, pos);
-    //    currentTime -= 2f;
-    //}
+   
 
     public void Quit()
     {

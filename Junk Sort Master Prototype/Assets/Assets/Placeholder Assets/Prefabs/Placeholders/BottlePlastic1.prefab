@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3262820711722690298}
   m_Layer: 0
   m_Name: BottlePlastic1
-  m_TagString: Plastic
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,14 +27,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745746577645620131}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1419676801945061698}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &3854540265725764035
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -54,8 +54,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.20000002, y: 0.43759042, z: 0.25}
-  m_Center: {x: 0, y: 0.2, z: 0}
+  m_Size: {x: 0.67, y: 0.56, z: 1.29}
+  m_Center: {x: 0, y: 0.02, z: 0.64}
 --- !u!54 &6311065544826949813
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -107,7 +107,6 @@ GameObject:
   - component: {fileID: 3708577229123653958}
   - component: {fileID: 4799996957721019525}
   - component: {fileID: 7185749072820588812}
-  - component: {fileID: 497065575989262870}
   m_Layer: 0
   m_Name: BottlePlastic1_plastic_0
   m_TagString: Plastic
@@ -123,13 +122,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1569147880580522087}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1964094026252196019}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
 --- !u!33 &3708577229123653958
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -202,24 +201,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JunkItem
   junkType: {fileID: 0}
---- !u!65 &497065575989262870
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1569147880580522087}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.17385945, y: 0.42083025, z: 0.22539285}
-  m_Center: {x: -0.000000048428774, y: 0.2104151, z: -0.0017816015}

@@ -13,8 +13,6 @@ GameObject:
   - component: {fileID: 7908870038966516088}
   - component: {fileID: 4105956305857848726}
   - component: {fileID: -1853655164023628730}
-  - component: {fileID: -2530963756798980555}
-  - component: {fileID: 8396807743727746915}
   m_Layer: 0
   m_Name: Cereal Box.001
   m_TagString: Paper
@@ -30,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9028261215111369047}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
@@ -120,7 +118,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!114 &-1853655164023628730
 MonoBehaviour:
@@ -135,36 +133,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JunkItem
   junkType: {fileID: 11400000, guid: d3dda4f0e0811ff4c9e01f43cbf85aa3, type: 2}
---- !u!114 &-2530963756798980555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9028261215111369047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1c5325f26bf2374ebcec34693515c74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DragController
---- !u!65 &8396807743727746915
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9028261215111369047}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.23622054, y: 0.33070868, z: 0.05905525}
-  m_Center: {x: 0.000000115484, y: -0.000000007450581, z: -0.00000008568168}

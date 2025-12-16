@@ -8,17 +8,16 @@ public class JunkBin : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         JunkItem junk = other.GetComponentInChildren<JunkItem>();
-        if (junk == null) return;
+        if (junk.IsResolved) return;
 
         
         // Check if the items list contains the correct junk type
         bool isCorrect = junk.junkType == correctType;
 
-        SortingResolver.Instance.Resolve(
-
-            isCorrect? SortResult.Correct : SortResult.Wrong , junk
-
-            );
+        if (isCorrect)
+            SortingResolver.Instance.Resolve(SortResult.Correct , junk);
+        else
+            SortingResolver.Instance.Resolve(SortResult.Wrong , junk);
 
     }
 

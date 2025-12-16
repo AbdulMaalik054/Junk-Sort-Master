@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PoolManager : MonoBehaviour
@@ -6,6 +7,8 @@ public class PoolManager : MonoBehaviour
     public static PoolManager Instance;
 
     private readonly Dictionary<string, Queue<GameObject>> pools = new();
+
+    private readonly HashSet<GameObject> activeObjects = new();
 
     private void Awake()
     {
@@ -60,9 +63,12 @@ public class PoolManager : MonoBehaviour
 
         GameObject root = queue.Dequeue();
         root.SetActive(true);
-        root.GetComponentInChildren<IPoolable>()?.OnSpawn();
 
+        activeObjects.Add(root);
+
+        root.GetComponentInChildren<IPoolable>()?.OnSpawn();
         return root;
+
     }
 
     // ----------------------------------------------------
@@ -73,11 +79,14 @@ public class PoolManager : MonoBehaviour
         if (root == null || !pools.ContainsKey(poolKey))
             return;
 
+        activeObjects.Remove(root);
+
         root.GetComponentInChildren<IPoolable>()?.OnDespawn();
         root.SetActive(false);
 
         pools[poolKey].Enqueue(root);
     }
+
 
     // ----------------------------------------------------
     // Internal creation (NO runtime parents)
@@ -105,4 +114,38 @@ public class PoolManager : MonoBehaviour
     {
         return $"{type.typeName}_{index}";
     }
+
+    // ----------------------------------------------------
+    // Reset all pooled + active objects (LEVEL RESTART SAFE)
+    // ----------------------------------------------------
+    public void ResetPools()
+    {
+        // Force-return all active junk first
+        foreach (var root in activeObjects.ToArray())
+        {
+            if (root == null) continue;
+
+            JunkItem item = root.GetComponentInChildren<JunkItem>(true);
+            if (item != null)
+            {
+                item.ReturnToPool();
+            }
+        }
+
+        activeObjects.Clear();
+
+        // Reset pooled objects
+        foreach (var kvp in pools)
+        {
+            foreach (GameObject root in kvp.Value)
+            {
+                if (root == null) continue;
+
+                root.GetComponentInChildren<IPoolable>()?.OnDespawn();
+                root.SetActive(false);
+            }
+        }
+    }
+
+
 }

@@ -16,6 +16,8 @@ public class SortingResolver : MonoBehaviour
     public int wrongPenalty = 2;
     public int overflowPenalty = 5;
 
+
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -25,6 +27,8 @@ public class SortingResolver : MonoBehaviour
     public void Resolve(SortResult result, JunkItem junk)
     {
         if (junk == null) return;
+
+        junk.MarkResolved();
 
         Vector3 pos = junk.transform.position;
 

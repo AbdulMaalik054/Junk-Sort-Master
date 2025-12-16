@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class JunkItem : MonoBehaviour, IPoolable
@@ -7,6 +8,7 @@ public class JunkItem : MonoBehaviour, IPoolable
     private GameObject pooledRoot;
     private string poolKey;
     private Rigidbody rb;
+    public bool IsResolved { get; private set; }
 
     public void Initialize(GameObject root, string key, JunkType type)
     {
@@ -35,13 +37,22 @@ public class JunkItem : MonoBehaviour, IPoolable
         ResetState();
     }
 
+    public void MarkResolved()
+    {
+        IsResolved = true;
+    }
     public void ReturnToPool()
     {
+        IsResolved = false;
         PoolManager.Instance.ReturnToPool(pooledRoot, poolKey);
     }
 
-    private void ResetState()
+    public void ResetState()
     {
-        // gameplay reset logic
+        IsResolved = false ;
+        //If you later add:
+        //Conveyor attachment
+        //Bin lock state
+        //Drag flags
     }
 }

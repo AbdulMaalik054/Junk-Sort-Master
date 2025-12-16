@@ -87,8 +87,9 @@ public class ScoreManager : MonoBehaviour
     {
         currentStreak = 0;
         UpdateMultiplier(worldPos);
+        Vector3 offset = new Vector3(0 , 1 , 0);
 
-        FloatingTextPool.Instance.SpawnFloatingText("Combo Broken", Color.red, worldPos);
+        FloatingTextPool.Instance.SpawnFloatingText("Combo Broken", Color.red, worldPos + offset);
     }
 
     private void UpdateMultiplier(Vector3 worldPos)

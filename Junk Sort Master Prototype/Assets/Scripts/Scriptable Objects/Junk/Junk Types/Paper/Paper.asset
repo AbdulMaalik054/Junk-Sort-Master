@@ -14,12 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::JunkType
   typeName: Paper
   prefabVariants:
-  - {fileID: 1440500669373584903, guid: 81038d8788802414cb8f1d782e75a388, type: 3}
-  - {fileID: 4290816898541943761, guid: 79c4108dfdba4d14c9d56534587433ed, type: 3}
-  - {fileID: 2156755629658009254, guid: c93f042112daf30438b318d97d0c956b, type: 3}
-  - {fileID: 7109442650169587628, guid: 3309b61234b40374d9df6f2fa934765e, type: 3}
-  - {fileID: 2175707745840151296, guid: b0d54b565729e0641a1e54a1dca8ffcc, type: 3}
-  - {fileID: 334958131749485062, guid: 74e99a477c7274d4081e2da1cbc0c8eb, type: 3}
-  - {fileID: 4118886047998292207, guid: cb6d9ae6202b44f418ea8d114231b983, type: 3}
-  - {fileID: 3679412719717656970, guid: 6b3828ec00580a94e91a8acfe02f7b84, type: 3}
+  - {fileID: 6518694708964527494, guid: 2d0503a03d21b914c8de2acb3e2d2af9, type: 3}
+  - {fileID: 7540873630482875836, guid: 33d323ff3b354614b97e6e43edfd2984, type: 3}
   initialSize: 2
