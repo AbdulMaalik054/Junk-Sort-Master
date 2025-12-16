@@ -2,16 +2,11 @@ using UnityEngine;
 
 public class ConveyorManager : MonoBehaviour
 {
-    public static ConveyorManager Instance;
-
     [Header("Movement")]
     [SerializeField] private Vector3 moveDirection = Vector3.back;
     [SerializeField] private float currentSpeed = 0f;
-    
-
-    private float maxSpeed = 5f;
-    private float acceleration = 1f;
-    
+    [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float acceleration = 1f;
 
     [Header("Material Scrolling")]
     [SerializeField] private Renderer beltRenderer;
@@ -22,14 +17,8 @@ public class ConveyorManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-
         if (beltRenderer != null)
-        {
-            // Instantiate unique material so scrolling affects only this belt
             beltMaterial = beltRenderer.material;
-        }
     }
     private void FixedUpdate()
     {
@@ -41,7 +30,7 @@ public class ConveyorManager : MonoBehaviour
         {
             currentSpeed += acceleration * Time.deltaTime;
             currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
-
+            Debug.Log(currentSpeed);
         }
     }
 

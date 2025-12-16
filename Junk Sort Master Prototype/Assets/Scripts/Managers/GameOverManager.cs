@@ -28,7 +28,7 @@ public class GameOverManager : MonoBehaviour
 
         //stop game systems
 
-        ConveyorManager.Instance.StopConveyor(false);
+        //ConveyorManager.Instance.StopConveyor(false);
         Spawner.Instance.StopSpawning();
         DragController.DisableDrag = true;
 

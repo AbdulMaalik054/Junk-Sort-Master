@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Spawner spawner;
-    [SerializeField] private ConveyorManager conveyor;
+    [SerializeField] private ConveyorController conveyorController;
 
     private void Awake()
     {
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.pauseButton.gameObject.SetActive(true);
         ScoreManager.Instance.ResetScore();
         Invoke(nameof(StartDelayedCoroutine), 1.8f);
-        conveyor.StartConveyor();
+        conveyorController.StartAll();
         spawner.StartSpawning();
     }
 
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
 
     private void CleanupGameplay()
     {
-        conveyor.StopConveyor(false);
+        conveyorController.StopAll(false);
         spawner.StopSpawning();
         //PoolManager.Instance.ResetAllObjects();
         ScoreManager.Instance.ResetScore();
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
 
         progression.Initialize(currentDifficulty); // Re-initialize progression to stop/cleanup
         spawner.StopSpawning();
-        conveyor.StopConveyor(false);
+        conveyorController.StopAll(false);
         DragController.DisableDrag = true;
 
         int finalScore = ScoreManager.Instance.Score;
@@ -139,24 +139,24 @@ public class GameManager : MonoBehaviour
         {
             case Difficulty.Easy:
                 currentTime = easyTime;
-                conveyor.SetDifficulty(0.5f, 2f, 0.05f);
+                conveyorController.SetDifficulty(0.5f, 2f, 0.05f);
                 spawner.SetSpawnRates(4f);
                 break;
 
             case Difficulty.Medium:
                 currentTime = mediumTime;
-                conveyor.SetDifficulty(1.5f, 2.75f, 0.05f);
+                conveyorController.SetDifficulty(1.5f, 2.75f, 0.05f);
                 spawner.SetSpawnRates(3f);
                 break;
 
             case Difficulty.Hard:
                 currentTime = hardTime;
-                conveyor.SetDifficulty(2.25f, 3.25f, 0.05f);
+                conveyorController.SetDifficulty(2.25f, 3.25f, 0.05f);
                 spawner.SetSpawnRates(2f);
                 break;
             case Difficulty.Endless:
                 currentTime = endlessTime;
-                conveyor.SetDifficulty(1.75f, 3.75f, 0.05f);
+                conveyorController.SetDifficulty(1.75f, 3.75f, 0.05f);
                 spawner.SetSpawnRates(2f);
                 break;
         }

@@ -5,6 +5,7 @@ public class ProgressionController : MonoBehaviour
     public static ProgressionController Instance;
 
     [SerializeField] private DifficultyConfigDatabase configDatabase;
+    [SerializeField] private ConveyorController conveyorController;
 
     private DifficultyTierConfig activeConfig;
     private int currentTierIndex;
@@ -81,7 +82,7 @@ public class ProgressionController : MonoBehaviour
         currentTierIndex = index;
         var tier = activeConfig.tiers[index];
 
-        ConveyorManager.Instance.SetDifficulty(
+        conveyorController.SetDifficulty(
             tier.startSpeed,
             tier.maxSpeed,
             tier.acceleration
