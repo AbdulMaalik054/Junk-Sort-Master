@@ -1,54 +1,71 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-// IMPORTANT:
-// This controller ONLY accepts screen-space positions (pixels).
-// Do NOT pass rays, hit points, or world positions.
+public enum DragPlaneMode
+{
+    WorldPlane,
+    CameraFacingPlane
+}
 
-
+[RequireComponent(typeof(Collider))]
 public class DragController : MonoBehaviour
 {
     public static bool DisableDrag = false;
 
+    [Header("Drag Settings")]
+    [SerializeField] private DragPlaneMode planeMode = DragPlaneMode.WorldPlane;
+
     private bool isDragging;
     private Vector3 offset;
+    private Plane dragPlane;
     private Camera cam;
+    private Collider cachedCollider;
+    private float startY;
 
-    // Fixed plane height (floor level or item base)
-    private const float DragY = 0.3f;
-
-    void Awake()
+    private void Awake()
     {
         cam = Camera.main;
+        cachedCollider = GetComponent<Collider>();
     }
 
-    public void BeginDrag(Vector3 screenPositionPx)
+    public void BeginDrag(Vector3 hitPoint)
     {
         if (DisableDrag) return;
 
-        Vector3 worldPoint = ScreenToWorldOnPlane(screenPositionPx);
-        offset = transform.position - worldPoint;
+        startY = transform.position.y;
 
+        switch (planeMode)
+        {
+            case DragPlaneMode.WorldPlane:
+                dragPlane = new Plane(Vector3.up, transform.position);
+                break;
+
+            case DragPlaneMode.CameraFacingPlane:
+                dragPlane = new Plane(-cam.transform.forward, transform.position);
+                break;
+        }
+
+        offset = transform.position - hitPoint;
         isDragging = true;
+        cachedCollider.enabled = false;
     }
 
-    public void Drag(Vector3 screenPosition)
+    public void Drag(Ray ray)
     {
         if (!isDragging) return;
 
-        Vector3 worldPoint = ScreenToWorldOnPlane(screenPosition);
-        transform.position = worldPoint + offset;
+        if (dragPlane.Raycast(ray, out float enter))
+        {
+            Vector3 worldPoint = ray.GetPoint(enter);
+            Vector3 targetPos = worldPoint + offset;
+            targetPos.y = startY; // ✅ stable Y
+
+            transform.position = targetPos;
+        }
     }
 
     public void EndDrag()
     {
         isDragging = false;
-    }
-
-    private Vector3 ScreenToWorldOnPlane(Vector3 screenPos)
-    {
-        screenPos.z = cam.nearClipPlane;
-        Vector3 world = cam.ScreenToWorldPoint(screenPos);
-        world.y = DragY;
-        return world;
+        cachedCollider.enabled = true;
     }
 }
