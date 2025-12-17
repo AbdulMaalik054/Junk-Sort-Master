@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d53cc66e2c1f19241adfcea8df3101b7, type: 3}
+  m_Name: Glass
+  m_EditorClassIdentifier: Assembly-CSharp::JunkType
+  typeName: Glass
+  prefabVariants:
+  - {fileID: 6384587255795527494, guid: 44694733945413e4c98ee2ac5dbceb09, type: 3}
+  - {fileID: 3467378914411852093, guid: 97610e425f3edef40a6f8dfcd8916788, type: 3}
+  - {fileID: 6433052967972852952, guid: 9b08e5481da359340a6ae5f0ba3f61e0, type: 3}
+  - {fileID: 3692456506924356335, guid: 6fd9a3ca0221d064f9ddfbea21bfd0fe, type: 3}
+  initialSize: 8
