@@ -18,7 +18,7 @@ public class ConveyorManager : MonoBehaviour
     private void Awake()
     {
         if (beltRenderer != null)
-            beltMaterial = beltRenderer.material;
+            beltMaterial = beltRenderer.sharedMaterial;
     }
     private void FixedUpdate()
     {
