@@ -3,23 +3,25 @@ using UnityEngine;
 public class JunkBin : MonoBehaviour
 {
     public JunkType correctType;
-    public ScoreManager scoreManager;
+    public SortingLaneTracker laneTracker;
 
     private void OnTriggerEnter(Collider other)
     {
         JunkItem junk = other.GetComponentInChildren<JunkItem>();
-        if (junk.IsResolved) return;
+        if (junk == null || junk.IsResolved) return;
 
-        
-        // Check if the items list contains the correct junk type
-        bool isCorrect = junk.junkType == correctType;
+        if (laneTracker == null)
+        {
+            Debug.LogError($"{name}: Missing SortingLaneTracker reference!");
+            return;
+        }
 
-        if (isCorrect)
-            SortingResolver.Instance.Resolve(SortResult.Correct , junk);
-        else
-            SortingResolver.Instance.Resolve(SortResult.Wrong , junk);
+        bool isCorrect = (junk.junkType == correctType);
 
+        SortingResolver.Instance.Resolve(
+            isCorrect ? SortResult.Correct : SortResult.Wrong,
+            junk,
+            laneTracker
+        );
     }
-
 }
-

@@ -24,26 +24,34 @@ public class SortingResolver : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void Resolve(SortResult result, JunkItem junk)
+    public void Resolve(SortResult result, JunkItem junk , SortingLaneTracker tracker)
     {
         if (junk == null) return;
 
         junk.MarkResolved();
+
+        
 
         Vector3 pos = junk.transform.position;
 
         switch (result)
         {
             case SortResult.Correct:
+                
                 ScoreManager.Instance.AddCorrectScore(correctScore, pos);
+                tracker.RegisterCorrect();
                 break;
 
             case SortResult.Wrong:
+                
                 ScoreManager.Instance.AddWrongPenalty(wrongPenalty, pos);
+                tracker.RegisterWrong();
                 break;
 
             case SortResult.Overflow:
+                
                 ScoreManager.Instance.AddOverflowPenalty(overflowPenalty, pos);
+                tracker.RegisterOverflow();
                 break;
         }
 
