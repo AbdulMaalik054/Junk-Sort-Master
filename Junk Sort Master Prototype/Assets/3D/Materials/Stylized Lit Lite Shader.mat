@@ -45,6 +45,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: be48049391173104eb71226627a26b7c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_22c41f7bdfba447aa659c4de8f30e8c9_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: be48049391173104eb71226627a26b7c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_3b348bc7f3ca452cbb6cc3927db8d9ce_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 5508b6700587d9144a8b838d3a32a8c7, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -64,16 +68,16 @@ Material:
     m_Ints: []
     m_Floats:
     - _AOIntensity: 0.2
-    - _BigGreenIntensity: 1
-    - _BigRedIntensity: 1
+    - _BigGreenIntensity: 0
+    - _BigRedIntensity: 0
     - _InstancedRimPower: 3
     - _InstancedRimStrength: 0.25
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RimPower: 4
+    - _RimPower: 0.1
     - _RimStrength: 25
-    - _SmallGreenIntensity: 1
-    - _SmallRedIntensity: 1
+    - _SmallGreenIntensity: 0
+    - _SmallRedIntensity: 0
     - _SmoothnessStrength: 0
     - _XRMotionVectorsPass: 1
     m_Colors:

@@ -4,16 +4,23 @@ public class SortingLaneTracker : MonoBehaviour
 {
     [Header("Lane Tracking")]
     public int penaltyCount = 0;
+    public int bonusCount = 0; // NEW — visible green indicators
     public int streakCount = 0;
 
-    [SerializeField] private int streakThreshold = 5;
+    [SerializeField] public int streakThreshold = 5;
+
+    public event System.Action OnLaneUpdated;
 
     public void RegisterCorrect()
     {
         streakCount++;
 
-        CheckBonus();
-        Debug.Log($"{name} | Correct | Streak: {streakCount}, Penalty: {penaltyCount}");
+        Debug.Log($"Correct | Streak: {streakCount} | Penalty: {penaltyCount} | Bonus: {bonusCount}");
+
+        if (streakCount >= streakThreshold)
+            ApplyStreakBonus();
+
+        OnLaneUpdated?.Invoke();
     }
 
     public void RegisterWrong()
@@ -21,7 +28,9 @@ public class SortingLaneTracker : MonoBehaviour
         penaltyCount++;
         streakCount = 0;
 
-        Debug.Log($"{name} | Wrong | Penalty: {penaltyCount}");
+        Debug.Log($"Wrong | Streak reset | Penalty: {penaltyCount} | Bonus: {bonusCount}");
+
+        OnLaneUpdated?.Invoke();
     }
 
     public void RegisterOverflow()
@@ -30,30 +39,23 @@ public class SortingLaneTracker : MonoBehaviour
         Debug.Log($"{name} | Overflow");
     }
 
-    private void CheckBonus()
+    private void ApplyStreakBonus()
     {
-        if (streakCount < streakThreshold) return;
+        int bonusCycles = streakCount / streakThreshold;
+        streakCount %= streakThreshold; // keep leftover streak
 
-        int bonusCount = streakCount / streakThreshold;
-
-        for (int i = 0; i < bonusCount; i++)
+        for (int i = 0; i < bonusCycles; i++)
         {
-            ApplyBonus();
-        }
-
-        streakCount = streakCount % streakThreshold;
-    }
-
-    private void ApplyBonus()
-    {
-        if (penaltyCount > 0)
-        {
-            penaltyCount--;
-            Debug.Log($"{name} | Bonus Triggered! Penalty Removed");
-        }
-        else
-        {
-            Debug.Log($"{name} | Bonus Triggered! No penalty to remove");
+            if (penaltyCount > 0)
+            {
+                penaltyCount--;
+                Debug.Log($"{name} | Penalty removed by bonus!");
+            }
+            else
+            {
+                bonusCount++;
+                Debug.Log($"{name} | Bonus bulb earned! BonusCount: {bonusCount}");
+            }
         }
     }
 }
