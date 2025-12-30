@@ -6,6 +6,14 @@ public class BulbEmissionController : MonoBehaviour
     private Renderer _renderer;
     private MaterialPropertyBlock _mpb;
 
+    
+
+    [Header("Flashing Settings")]
+    public float flashFrequency = 2f;
+
+    private bool flashRed = false;
+    private float flashTimer;
+
     void OnEnable()
     {
         if (_renderer == null)
@@ -32,6 +40,17 @@ public class BulbEmissionController : MonoBehaviour
         _mpb.SetFloat("_RimPower", 4f);
     }
 
+    private void Update()
+    {
+        if (flashRed)
+        {
+            flashTimer += Time.deltaTime * flashFrequency;
+            float intensity = Mathf.PingPong(flashTimer, 1f) * 40f; // adjustable
+
+            SetBigRedIntensity(intensity);
+            SetBigGreenIntensity(0f);
+        }
+    }
     public void SetSmallGreen(float intensity)
     {
         if (_mpb == null) return;
@@ -48,19 +67,38 @@ public class BulbEmissionController : MonoBehaviour
         _renderer.SetPropertyBlock(_mpb);
     }
 
-    public void SetBigGreen(float intensity)
+    // Big Bulbs (Shader Control Only)
+    private void SetBigGreenIntensity(float intensity)
     {
-        if (_mpb == null) return;
         _renderer.GetPropertyBlock(_mpb);
         _mpb.SetFloat("_BigGreenIntensity", intensity);
         _renderer.SetPropertyBlock(_mpb);
     }
 
-    public void SetBigRed(float intensity)
+    private void SetBigRedIntensity(float intensity)
     {
-        if (_mpb == null) return;
         _renderer.GetPropertyBlock(_mpb);
         _mpb.SetFloat("_BigRedIntensity", intensity);
         _renderer.SetPropertyBlock(_mpb);
+    }
+    public void SetBigGreen(bool active)
+    {
+        flashRed = false;
+        flashTimer = 0f;
+
+        SetBigGreenIntensity(active ? 40f : 0f);
+        SetBigRedIntensity(0f);
+    }
+
+    public void FlashBigRed(bool flashing)
+    {
+        flashRed = flashing;
+        flashTimer = 0f;
+
+        if (!flashing)
+        {
+            SetBigRedIntensity(0f);
+            SetBigGreenIntensity(40f);
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,26 +17,34 @@ public class GameManager : MonoBehaviour
     private bool gameRunning;
     private bool paused;
 
-    [Header("Progresseion Controller")]
-
+    [Header("Progression")]
     [SerializeField] private ProgressionController progression;
 
     [Header("References")]
     [SerializeField] private Spawner spawner;
     [SerializeField] private ConveyorController conveyorController;
 
+    [Header("Breakdowns")]
+    [SerializeField] private bool breakdownSystemEnabled = true;
+
+    [Header("Global Bulbs")]
+    public BulbEmissionController BigGreenBulb;
+    public BulbEmissionController BigRedBulb;
+
+    [Header("Lanes Reference")]
+    public BulbIndicatorController[] laneControllers;
+
+
     private void Awake()
     {
         Instance = this;
     }
 
-    // Replace all calls to progression.StartProgression() with progression.Initialize(currentDifficulty);
-    // and progression.StartProgression() with progression.ApplyTier(0); if you want to start the first tier.
-
     private void Start()
     {
         UIManager.Instance.ShowLoadingTransition("LOADING", 2.0f);
         MenuController.Instance.ReturnToMainMenu();
+        InitializeBreakdowns();
     }
 
     // MENU FLOW -------------------------------------------------------
@@ -51,40 +58,73 @@ public class GameManager : MonoBehaviour
         gameRunning = true;
         paused = false;
         Time.timeScale = 1;
+
         ApplyDifficulty();
         progression.Initialize(currentDifficulty);
-        progression.ApplyTier(0); // Start the first tier
+        progression.ApplyTier(0);
+
+        if (breakdownSystemEnabled)
+            InitializeBreakdowns();
+
         DragController.DisableDrag = false;
         UIManager.Instance.ShowStartTransition("GO!", 2.0f);
         UIManager.Instance.ShowtopBarGroup();
         UIManager.Instance.pauseButton.gameObject.SetActive(true);
+
         ScoreManager.Instance.ResetScore();
-        Invoke(nameof(StartDelayedCoroutine), 1.8f);
+
+        conveyorController.StartAll();
+        spawner.StartSpawning();
+
+        StartCoroutine(GameTimer());
+    }
+
+    // BREAKDOWNS ------------------------------------------------------
+    private void InitializeBreakdowns()
+    {
+        //int laneCount = conveyorController.conveyors.Count;
+        BreakdownManager.Instance.Initialize(laneControllers.Length);
+        
+
+        BreakdownManager.Instance.OnLocalBreakdown += HandleLocalBreakdown;
+        BreakdownManager.Instance.OnLocalRepaired += HandleLocalRepair;
+        BreakdownManager.Instance.OnGlobalBreakdown += HandleGlobalBreakdown;
+        BreakdownManager.Instance.OnGlobalRepaired += HandleGlobalRepair;
+    }
+
+    private void HandleGlobalBreakdown()
+    {
+        BigRedBulb.FlashBigRed(true);
+        conveyorController.StopAll(false);
+        spawner.StopSpawning();
+    }
+
+    private void HandleGlobalRepair()
+    {
+        BigRedBulb.FlashBigRed(false);
+        BigGreenBulb.SetBigGreen(true);
         conveyorController.StartAll();
         spawner.StartSpawning();
     }
-        
 
-
-
-    public void ReturnToMenu()
+    private void HandleLocalBreakdown(int laneIndex)
     {
-        DragController.DisableDrag = true;
+        //conveyorController.conveyors[laneIndex].StopConveyor(false);
 
-        CleanupGameplay();
-
-        UIManager.Instance.HideGameOver();
-        UIManager.Instance.HidePauseMenu();
-        
-        MenuController.Instance.ReturnToMainMenu();
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(laneControllers[laneIndex].transform.position);
+        UIManager.Instance.SpawnRepairButton(screenPos, laneIndex);
     }
 
-    // CLEAR OBJECT POOL------------------------------------------------
+    private void HandleLocalRepair(int laneIndex)
+    {
+        //conveyorController.conveyors[laneIndex].StartConveyor();
+        UIManager.Instance.RemoveAllRepairButtons();
+    }
 
+    // CLEANUP ---------------------------------------------------------
     private void CleanupGameplay()
     {
-        StopAllCoroutines();   // CRITICAL
-
+        StopAllCoroutines();
         gameRunning = false;
         paused = false;
 
@@ -92,25 +132,27 @@ public class GameManager : MonoBehaviour
         spawner.StopSpawning();
         PoolManager.Instance.ResetPools();
         ScoreManager.Instance.ResetScore();
-        
     }
 
+    public void ReturnToMenu()
+    {
+        DragController.DisableDrag = true;
+        CleanupGameplay();
+        UIManager.Instance.HideGameOver();
+        UIManager.Instance.HidePauseMenu();
+        MenuController.Instance.ReturnToMainMenu();
+    }
 
     // PAUSE -----------------------------------------------------------
     public void TogglePause()
     {
-        if (!paused)
-        {
-            paused = true;
-            Time.timeScale = 0;
+        paused = !paused;
+        Time.timeScale = paused ? 0 : 1;
+
+        if (paused)
             UIManager.Instance.ShowPauseMenu();
-        }
         else
-        {
-            paused = false;
-            Time.timeScale = 1;
             UIManager.Instance.HidePauseMenu();
-        }
     }
 
     // GAME OVER -------------------------------------------------------
@@ -122,7 +164,6 @@ public class GameManager : MonoBehaviour
         paused = false;
         Time.timeScale = 0;
 
-        progression.Initialize(currentDifficulty); // Re-initialize progression to stop/cleanup
         spawner.StopSpawning();
         conveyorController.StopAll(false);
         DragController.DisableDrag = true;
@@ -159,6 +200,7 @@ public class GameManager : MonoBehaviour
                 conveyorController.SetDifficulty(2.25f, 3.25f, 0.05f);
                 spawner.SetSpawnRates(2f);
                 break;
+
             case Difficulty.Endless:
                 currentTime = endlessTime;
                 conveyorController.SetDifficulty(1.75f, 3.75f, 0.05f);
@@ -168,14 +210,8 @@ public class GameManager : MonoBehaviour
     }
 
     // TIMER -----------------------------------------------------------
-
-    public void StartDelayedCoroutine()
-    {
-        StartCoroutine(GameTimer());
-    }
     private IEnumerator GameTimer()
     {
-        
         while (currentTime > 0 && gameRunning)
         {
             if (!paused)
@@ -192,16 +228,12 @@ public class GameManager : MonoBehaviour
     // RESET -----------------------------------------------------------
     public void RestartGame()
     {
-        
         Time.timeScale = 1;
         CleanupGameplay();
         UIManager.Instance.HideGameOver();
         UIManager.Instance.HidePauseMenu();
         StartGame();
-       
     }
-
-   
 
     public void Quit()
     {
@@ -213,4 +245,4 @@ public class GameManager : MonoBehaviour
     }
 }
 
-public enum Difficulty { Easy, Medium, Hard , Endless }
+public enum Difficulty { Easy, Medium, Hard, Endless }

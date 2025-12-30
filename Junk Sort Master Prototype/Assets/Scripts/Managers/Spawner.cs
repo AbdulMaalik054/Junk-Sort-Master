@@ -86,7 +86,7 @@ public class Spawner : MonoBehaviour
     {
         // clamp to safe, non-zero values
         spawnObjectInterval = Mathf.Max(0.001f, spawnInterval);
-        Debug.Log($"[Spawner] Spawn interval set to {spawnObjectInterval}");
+        
     }
     private void SpawnTypeObjects()
     {

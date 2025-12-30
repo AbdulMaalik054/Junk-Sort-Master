@@ -5,12 +5,8 @@ public class UnifiedDragManager : MonoBehaviour
     [Header("Snap Settings")]
     [SerializeField] private float snapDistance = 1.0f;
 
-    [Header("Feedback")]
-    [SerializeField] private ParticleSystem correctParticle;
-    [SerializeField] private ParticleSystem incorrectParticle;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip correctSFX;
-    [SerializeField] private AudioClip incorrectSFX;
+
+    private RepairButton activeRepairButton = null;
 
     private DragController currentDrag;
     private Camera mainCamera;
@@ -20,6 +16,7 @@ public class UnifiedDragManager : MonoBehaviour
     {
         mainCamera = Camera.main;
         allBins = FindObjectsByType<BinMarker>(FindObjectsSortMode.None);
+        
     }
 
     private void Update()
@@ -32,10 +29,15 @@ public class UnifiedDragManager : MonoBehaviour
 
     #region Input Handling
 
+    
     private void HandleTouch()
     {
+
         Touch touch = Input.GetTouch(0);
         Ray ray = mainCamera.ScreenPointToRay(touch.position);
+        if (TouchIsOverUI(touch)) return;
+
+       
 
         switch (touch.phase)
         {
@@ -53,23 +55,57 @@ public class UnifiedDragManager : MonoBehaviour
             case TouchPhase.Canceled:
                 if (currentDrag != null)
                     EndDragWithSnap();
+                
+                
                 break;
         }
     }
+    private bool TouchIsOverUI(Touch touch)
+    {
+        return UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(touch.fingerId);
+    }
+
 
     private void HandleMouse()
     {
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
+        // Mouse down
         if (Input.GetMouseButtonDown(0))
+        {
+            if (TryHitRepairButton(ray)) return;
             TryBeginDrag(ray);
-        else if (Input.GetMouseButton(0) && currentDrag != null)
+        }
+
+        // Mouse held
+        if (Input.GetMouseButton(0))
+        {
+            if (activeRepairButton != null)
+                return; // block dragging while repairing
+
             currentDrag?.Drag(ray);
-        else if (Input.GetMouseButtonUp(0) && currentDrag != null)
-            EndDragWithSnap();
+        }
+
+        // Mouse up
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (activeRepairButton != null)
+            {
+                activeRepairButton.EndHold();
+                activeRepairButton = null;
+                return;
+            }
+
+            if (currentDrag != null)
+                EndDragWithSnap();
+        }
     }
 
+
     #endregion
+
+
 
     private void TryBeginDrag(Ray ray)
     {
@@ -77,6 +113,16 @@ public class UnifiedDragManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
+            // 1. Repair button interaction
+            if (hit.collider.TryGetComponent(out RepairButton repair))
+            {
+                repair.BeginHold();
+                currentDrag = null; // block junk drag while repairing
+                return;
+            }
+
+            if (DragController.DisableDrag) return;
+            // 2. Junk dragging
             if (hit.collider.TryGetComponent(out DragController drag))
             {
                 currentDrag = drag;
@@ -85,8 +131,13 @@ public class UnifiedDragManager : MonoBehaviour
         }
     }
 
+    
     private void EndDragWithSnap()
     {
+        RepairButton[] buttons = FindObjectsByType<RepairButton>(FindObjectsSortMode.None);
+        foreach (var button in buttons)
+            button.EndHold();
+        
         currentDrag.EndDrag();
 
         BinMarker nearestBin = null;
@@ -111,35 +162,28 @@ public class UnifiedDragManager : MonoBehaviour
         if (nearestBin != null)
         {
             currentDrag.transform.position = nearestBin.transform.position;
-            PlayCorrectFeedback(nearestBin.transform.position);
+            
         }
-        else
-        {
-            PlayIncorrectFeedback(currentDrag.transform.position);
-        }
+        
+        
 
         currentDrag = null;
     }
+    
 
-    #region Feedback
-
-    private void PlayCorrectFeedback(Vector3 position)
+    private bool TryHitRepairButton(Ray ray)
     {
-        if (correctParticle != null)
-            Instantiate(correctParticle, position, Quaternion.identity);
-
-        if (audioSource != null && correctSFX != null)
-            audioSource.PlayOneShot(correctSFX);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            if (hit.collider.TryGetComponent(out RepairButton repair))
+            {
+                activeRepairButton = repair;
+                repair.BeginHold();
+                currentDrag = null;
+                return true;
+            }
+        }
+        return false;
     }
 
-    private void PlayIncorrectFeedback(Vector3 position)
-    {
-        if (incorrectParticle != null)
-            Instantiate(incorrectParticle, position, Quaternion.identity);
-
-        if (audioSource != null && incorrectSFX != null)
-            audioSource.PlayOneShot(incorrectSFX);
-    }
-
-    #endregion
 }

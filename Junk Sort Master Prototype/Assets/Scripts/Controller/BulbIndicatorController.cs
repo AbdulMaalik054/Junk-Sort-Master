@@ -3,10 +3,10 @@
 public class BulbIndicatorController : MonoBehaviour
 {
     [Header("Penalty Bulbs (Red)")]
-    public BulbEmissionController[] penaltyBulbs; // optional
+    public BulbEmissionController[] penaltyBulbs;
 
     [Header("Bonus Bulbs (Green)")]
-    public BulbEmissionController[] bonusBulbs; // optional
+    public BulbEmissionController[] bonusBulbs;
 
     [Header("Sorting Lane Tracker")]
     public SortingLaneTracker laneTracker;
@@ -15,6 +15,11 @@ public class BulbIndicatorController : MonoBehaviour
     [SerializeField] private float onIntensity = 40f;
     [SerializeField] private float offIntensity = 0f;
 
+    private void Awake()
+    {
+        if (laneTracker == null)
+            laneTracker = FindAnyObjectByType<SortingLaneTracker>();
+    }
     private void OnEnable()
     {
         if (laneTracker != null)
@@ -29,6 +34,10 @@ public class BulbIndicatorController : MonoBehaviour
             laneTracker.OnLaneUpdated -= UpdateIndicators;
     }
 
+    private void Start()
+    {
+        UpdateIndicators();
+    }
     private void UpdateIndicators()
     {
         UpdatePenaltyBulbs();
@@ -37,15 +46,13 @@ public class BulbIndicatorController : MonoBehaviour
 
     private void UpdatePenaltyBulbs()
     {
-        if (penaltyBulbs == null || penaltyBulbs.Length == 0)
-            return;
+        if (penaltyBulbs == null || penaltyBulbs.Length == 0) return;
 
         int penalties = laneTracker != null ? laneTracker.penaltyCount : 0;
 
         for (int i = 0; i < penaltyBulbs.Length; i++)
         {
-            if (penaltyBulbs[i] == null)
-                continue;
+            if (penaltyBulbs[i] == null) continue;
 
             float intensity = i < penalties ? onIntensity : offIntensity;
             penaltyBulbs[i].SetSmallRed(intensity);
@@ -54,20 +61,16 @@ public class BulbIndicatorController : MonoBehaviour
 
     private void UpdateBonusBulbs()
     {
-        if (bonusBulbs == null || bonusBulbs.Length == 0)
-            return;
+        if (bonusBulbs == null || bonusBulbs.Length == 0) return;
 
         int activeBonuses = Mathf.Clamp(laneTracker.bonusCount, 0, bonusBulbs.Length);
 
         for (int i = 0; i < bonusBulbs.Length; i++)
         {
-            if (bonusBulbs[i] == null)
-                continue;
+            if (bonusBulbs[i] == null) continue;
 
             float intensity = i < activeBonuses ? onIntensity : offIntensity;
             bonusBulbs[i].SetSmallGreen(intensity);
-            Debug.Log($"GREEN BULB [{i}] → {(i < activeBonuses ? "ON" : "OFF")} | bonusCount: {laneTracker.bonusCount}");
         }
     }
-
 }

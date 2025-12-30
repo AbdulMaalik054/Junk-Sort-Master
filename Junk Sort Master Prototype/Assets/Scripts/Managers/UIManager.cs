@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using JetBrains.Annotations;
+
 [DefaultExecutionOrder(-50)]
 public class UIManager : MonoBehaviour
 {
@@ -28,23 +29,22 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CanvasGroup gameOverPanel;
     [SerializeField] private TextMeshProUGUI finalScoreText;
     [SerializeField] private TextMeshProUGUI bestScoreText;
-    
 
     [Header("Pause Panel")]
     [SerializeField] private CanvasGroup pausePanel;
     [SerializeField] public Button pauseButton;
 
+    [Header("Repair Button")]
+    [SerializeField] private CanvasGroup repairCanvas; // assign prefab with CanvasGroup
+    [SerializeField] private RepairButton repairButtonPrefab;
+    private readonly System.Collections.Generic.List<RepairButton> activeRepairButtons = new();
     private void Awake()
     {
         Instance = this;
-
         InitPanel(loadingPanel);
         InitPanel(gameOverPanel);
         InitPanel(pausePanel);
-
         comboGroup.alpha = 0;
-
-        
     }
 
     private void InitPanel(CanvasGroup panel)
@@ -52,12 +52,10 @@ public class UIManager : MonoBehaviour
         panel.alpha = 0;
         panel.interactable = false;
         panel.blocksRaycasts = false;
-        panel.gameObject.SetActive(true);  // keep active now
+        panel.gameObject.SetActive(true);
     }
 
-   
-
-    // SCORE UI ----------------------------------------------------
+    // Score & Timer
     public void UpdateScoreUI(int score) => UpdateScore(score);
     public void UpdateScore(int score)
     {
@@ -70,19 +68,17 @@ public class UIManager : MonoBehaviour
         timerText.text = "Time: " + Mathf.CeilToInt(timeLeft).ToString();
     }
 
-    // COMBO UI -----------------------------------------------------
-    
+    // Combo
     public void UpdateComboUI(int combo) => ShowCombo(combo);
     public void ShowCombo(int combo)
     {
         comboText.text = $"Combo x{combo}";
-
         UIAnimator.FadeIn(comboGroup, 0.15f);
         UIAnimator.PunchScale(comboText.transform, 1.15f, 0.2f);
         UIAnimator.FadeOut(comboGroup, 0.25f, 0.5f);
     }
 
-    // TRANSITION ---------------------------------------------------
+    // Transitions
     public void ShowLoadingTransition(string msg, float duration = 1f)
     {
         loadingMessage.text = msg;
@@ -95,10 +91,9 @@ public class UIManager : MonoBehaviour
         startMessage.text = msg;
         UIAnimator.FadeIn(startPanel, 0.35f);
         UIAnimator.FadeOut(startPanel, 0.35f, duration);
-        
     }
 
-    // PAUSE --------------------------------------------------------
+    // Pause
     public void ShowPauseMenu()
     {
         pauseButton.gameObject.SetActive(false);
@@ -110,19 +105,48 @@ public class UIManager : MonoBehaviour
         pauseButton.gameObject.SetActive(true);
     }
 
-    // GAME OVER ----------------------------------------------------
+    // Game Over
     public void ShowGameOver(int finalScore, int bestScore)
-    {   
-        
+    {
         finalScoreText.text = $"Score: {finalScore}";
         bestScoreText.text = $"Best: {bestScore}";
         HideTopBarGroup();
 
         UIAnimator.FadeIn(gameOverPanel, 0.35f);
         UIAnimator.PunchScale(finalScoreText.transform, 1.2f, 0.22f);
+    }
+
+    // Repair Buttons
+    public void SpawnRepairButton(Vector3 screenPosition, int laneIndex)
+    {
+        RepairButton button = repairButtonPrefab; //Instantiate(repairButtonPrefab, repairCanvas.transform);
+        button.transform.position = screenPosition;
+        button.laneIndex = laneIndex;
+        button.gameObject.SetActive(true);
+        //activeRepairButtons.Add(button);
         
     }
+
+    public void RemoveRepairButton(int laneIndex)
+    {
+        for (int i = activeRepairButtons.Count - 1; i >= 0; i--)
+        {
+            if (activeRepairButtons[i].laneIndex == laneIndex)
+            {
+                Destroy(activeRepairButtons[i].gameObject);
+                activeRepairButtons.RemoveAt(i);
+            }
+        }
+    }
+
+    public void RemoveAllRepairButtons()
+    {
+        foreach (var b in activeRepairButtons)
+            Destroy(b.gameObject);
+        activeRepairButtons.Clear();
+    }
+
     public void ShowtopBarGroup() => topBarGroup.gameObject.SetActive(true);
-    public void HideTopBarGroup()=>topBarGroup.gameObject.SetActive(false);
+    public void HideTopBarGroup() => topBarGroup.gameObject.SetActive(false);
     public void HideGameOver() => UIAnimator.FadeOut(gameOverPanel, 0.2f);
 }

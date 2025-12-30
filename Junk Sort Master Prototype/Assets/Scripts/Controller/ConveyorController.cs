@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ConveyorController : MonoBehaviour
 {
-    [SerializeField] private List<ConveyorManager> conveyors;
+    [SerializeField] public List<ConveyorManager> conveyors;
 
     public void StartAll()
     {
@@ -23,7 +23,7 @@ public class ConveyorController : MonoBehaviour
     {
         foreach (var c in conveyors)
             c.SetDifficulty(start, max, accel);
-       Debug.Log(start + " " + max);
+       
     }
 
     
