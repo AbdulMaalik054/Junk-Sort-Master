@@ -51,7 +51,7 @@ public class BreakdownManager : MonoBehaviour
     private void HandleLocalBreakdown(int laneIndex)
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(GameManager.Instance.laneControllers[laneIndex].transform.position);
-        UIManager.Instance.SpawnRepairButton(screenPos, laneIndex);
+        UIManager.Instance.SpawnRepairButton(laneIndex);
         
     }
 
@@ -64,7 +64,7 @@ public class BreakdownManager : MonoBehaviour
         if (laneBroken[laneIndex]) return;
 
         currentPenalties[laneIndex]++;
-        Debug.Log($"Lane {laneIndex} penalty added. Current: {currentPenalties[laneIndex]} / {penaltyThresholds[laneIndex]}");
+        
 
         if (currentPenalties[laneIndex] >= penaltyThresholds[laneIndex])
             TriggerLocalBreakdown(laneIndex);
@@ -80,7 +80,7 @@ public class BreakdownManager : MonoBehaviour
             globalBroken = true;
             OnGlobalBreakdown?.Invoke();
         }
-        Debug.Log($"BREAKDOWN DEBUG | laneIndex={laneIndex} | marking laneBroken true");
+        
 
     }
 

@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.ShowLoadingTransition("LOADING", 2.0f);
         MenuController.Instance.ReturnToMainMenu();
-        
+        BigGreenBulb.SetBigGreen(true);
 
     }
 
@@ -85,33 +85,38 @@ public class GameManager : MonoBehaviour
     {
         
         BreakdownManager.Instance.Initialize(laneControllers.Length);
-        
-
         BreakdownManager.Instance.OnLocalBreakdown += HandleLocalBreakdown;
         BreakdownManager.Instance.OnLocalRepaired += HandleLocalRepair;
         BreakdownManager.Instance.OnGlobalBreakdown += HandleGlobalBreakdown;
         BreakdownManager.Instance.OnGlobalRepaired += HandleGlobalRepair;
     }
+        
+
 
     private void HandleGlobalBreakdown()
     {
+        BigGreenBulb.SetBigGreen(false);
         BigRedBulb.FlashBigRed(true);
         conveyorController.StopAll(false);
         spawner.StopSpawning();
+        DragController.DisableDrag = true;
     }
 
     private void HandleGlobalRepair()
     {
         BigRedBulb.FlashBigRed(false);
         BigGreenBulb.SetBigGreen(true);
+        DragController.DisableDrag = false;
         conveyorController.StartAll();
         spawner.StartSpawning();
     }
 
     private void HandleLocalBreakdown(int laneIndex)
     {
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(laneControllers[laneIndex].transform.position);
-        UIManager.Instance.SpawnRepairButton(screenPos, laneIndex);
+        
+        
+        UIManager.Instance.SpawnRepairButton(laneIndex);
+        
     }
         
     private void HandleLocalRepair()

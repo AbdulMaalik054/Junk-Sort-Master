@@ -1,9 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using JetBrains.Annotations;
 
-[DefaultExecutionOrder(-50)]
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
@@ -35,9 +35,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] public Button pauseButton;
 
     [Header("Repair Button")]
-    [SerializeField] private CanvasGroup repairCanvas; // assign prefab with CanvasGroup
+    [SerializeField] private CanvasGroup repairButtonGroup;
+    [SerializeField] private RectTransform repairButtonParent;
     [SerializeField] private RepairButton repairButtonPrefab;
     
+    
+
     private void Awake()
     {
         Instance = this;
@@ -117,21 +120,38 @@ public class UIManager : MonoBehaviour
     }
 
     // Repair Buttons
-    public void SpawnRepairButton(Vector3 screenPosition, int laneIndex)
+    public void SpawnRepairButton(int laneIndex)
     {
-        RepairButton button = repairButtonPrefab;
-        button.transform.position = screenPosition;
-        button.laneIndex = laneIndex;
-        button.gameObject.SetActive(true);
-        Debug.Log($"UI BUTTON SPAWNED FOR LANE {laneIndex}");
+        // Instantiate a new button under the UI Canvas
+        RepairButton newBtn = Instantiate(repairButtonPrefab, repairButtonParent);
 
+        RectTransform buttonRect = newBtn.GetComponent<RectTransform>();
 
+        // Reset + Center Position
+        buttonRect.localScale = Vector3.one;
+        buttonRect.anchoredPosition = Vector2.zero; // center of screen
+
+        // Set lane assignment
+        newBtn.laneIndex = laneIndex;
+
+        newBtn.gameObject.SetActive(true);
+
+        Debug.Log("Repair button spawned at center screen for lane: " + laneIndex);
+
+        UIAnimator.FadeIn(repairButtonGroup, 0.2f);
+        UIAnimator.PunchScale(buttonRect.transform, 1.2f, 0.2f);
     }
+
 
     public void RemoveRepairButton()
-    {
-       repairButtonPrefab.gameObject.SetActive(false);
+    {   
+        UIAnimator.FadeOut(repairButtonGroup, 0.2f);
+        
     }
+
+
+        
+
 
    
 
