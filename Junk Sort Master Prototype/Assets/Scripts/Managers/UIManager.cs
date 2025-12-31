@@ -37,7 +37,7 @@ public class UIManager : MonoBehaviour
     [Header("Repair Button")]
     [SerializeField] private CanvasGroup repairCanvas; // assign prefab with CanvasGroup
     [SerializeField] private RepairButton repairButtonPrefab;
-    private readonly System.Collections.Generic.List<RepairButton> activeRepairButtons = new();
+    
     private void Awake()
     {
         Instance = this;
@@ -119,32 +119,21 @@ public class UIManager : MonoBehaviour
     // Repair Buttons
     public void SpawnRepairButton(Vector3 screenPosition, int laneIndex)
     {
-        RepairButton button = repairButtonPrefab; //Instantiate(repairButtonPrefab, repairCanvas.transform);
+        RepairButton button = repairButtonPrefab;
         button.transform.position = screenPosition;
         button.laneIndex = laneIndex;
         button.gameObject.SetActive(true);
-        //activeRepairButtons.Add(button);
-        
+        Debug.Log($"UI BUTTON SPAWNED FOR LANE {laneIndex}");
+
+
     }
 
-    public void RemoveRepairButton(int laneIndex)
+    public void RemoveRepairButton()
     {
-        for (int i = activeRepairButtons.Count - 1; i >= 0; i--)
-        {
-            if (activeRepairButtons[i].laneIndex == laneIndex)
-            {
-                Destroy(activeRepairButtons[i].gameObject);
-                activeRepairButtons.RemoveAt(i);
-            }
-        }
+       repairButtonPrefab.gameObject.SetActive(false);
     }
 
-    public void RemoveAllRepairButtons()
-    {
-        foreach (var b in activeRepairButtons)
-            Destroy(b.gameObject);
-        activeRepairButtons.Clear();
-    }
+   
 
     public void ShowtopBarGroup() => topBarGroup.gameObject.SetActive(true);
     public void HideTopBarGroup() => topBarGroup.gameObject.SetActive(false);

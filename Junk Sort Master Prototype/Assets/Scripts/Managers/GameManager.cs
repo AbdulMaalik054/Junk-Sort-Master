@@ -44,7 +44,8 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.ShowLoadingTransition("LOADING", 2.0f);
         MenuController.Instance.ReturnToMainMenu();
-        InitializeBreakdowns();
+        
+
     }
 
     // MENU FLOW -------------------------------------------------------
@@ -82,7 +83,7 @@ public class GameManager : MonoBehaviour
     // BREAKDOWNS ------------------------------------------------------
     private void InitializeBreakdowns()
     {
-        //int laneCount = conveyorController.conveyors.Count;
+        
         BreakdownManager.Instance.Initialize(laneControllers.Length);
         
 
@@ -109,16 +110,14 @@ public class GameManager : MonoBehaviour
 
     private void HandleLocalBreakdown(int laneIndex)
     {
-        //conveyorController.conveyors[laneIndex].StopConveyor(false);
-
         Vector3 screenPos = Camera.main.WorldToScreenPoint(laneControllers[laneIndex].transform.position);
         UIManager.Instance.SpawnRepairButton(screenPos, laneIndex);
     }
-
-    private void HandleLocalRepair(int laneIndex)
+        
+    private void HandleLocalRepair()
     {
-        //conveyorController.conveyors[laneIndex].StartConveyor();
-        UIManager.Instance.RemoveAllRepairButtons();
+        UIManager.Instance.RemoveRepairButton();
+        conveyorController.StartAll();
     }
 
     // CLEANUP ---------------------------------------------------------

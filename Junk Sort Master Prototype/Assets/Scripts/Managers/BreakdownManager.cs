@@ -17,7 +17,7 @@ public class BreakdownManager : MonoBehaviour
     private bool globalBroken;
 
     public event Action<int> OnLocalBreakdown;
-    public event Action<int> OnLocalRepaired;
+    public event Action OnLocalRepaired;
     public event Action OnGlobalBreakdown;
     public event Action OnGlobalRepaired;
 
@@ -55,9 +55,9 @@ public class BreakdownManager : MonoBehaviour
         
     }
 
-    private void HandleLocalRepaired(int laneIndex)
+    private void HandleLocalRepaired()
     {
-        UIManager.Instance.RemoveRepairButton(laneIndex);
+        UIManager.Instance.RemoveRepairButton();
     }
     public void AddPenalty(int laneIndex)
     {
@@ -80,10 +80,27 @@ public class BreakdownManager : MonoBehaviour
             globalBroken = true;
             OnGlobalBreakdown?.Invoke();
         }
+        Debug.Log($"BREAKDOWN DEBUG | laneIndex={laneIndex} | marking laneBroken true");
+
     }
 
     public void RepairLane(int laneIndex)
     {
+        
+
+        laneBroken[laneIndex] = false;
+        currentPenalties[laneIndex] = 0;
+        OnLocalRepaired?.Invoke();
+
+        bool anyBroken = false;
+        foreach (var broken in laneBroken)
+            if (broken) { anyBroken = true; break; }
+
+        if (!anyBroken && globalBroken)
+        {
+            globalBroken = false;
+            OnGlobalRepaired?.Invoke();
+        }
         if (laneBroken == null || laneIndex < 0 || laneIndex >= laneBroken.Length)
         {
             Debug.LogWarning($"Invalid lane index {laneIndex} or laneBroken array not initialized.");
@@ -96,20 +113,7 @@ public class BreakdownManager : MonoBehaviour
             Debug.Log($"Lane {laneIndex} is not broken, nothing to repair.");
             return;
         }
-
-        laneBroken[laneIndex] = false;
-        currentPenalties[laneIndex] = 0;
-        OnLocalRepaired?.Invoke(laneIndex);
-
-        bool anyBroken = false;
-        foreach (var broken in laneBroken)
-            if (broken) { anyBroken = true; break; }
-
-        if (!anyBroken && globalBroken)
-        {
-            globalBroken = false;
-            OnGlobalRepaired?.Invoke();
-        }
+        Debug.Log($"REPAIR DEBUG | laneIndex={laneIndex} | laneBroken={(laneBroken != null ? laneBroken[laneIndex].ToString() : "NULL")} | currentPenalties={currentPenalties[laneIndex]}");
         Debug.Log($"Lane {laneIndex} repaired.");
     }
 

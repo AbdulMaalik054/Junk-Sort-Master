@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class RepairButton : MonoBehaviour
+public class RepairButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public int laneIndex;
     public float holdDuration = 1f;
