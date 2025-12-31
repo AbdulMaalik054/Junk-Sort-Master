@@ -20,6 +20,10 @@ public class BreakdownManager : MonoBehaviour
     public event Action OnLocalRepaired;
     public event Action OnGlobalBreakdown;
     public event Action OnGlobalRepaired;
+    public event Action OnResetIndicators;
+    public event Action<int> OnLaneReset;
+
+
 
     private void Awake()
     {
@@ -45,7 +49,10 @@ public class BreakdownManager : MonoBehaviour
             for (int i = 0; i < laneCount; i++)
                 penaltyThresholds[i] = (i == mainConveyorIndex) ? 5 : 3;
         }
-        Debug.Log($"BreakdownManager initialized with {laneCount} lanes.");
+        OnResetIndicators?.Invoke(); // <-- Ensures bulbs off when game restarts
+        
+        for (int i = 0; i < laneCount; i++)
+            OnLaneReset?.Invoke(i); // Reset per-lane tracking
     }
 
     private void HandleLocalBreakdown(int laneIndex)
@@ -90,7 +97,10 @@ public class BreakdownManager : MonoBehaviour
 
         laneBroken[laneIndex] = false;
         currentPenalties[laneIndex] = 0;
+
         OnLocalRepaired?.Invoke();
+        OnResetIndicators?.Invoke(); // <-- NEW
+        OnLaneReset?.Invoke(laneIndex); // Notify lane tracker to reset bonus + penalty counts
 
         bool anyBroken = false;
         foreach (var broken in laneBroken)
@@ -101,21 +111,16 @@ public class BreakdownManager : MonoBehaviour
             globalBroken = false;
             OnGlobalRepaired?.Invoke();
         }
-        if (laneBroken == null || laneIndex < 0 || laneIndex >= laneBroken.Length)
-        {
-            Debug.LogWarning($"Invalid lane index {laneIndex} or laneBroken array not initialized.");
-            return;
-        }
-
-        Debug.Log($"RepairLane called on lane {laneIndex}. Broken? {laneBroken[laneIndex]}");
-        if (!laneBroken[laneIndex])
-        {
-            Debug.Log($"Lane {laneIndex} is not broken, nothing to repair.");
-            return;
-        }
-        Debug.Log($"REPAIR DEBUG | laneIndex={laneIndex} | laneBroken={(laneBroken != null ? laneBroken[laneIndex].ToString() : "NULL")} | currentPenalties={currentPenalties[laneIndex]}");
-        Debug.Log($"Lane {laneIndex} repaired.");
+        
     }
+    public bool IsAnyLaneBroken() // optonal helper method
+    {
+        if (laneBroken == null) return false;
+        foreach (var broken in laneBroken)
+            if (broken) return true;
+        return false;
+    }
+
 
     public bool IsLaneBroken(int laneIndex) => laneBroken != null && laneBroken[laneIndex];
 }

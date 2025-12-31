@@ -122,22 +122,13 @@ public class UIManager : MonoBehaviour
     // Repair Buttons
     public void SpawnRepairButton(int laneIndex)
     {
-        // Instantiate a new button under the UI Canvas
-        RepairButton newBtn = Instantiate(repairButtonPrefab, repairButtonParent);
-
+        
+        RepairButton newBtn = repairButtonPrefab;
         RectTransform buttonRect = newBtn.GetComponent<RectTransform>();
-
-        // Reset + Center Position
-        buttonRect.localScale = Vector3.one;
         buttonRect.anchoredPosition = Vector2.zero; // center of screen
 
         // Set lane assignment
         newBtn.laneIndex = laneIndex;
-
-        newBtn.gameObject.SetActive(true);
-
-        Debug.Log("Repair button spawned at center screen for lane: " + laneIndex);
-
         UIAnimator.FadeIn(repairButtonGroup, 0.2f);
         UIAnimator.PunchScale(buttonRect.transform, 1.2f, 0.2f);
     }
@@ -148,6 +139,15 @@ public class UIManager : MonoBehaviour
         UIAnimator.FadeOut(repairButtonGroup, 0.2f);
         
     }
+    public void ShowtopBarGroup() => topBarGroup.gameObject.SetActive(true);
+    public void HideTopBarGroup() => topBarGroup.gameObject.SetActive(false);
+    public void HideGameOver() => UIAnimator.FadeOut(gameOverPanel, 0.2f);
+}
+
+        
+
+        
+
 
 
         
@@ -155,7 +155,3 @@ public class UIManager : MonoBehaviour
 
    
 
-    public void ShowtopBarGroup() => topBarGroup.gameObject.SetActive(true);
-    public void HideTopBarGroup() => topBarGroup.gameObject.SetActive(false);
-    public void HideGameOver() => UIAnimator.FadeOut(gameOverPanel, 0.2f);
-}

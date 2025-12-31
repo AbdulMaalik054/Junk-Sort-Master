@@ -19,19 +19,30 @@ public class BulbIndicatorController : MonoBehaviour
     {
         if (laneTracker == null)
             laneTracker = FindAnyObjectByType<SortingLaneTracker>();
+        BreakdownManager.Instance.OnResetIndicators += ResetIndicators;
+
+        ResetIndicators();
     }
     private void OnEnable()
     {
         if (laneTracker != null)
             laneTracker.OnLaneUpdated += UpdateIndicators;
 
-        UpdateIndicators();
+        BreakdownManager.Instance.OnLaneReset += HandleLaneReset;
+        BreakdownManager.Instance.OnResetIndicators += HandleGlobalReset;
+
+        
     }
 
     private void OnDisable()
     {
         if (laneTracker != null)
             laneTracker.OnLaneUpdated -= UpdateIndicators;
+        if (BreakdownManager.Instance != null)
+        {
+            BreakdownManager.Instance.OnLaneReset -= HandleLaneReset;
+            BreakdownManager.Instance.OnResetIndicators -= HandleGlobalReset;
+        }
     }
 
     private void Start()
@@ -72,5 +83,28 @@ public class BulbIndicatorController : MonoBehaviour
             float intensity = i < activeBonuses ? onIntensity : offIntensity;
             bonusBulbs[i].SetSmallGreen(intensity);
         }
+    }
+
+    private void ResetIndicators()
+    {
+        foreach (var bulb in penaltyBulbs)
+            bulb.SetSmallRed(offIntensity);
+
+        foreach (var bulb in bonusBulbs)
+            bulb.SetSmallGreen(offIntensity);
+    }
+    private void HandleLaneReset(int laneIndex)
+    {
+        if (laneTracker == null) return;
+        if (laneTracker.laneIndex != laneIndex) return;
+
+        ResetIndicators();     // Only reset THIS lane
+        UpdateIndicators();
+    }
+
+    private void HandleGlobalReset()
+    {
+        ResetIndicators();     // This runs only on RestartGame
+        UpdateIndicators();
     }
 }

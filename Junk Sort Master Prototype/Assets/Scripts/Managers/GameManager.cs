@@ -113,12 +113,8 @@ public class GameManager : MonoBehaviour
 
     private void HandleLocalBreakdown(int laneIndex)
     {
-        
-        
         UIManager.Instance.SpawnRepairButton(laneIndex);
-        
-    }
-        
+    }    
     private void HandleLocalRepair()
     {
         UIManager.Instance.RemoveRepairButton();
@@ -143,6 +139,7 @@ public class GameManager : MonoBehaviour
         DragController.DisableDrag = true;
         CleanupGameplay();
         UIManager.Instance.HideGameOver();
+        UIManager.Instance.RemoveRepairButton();
         UIManager.Instance.HidePauseMenu();
         MenuController.Instance.ReturnToMainMenu();
     }
@@ -177,7 +174,7 @@ public class GameManager : MonoBehaviour
 
         if (finalScore > best)
             PlayerPrefs.SetInt("BestScore", finalScore);
-
+        
         UIManager.Instance.pauseButton.gameObject.SetActive(false);
         UIManager.Instance.ShowGameOver(finalScore, PlayerPrefs.GetInt("BestScore"));
     }
@@ -233,8 +230,10 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1;
+        BreakdownManager.Instance.Initialize(laneControllers.Length);
         CleanupGameplay();
         UIManager.Instance.HideGameOver();
+        UIManager.Instance.RemoveRepairButton();
         UIManager.Instance.HidePauseMenu();
         StartGame();
     }

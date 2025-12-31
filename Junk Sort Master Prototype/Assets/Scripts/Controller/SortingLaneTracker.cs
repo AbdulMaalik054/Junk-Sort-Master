@@ -17,6 +17,27 @@ public class SortingLaneTracker : MonoBehaviour
 
     private BreakdownManager breakdown => BreakdownManager.Instance;
 
+    private void OnEnable()
+    {
+        BreakdownManager.Instance.OnLaneReset += ResetLaneState;
+    }
+
+    private void OnDisable()
+    {
+        if (BreakdownManager.Instance != null)
+            BreakdownManager.Instance.OnLaneReset -= ResetLaneState;
+    }
+
+    private void ResetLaneState(int laneIndex)
+    {
+        if (this.laneIndex != laneIndex) return;
+
+        penaltyCount = 0;
+        bonusCount = 0;
+
+        OnLaneUpdated?.Invoke(); // Ensure bulbs refresh visuals as well
+    }
+
     public void RegisterCorrect()
     {
         streakCount++;
