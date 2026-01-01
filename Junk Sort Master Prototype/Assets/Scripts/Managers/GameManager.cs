@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.ShowLoadingTransition("LOADING", 2.0f);
         MenuController.Instance.ReturnToMainMenu();
         BigGreenBulb.SetBigGreen(true);
+        BigRedBulb.FlashBigRed(false);
 
     }
 
@@ -141,6 +142,10 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.HideGameOver();
         UIManager.Instance.RemoveRepairButton();
         UIManager.Instance.HidePauseMenu();
+        // Force breakdown reset (new)
+        BreakdownManager.Instance.Initialize(laneControllers.Length);
+        BigRedBulb.FlashBigRed(false);
+        BigGreenBulb.SetBigGreen(true);
         MenuController.Instance.ReturnToMainMenu();
     }
 

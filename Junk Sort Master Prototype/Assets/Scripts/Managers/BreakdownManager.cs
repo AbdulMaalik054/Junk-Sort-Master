@@ -42,7 +42,7 @@ public class BreakdownManager : MonoBehaviour
         currentPenalties = new int[laneCount];
         laneBroken = new bool[laneCount];
         globalBroken = false;
-
+        OnGlobalRepaired?.Invoke();
         if (penaltyThresholds == null || penaltyThresholds.Length != laneCount)
         {
             penaltyThresholds = new int[laneCount];
@@ -57,7 +57,7 @@ public class BreakdownManager : MonoBehaviour
 
     private void HandleLocalBreakdown(int laneIndex)
     {
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(GameManager.Instance.laneControllers[laneIndex].transform.position);
+        
         UIManager.Instance.SpawnRepairButton(laneIndex);
         
     }

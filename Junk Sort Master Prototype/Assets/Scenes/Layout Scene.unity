@@ -6340,7 +6340,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &846849915
 Transform:
   m_ObjectHideFlags: 0
@@ -8183,7 +8183,7 @@ MonoBehaviour:
   pauseButton: {fileID: 1091480443}
   repairButtonGroup: {fileID: 644872166}
   repairButtonParent: {fileID: 644872165}
-  repairButtonPrefab: {fileID: 414756323330768199, guid: 39d1d4c4a3e10af44a408e34a0e05aef, type: 3}
+  repairButtonPrefab: {fileID: 1540252864}
 --- !u!114 &1078023465 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
@@ -8794,7 +8794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1204374718
 Transform:
   m_ObjectHideFlags: 0
@@ -11209,6 +11209,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb0ae6f0ee8459c409f57daecbfcfe44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulbEmissionController
+--- !u!1 &1494288143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1494288145}
+  - component: {fileID: 1494288144}
+  m_Layer: 0
+  m_Name: Decal Projector (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!114 &1494288144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494288143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
+  m_Material: {fileID: 2100000, guid: d45e9731060c0ad479c0e3d45abf1074, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_RenderingLayerMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 5, y: 5, z: 1}
+  m_FadeFactor: 1
+  version: 1
+  m_DecalLayerMask: 1
+--- !u!4 &1494288145
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494288143}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.60697097, y: 0.3627482, z: 0.60697097, w: 0.3627482}
+  m_LocalPosition: {x: -2.92, y: 2.25, z: -11.000001}
+  m_LocalScale: {x: 1.9192, y: 1.9192, z: 1.9192}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 118.272}
 --- !u!23 &1523876564 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5604630905275797196, guid: c8b90a54c81e744458b679717f6823a1, type: 3}
@@ -11554,6 +11614,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7074227444104316190, guid: 39d1d4c4a3e10af44a408e34a0e05aef, type: 3}
   m_PrefabInstance: {fileID: 1540252862}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1540252864 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 414756323330768199, guid: 39d1d4c4a3e10af44a408e34a0e05aef, type: 3}
+  m_PrefabInstance: {fileID: 1540252862}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c5bbe24573fa944aba4de70aefd27fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RepairButton
 --- !u!1001 &1541193781
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15065,6 +15136,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb0ae6f0ee8459c409f57daecbfcfe44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulbEmissionController
+--- !u!1 &2057346829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2057346831}
+  - component: {fileID: 2057346830}
+  m_Layer: 0
+  m_Name: Decal Projector (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!114 &2057346830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057346829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
+  m_Material: {fileID: 2100000, guid: d45e9731060c0ad479c0e3d45abf1074, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_RenderingLayerMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 5, y: 5, z: 1}
+  m_FadeFactor: 1
+  version: 1
+  m_DecalLayerMask: 1
+--- !u!4 &2057346831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057346829}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.60697097, y: 0.3627482, z: 0.60697097, w: 0.3627482}
+  m_LocalPosition: {x: 5.142, y: 2.25, z: -11.000001}
+  m_LocalScale: {x: 1.9192, y: 1.9192, z: 1.9192}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 118.272}
 --- !u!1 &2067971925
 GameObject:
   m_ObjectHideFlags: 0
@@ -17077,7 +17208,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2274797251022518026
 Transform:
   m_ObjectHideFlags: 0
@@ -20915,4 +21046,6 @@ SceneRoots:
   - {fileID: 1684179830}
   - {fileID: 4567745016432224239}
   - {fileID: 962909229}
+  - {fileID: 2057346831}
   - {fileID: 257786092}
+  - {fileID: 1494288145}
