@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
 
         if (breakdownSystemEnabled)
             InitializeBreakdowns();
-
+        
         DragController.DisableDrag = false;
         UIManager.Instance.ShowStartTransition("GO!", 2.0f);
         UIManager.Instance.ShowtopBarGroup();
@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
     private void InitializeBreakdowns()
     {
         
+
         BreakdownManager.Instance.Initialize(laneControllers.Length);
         BreakdownManager.Instance.OnLocalBreakdown += HandleLocalBreakdown;
         BreakdownManager.Instance.OnLocalRepaired += HandleLocalRepair;
@@ -101,6 +102,7 @@ public class GameManager : MonoBehaviour
         conveyorController.StopAll(false);
         spawner.StopSpawning();
         DragController.DisableDrag = true;
+
     }
 
     private void HandleGlobalRepair()
@@ -115,10 +117,19 @@ public class GameManager : MonoBehaviour
     private void HandleLocalBreakdown(int laneIndex)
     {
         UIManager.Instance.SpawnRepairButton(laneIndex);
+        if (laneIndex >= 0 && laneIndex < laneControllers.Length)
+        {
+            laneControllers[laneIndex].StartBreakdownFlash();
+            Debug.Log($"Lane {laneIndex} breakdown handled in GameManager.");
+        }
     }    
     private void HandleLocalRepair()
     {
         UIManager.Instance.RemoveRepairButton();
+        for (int i = 0; i < laneControllers.Length; i++)
+        {
+            laneControllers[i].StopBreakdownFlash();
+        }
         conveyorController.StartAll();
     }
 

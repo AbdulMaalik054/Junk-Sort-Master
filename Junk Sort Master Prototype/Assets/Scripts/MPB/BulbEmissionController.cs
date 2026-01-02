@@ -8,11 +8,18 @@ public class BulbEmissionController : MonoBehaviour
 
     
 
-    [Header("Flashing Settings")]
+    [Header("Big Bulbs Flash Settings")]
     public float flashFrequency = 2f;
-
     private bool flashRed = false;
-    private float flashTimer;
+   
+    [Header("Small Bulbs Flash Settings")]
+    private bool flashSmallRed = false;
+    private bool flashSmallGreen = false;
+
+    [Header("Bulbs Flash Settings")]
+    private float bigRedTimer;
+    private float smallRedTimer;
+    private float smallGreenTimer;
 
     void OnEnable()
     {
@@ -44,13 +51,27 @@ public class BulbEmissionController : MonoBehaviour
     {
         if (flashRed)
         {
-            flashTimer += Time.deltaTime * flashFrequency;
-            float intensity = Mathf.PingPong(flashTimer, 1f) * 40f; // adjustable
-
+            bigRedTimer += Time.deltaTime * flashFrequency;
+            float intensity = Mathf.PingPong(bigRedTimer, 1f) * 40f;
             SetBigRedIntensity(intensity);
             SetBigGreenIntensity(0f);
         }
+
+        if (flashSmallRed)
+        {
+            smallRedTimer += Time.deltaTime * flashFrequency;
+            float intensity = Mathf.PingPong(smallRedTimer, 1f) * 40f;
+            SetSmallRed(intensity);
+        }
+
+        if (flashSmallGreen)
+        {
+            smallGreenTimer += Time.deltaTime * flashFrequency;
+            float intensity = Mathf.PingPong(smallGreenTimer, 1f) * 40f;
+            SetSmallGreen(intensity);
+        }
     }
+
     public void SetSmallGreen(float intensity)
     {
         if (_mpb == null) return;
@@ -66,8 +87,6 @@ public class BulbEmissionController : MonoBehaviour
         _mpb.SetFloat("_SmallRedIntensity", intensity);
         _renderer.SetPropertyBlock(_mpb);
     }
-
-    // Big Bulbs (Shader Control Only)
     private void SetBigGreenIntensity(float intensity)
     {
         _renderer.GetPropertyBlock(_mpb);
@@ -84,7 +103,7 @@ public class BulbEmissionController : MonoBehaviour
     public void SetBigGreen(bool active)
     {
         flashRed = false;
-        flashTimer = 0f;
+        
 
         SetBigGreenIntensity(active ? 40f : 0f);
         SetBigRedIntensity(0f);
@@ -93,7 +112,7 @@ public class BulbEmissionController : MonoBehaviour
     public void FlashBigRed(bool flashing)
     {
         flashRed = flashing;
-        flashTimer = 0f;
+        bigRedTimer = 0f;
 
         if (!flashing)
         {
@@ -101,4 +120,39 @@ public class BulbEmissionController : MonoBehaviour
             SetBigGreenIntensity(40f);
         }
     }
+    public void FlashSmallRed(bool flashing)
+    {
+        flashSmallRed = flashing;
+        smallRedTimer = 0f;
+
+        if (!flashing)
+            SetSmallRed(0f);
+    }
+
+    public void FlashSmallGreen(bool flashing)
+    {
+        flashSmallGreen = flashing;
+        smallGreenTimer = 0f;
+
+        if (!flashing)
+            SetSmallGreen(0f);
+    }
+
+    public void ResetAll()
+    {
+        flashRed = false;
+        flashSmallRed = false;
+        flashSmallGreen = false;
+
+        bigRedTimer = 0f;
+        smallRedTimer = 0f;
+        smallGreenTimer = 0f;
+
+        SetSmallRed(0f);
+        SetSmallGreen(0f);
+        SetBigRedIntensity(0f);
+        SetBigGreenIntensity(0f);
+    }
+
+
 }
