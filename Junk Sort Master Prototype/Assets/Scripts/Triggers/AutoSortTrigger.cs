@@ -21,9 +21,11 @@ public class AutoSortTrigger : MonoBehaviour
 
         JunkBin targetBin = SortingRegistry.Instance.GetBinForLane(tracker.laneIndex);
         if (targetBin != null)
+        {
             Debug.Log("Auto-sorting junk of type " + junk.junkType +
                 " to bin for lane " + tracker.laneIndex);
             junk.AutoFlyTo(targetBin);
+        }
     }
 
 }

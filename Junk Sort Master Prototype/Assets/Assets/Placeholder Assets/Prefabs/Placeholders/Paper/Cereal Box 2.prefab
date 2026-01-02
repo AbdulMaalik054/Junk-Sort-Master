@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d8402a1db8c344eb0a3ea6302b5d17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
-  laneIndex: 2
+  laneIndex: 1
   penaltyCount: 0
   bonusCount: 0
   streakCount: 0

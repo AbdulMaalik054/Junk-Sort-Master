@@ -6,12 +6,12 @@ public class AbilityButton : MonoBehaviour
 
     public void OnClick()
     {
-        AbilityController ability =
-            AbilityManager.Instance.GetAbilityForLane(laneIndex);
-        Debug.Log("AbilityButton clicked for lane " + laneIndex);
+        AbilityController ability = AbilityManager.Instance.GetAbilityForLane(laneIndex);
+        Debug.Log($"AbilityButton clicked for lane {laneIndex}");
 
         if (ability != null)
             ability.OnAbilityClicked();
-
     }
 }
+        
+
