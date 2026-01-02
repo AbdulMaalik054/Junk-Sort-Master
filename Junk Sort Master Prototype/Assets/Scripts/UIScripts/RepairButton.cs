@@ -16,7 +16,7 @@ public class RepairButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     {
         holding = true;
         timer = 0f;
-        Debug.Log($"Started holding repair button for lane {laneIndex}");
+        //Debug.Log($"Started holding repair button for lane {laneIndex}");
     }
 
     public void EndHold()
@@ -24,7 +24,7 @@ public class RepairButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         if (!holding) return;
         holding = false;
         timer = 0f;
-        Debug.Log($"Stopped holding repair button for lane {laneIndex}");
+        //Debug.Log($"Stopped holding repair button for lane {laneIndex}");
     }
 
     private void Update()

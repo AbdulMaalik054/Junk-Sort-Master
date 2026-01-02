@@ -40,7 +40,6 @@ public class SortingResolver : MonoBehaviour
                 
                 ScoreManager.Instance.AddCorrectScore(correctScore, pos);
                 tracker.RegisterCorrect();
-                Debug.Log(tracker.name + " Registered Correct");
                 break;
 
             case SortResult.Wrong:

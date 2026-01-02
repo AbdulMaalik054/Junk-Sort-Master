@@ -104,6 +104,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8643035526615989192}
     m_Modifications:
+    - target: {fileID: 3534622523253161357, guid: 85f0d84c3a6915345acd9426070afb44, type: 3}
+      propertyPath: conveyorLane
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7246854249127984740, guid: 85f0d84c3a6915345acd9426070afb44, type: 3}
       propertyPath: m_LocalScale.x
       value: 6
@@ -167,10 +171,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8673852027073624478, guid: 85f0d84c3a6915345acd9426070afb44, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1926196565018560886}
   m_SourcePrefab: {fileID: 100100000, guid: 85f0d84c3a6915345acd9426070afb44, type: 3}
 --- !u!4 &527549292821676018 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7246854249127984740, guid: 85f0d84c3a6915345acd9426070afb44, type: 3}
   m_PrefabInstance: {fileID: 7188805768293466518}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1989591254126508040 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8673852027073624478, guid: 85f0d84c3a6915345acd9426070afb44, type: 3}
+  m_PrefabInstance: {fileID: 7188805768293466518}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1926196565018560886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989591254126508040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d8402a1db8c344eb0a3ea6302b5d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
+  laneIndex: 3
+  penaltyCount: 0
+  bonusCount: 0
+  streakCount: 0
+  streakThreshold: 5

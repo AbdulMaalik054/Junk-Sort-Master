@@ -16,6 +16,7 @@ public class AbilityController : MonoBehaviour
     [Header("Ability Stats")]
     [SerializeField] private float abilityDuration = 5f;
     private Coroutine abilityRoutine;
+
     private void Start()
     {
         SetState(AbilityState.Locked);
@@ -58,7 +59,7 @@ public class AbilityController : MonoBehaviour
                 break;
         }
     }
-    private void OnAbilityClicked()
+    public void OnAbilityClicked()
     {
         if (currentState == AbilityState.Ready)
         {

@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 3708577229123653958}
   - component: {fileID: 4799996957721019525}
   - component: {fileID: 7185749072820588812}
+  - component: {fileID: 8777494040539077993}
   m_Layer: 0
   m_Name: BottlePlastic1_plastic_0
   m_TagString: Plastic
@@ -202,3 +203,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JunkItem
   junkType: {fileID: 0}
+--- !u!114 &8777494040539077993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569147880580522087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d8402a1db8c344eb0a3ea6302b5d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
+  laneIndex: 1
+  penaltyCount: 0
+  bonusCount: 0
+  streakCount: 0
+  streakThreshold: 5

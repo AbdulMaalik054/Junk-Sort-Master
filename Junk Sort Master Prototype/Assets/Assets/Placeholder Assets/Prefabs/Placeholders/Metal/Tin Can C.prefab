@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3862974061856040124}
   - component: {fileID: 3030826944632798796}
   - component: {fileID: 549291748764742244}
+  - component: {fileID: -8632144997857820257}
   m_Layer: 0
   m_Name: Tin Can C
   m_TagString: Untagged
@@ -96,6 +97,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragController
   planeMode: 0
+--- !u!114 &-8632144997857820257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8048284110753040056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d8402a1db8c344eb0a3ea6302b5d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
+  laneIndex: 4
+  penaltyCount: 0
+  bonusCount: 0
+  streakCount: 0
+  streakThreshold: 5
 --- !u!1001 &3631739524015876960
 PrefabInstance:
   m_ObjectHideFlags: 0

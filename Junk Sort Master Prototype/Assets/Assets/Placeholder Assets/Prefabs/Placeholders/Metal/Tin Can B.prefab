@@ -187,10 +187,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2131213458706742105, guid: 30e5bbfd0f6caa84d96ecd61bda006c1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5104046990187598509}
   m_SourcePrefab: {fileID: 100100000, guid: 30e5bbfd0f6caa84d96ecd61bda006c1, type: 3}
 --- !u!4 &1770535100523502734 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6614393728932594663, guid: 30e5bbfd0f6caa84d96ecd61bda006c1, type: 3}
   m_PrefabInstance: {fileID: 4852971948252667753}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6830464332576728112 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2131213458706742105, guid: 30e5bbfd0f6caa84d96ecd61bda006c1, type: 3}
+  m_PrefabInstance: {fileID: 4852971948252667753}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5104046990187598509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830464332576728112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d8402a1db8c344eb0a3ea6302b5d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
+  laneIndex: 4
+  penaltyCount: 0
+  bonusCount: 0
+  streakCount: 0
+  streakThreshold: 5

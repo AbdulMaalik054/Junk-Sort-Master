@@ -112,8 +112,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.6926184, y: 0.5489877, z: 25.565615}
-  m_Center: {x: 0, y: -0.0897307, z: 0}
+  m_Size: {x: 4.6926184, y: 0.8, z: 25.565615}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &6795720543305006235 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
@@ -141,11 +141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.77
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.27
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -153,19 +153,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.70710784
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.70710576
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -173,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -204,6 +204,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3092107961842514644}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8070551520440309070}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1474578627524578281}
   m_SourcePrefab: {fileID: 100100000, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}
 --- !u!23 &7906214058340040145 stripped
 MeshRenderer:
@@ -234,8 +240,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.6926184, y: 0.5489877, z: 25.565615}
-  m_Center: {x: 0, y: -0.0897307, z: 0}
+  m_Size: {x: 4.6926184, y: 0.8, z: 25.565615}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3092107961842514644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +260,41 @@ MonoBehaviour:
   acceleration: 1
   beltRenderer: {fileID: 7906214058340040145}
   uvMultiplier: 0.04
+--- !u!114 &8070551520440309070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8554727938277317636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838e2b4b722c9084fade6dcfbac12a14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConveyorStateController
+  lane: 0
+  wrongsToBreak: 3
+  correctsPerGreen: 10
+  greensToUnlockAbility: 3
+  currentState: 0
+--- !u!114 &1474578627524578281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8554727938277317636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b205462ef3489943a51766866f07e12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConveyorBulbVisualController
+  state: {fileID: 8070551520440309070}
+  smallRedBulbs: []
+  smallGreenBulbs: []
+  flashSpeed: 4
+  flashMinIntensity: 0
+  flashMaxIntensity: 1.5
 --- !u!4 &9075790160516433598 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 27fdd2740e3611f4c91d0c306f86adb8, type: 3}

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 public class ConveyorManager : MonoBehaviour
 {
     [Header("Movement")]
@@ -17,6 +17,7 @@ public class ConveyorManager : MonoBehaviour
 
     private void Awake()
     {
+        
         if (beltRenderer != null)
             beltMaterial = beltRenderer.sharedMaterial;
     }
@@ -30,7 +31,7 @@ public class ConveyorManager : MonoBehaviour
         {
             currentSpeed += acceleration * Time.deltaTime;
             currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
-            Debug.Log(currentSpeed);
+            
         }
     }
 
@@ -124,5 +125,4 @@ public class ConveyorManager : MonoBehaviour
         conveyorRunning = false;
     }
 
-    
 }

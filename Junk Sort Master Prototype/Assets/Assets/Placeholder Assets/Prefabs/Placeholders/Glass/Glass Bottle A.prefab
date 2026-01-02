@@ -104,6 +104,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3195323507267364550}
     m_Modifications:
+    - target: {fileID: 3496051174214663534, guid: 0a1de374e75f0af47a9374178929c400, type: 3}
+      propertyPath: conveyorLane
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7168660723440906513, guid: 0a1de374e75f0af47a9374178929c400, type: 3}
       propertyPath: m_Name
       value: Glss Bottle_1
@@ -167,8 +171,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7168660723440906513, guid: 0a1de374e75f0af47a9374178929c400, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 123092023575157528}
   m_SourcePrefab: {fileID: 100100000, guid: 0a1de374e75f0af47a9374178929c400, type: 3}
+--- !u!1 &2782796830473924529 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7168660723440906513, guid: 0a1de374e75f0af47a9374178929c400, type: 3}
+  m_PrefabInstance: {fileID: 5035666547272998560}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &123092023575157528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2782796830473924529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d8402a1db8c344eb0a3ea6302b5d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
+  laneIndex: 3
+  penaltyCount: 0
+  bonusCount: 0
+  streakCount: 0
+  streakThreshold: 5
 --- !u!4 &4500119038878118172 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8904155667377106876, guid: 0a1de374e75f0af47a9374178929c400, type: 3}
