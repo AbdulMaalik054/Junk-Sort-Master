@@ -4,7 +4,9 @@ public class SortingLaneTracker : MonoBehaviour
 {
     [Header("Lane Index")]
     [Tooltip("Assigned automatically by ConveyorController or inspector")]
-    public int laneIndex = -1;
+    public int physicalLaneIndex = -1;   // 0–4 (used by Breakdown, Bulbs, Conveyor)
+    public int playableLaneIndex = -1;   // 0–3 (used by Abilities, Junk, Registry)
+
 
     [Header("Lane Tracking")]
     public int penaltyCount = 0;
@@ -30,7 +32,7 @@ public class SortingLaneTracker : MonoBehaviour
 
     private void ResetLaneState(int laneIndex)
     {
-        if (this.laneIndex != laneIndex) return;
+        if (this.physicalLaneIndex != laneIndex) return;
 
         penaltyCount = 0;
         bonusCount = 0;
@@ -53,9 +55,10 @@ public class SortingLaneTracker : MonoBehaviour
         penaltyCount++;
         streakCount = 0;
 
-        if (laneIndex >= 0)
-            breakdown.AddPenalty(laneIndex);
-        
+        if (physicalLaneIndex >= 0)
+            breakdown.AddPenalty(physicalLaneIndex);
+
+        Debug.Log($"LaneTracker {gameObject.name} registering wrong. laneIndex={physicalLaneIndex}");
 
         OnLaneUpdated?.Invoke();
     }

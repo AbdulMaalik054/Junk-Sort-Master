@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class AbilityButton : MonoBehaviour
 {
-    [SerializeField] private int uilaneIndex;
-    private int laneIndex => uilaneIndex - 1;
+    [SerializeField] private int uiLaneIndex;
+    private int playableLaneIndex => uiLaneIndex - 1;
     public void OnClick()
     {
-        AbilityController ability = AbilityManager.Instance.GetAbilityForLane(laneIndex);
-        Debug.Log($"AbilityButton clicked for lane {laneIndex}");
+        AbilityController ability = AbilityManager.Instance.GetAbilityForLane(playableLaneIndex);
+        Debug.Log($"AbilityButton clicked for lane {playableLaneIndex}");
 
         if (ability != null)
             ability.OnAbilityClicked();

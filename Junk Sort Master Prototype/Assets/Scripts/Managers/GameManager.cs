@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -27,12 +28,14 @@ public class GameManager : MonoBehaviour
     [Header("Breakdowns")]
     [SerializeField] private bool breakdownSystemEnabled = true;
 
-    [Header("Global Bulbs")]
-    public BulbEmissionController BigGreenBulb;
-    public BulbEmissionController BigRedBulb;
-
+    [Header("Global Bulbs Status")]
+    [SerializeField] private bool bulbStatus = true;
     [Header("Lanes Reference")]
-    public BulbIndicatorController[] laneControllers;
+    [SerializeField] public BulbIndicatorController[] laneControllers;
+
+    private readonly Dictionary<int, BulbIndicatorController> laneByIndex
+        = new Dictionary<int, BulbIndicatorController>();
+
 
 
     private void Awake()
@@ -44,8 +47,7 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.ShowLoadingTransition("LOADING", 2.0f);
         MenuController.Instance.ReturnToMainMenu();
-        BigGreenBulb.SetBigGreen(true);
-        BigRedBulb.FlashBigRed(false);
+        
 
     }
 
@@ -60,7 +62,8 @@ public class GameManager : MonoBehaviour
         gameRunning = true;
         paused = false;
         Time.timeScale = 1;
-
+        SetGlobalNormal(bulbStatus);
+        SetGlobalBreakdown(!bulbStatus);
         ApplyDifficulty();
         progression.Initialize(currentDifficulty);
         progression.ApplyTier(0);
@@ -84,8 +87,8 @@ public class GameManager : MonoBehaviour
     // BREAKDOWNS ------------------------------------------------------
     private void InitializeBreakdowns()
     {
-        
 
+        CacheLaneControllers();
         BreakdownManager.Instance.Initialize(laneControllers.Length);
         BreakdownManager.Instance.OnLocalBreakdown += HandleLocalBreakdown;
         BreakdownManager.Instance.OnLocalRepaired += HandleLocalRepair;
@@ -97,8 +100,8 @@ public class GameManager : MonoBehaviour
 
     private void HandleGlobalBreakdown()
     {
-        BigGreenBulb.SetBigGreen(false);
-        BigRedBulb.FlashBigRed(true);
+        SetGlobalBreakdown(bulbStatus);
+        SetGlobalNormal(!bulbStatus);
         conveyorController.StopAll(false);
         spawner.StopSpawning();
         DragController.DisableDrag = true;
@@ -107,8 +110,8 @@ public class GameManager : MonoBehaviour
 
     private void HandleGlobalRepair()
     {
-        BigRedBulb.FlashBigRed(false);
-        BigGreenBulb.SetBigGreen(true);
+        SetGlobalNormal(bulbStatus);
+        SetGlobalBreakdown(!bulbStatus);
         DragController.DisableDrag = false;
         conveyorController.StartAll();
         spawner.StartSpawning();
@@ -117,23 +120,79 @@ public class GameManager : MonoBehaviour
     private void HandleLocalBreakdown(int laneIndex)
     {
         UIManager.Instance.SpawnRepairButton(laneIndex);
-        if (laneIndex >= 0 && laneIndex < laneControllers.Length)
+
+        if (!laneByIndex.TryGetValue(laneIndex, out var controller))
         {
-            laneControllers[laneIndex].StartBreakdownFlash();
-            Debug.Log($"Lane {laneIndex} breakdown handled in GameManager.");
+            Debug.LogError($"[GameManager] No lane controller for lane {laneIndex}");
+            return;
         }
-    }    
+
+        Debug.Log($"Lane {laneIndex} breakdown handled in GameManager.");
+        controller.StartBreakdownFlash();
+    }
+
     private void HandleLocalRepair()
     {
         UIManager.Instance.RemoveRepairButton();
-        for (int i = 0; i < laneControllers.Length; i++)
-        {
-            laneControllers[i].StopBreakdownFlash();
-        }
+
+        foreach (var controller in laneByIndex.Values)
+            controller.StopBreakdownFlash();
+
         conveyorController.StartAll();
     }
 
+    // BULBS CACHE----------------------------------------------------
+    private void CacheLaneControllers()
+    {
+        laneByIndex.Clear();
+
+        foreach (var controller in laneControllers)
+        {
+            if (controller == null)
+                continue;
+
+            var tracker = controller.GetComponentInParent<SortingLaneTracker>();
+            if (tracker == null)
+            {
+                Debug.LogError(
+                    $"[GameManager] BulbIndicatorController {controller.name} has no SortingLaneTracker",
+                    controller
+                );
+                continue;
+            }
+
+            int laneIndex = tracker.physicalLaneIndex;
+
+            if (laneByIndex.ContainsKey(laneIndex))
+            {
+                Debug.LogError(
+                    $"[GameManager] Duplicate BulbIndicatorController for lane {laneIndex}",
+                    controller
+                );
+                continue;
+            }
+
+            laneByIndex.Add(laneIndex, controller);
+        }
+    }
+    // BIG BULBS FUNCTIONS ---------------------------------------------
+    private void SetGlobalNormal(bool ON)
+    {
+        var mainLane = laneControllers[0];
+        mainLane?.UpdateBigGreenBulb(ON);
+    }
+
+    private void SetGlobalBreakdown(bool ON)
+    {
+        var mainLane = laneControllers[0];
+        mainLane?.FlashBigRed();
+        
+            
+    }
+
+
     // CLEANUP ---------------------------------------------------------
+
     private void CleanupGameplay()
     {
         StopAllCoroutines();
@@ -155,8 +214,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.HidePauseMenu();
         // Force breakdown reset (new)
         BreakdownManager.Instance.Initialize(laneControllers.Length);
-        BigRedBulb.FlashBigRed(false);
-        BigGreenBulb.SetBigGreen(true);
+        SetGlobalNormal(bulbStatus);
         MenuController.Instance.ReturnToMainMenu();
     }
 

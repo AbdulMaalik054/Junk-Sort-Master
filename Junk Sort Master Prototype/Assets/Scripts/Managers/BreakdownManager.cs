@@ -71,7 +71,8 @@ public class BreakdownManager : MonoBehaviour
         if (laneBroken[laneIndex]) return;
 
         currentPenalties[laneIndex]++;
-        
+        Debug.Log($"Adding penalty to lane {laneIndex}. Current: {currentPenalties[laneIndex]}");
+
 
         if (currentPenalties[laneIndex] >= penaltyThresholds[laneIndex])
             TriggerLocalBreakdown(laneIndex);

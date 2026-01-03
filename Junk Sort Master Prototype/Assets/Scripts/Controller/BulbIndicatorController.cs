@@ -7,31 +7,42 @@ public class BulbIndicatorController : MonoBehaviour
 
     [Header("Bonus Bulbs (Green)")]
     public BulbEmissionController[] bonusBulbs;
-
+    
     [Header("Sorting Lane Tracker")]
     public SortingLaneTracker laneTracker;
 
     [Header("Emission Settings")]
-    [SerializeField] private float onIntensity = 40f;
+    [SerializeField] private float onIntensity = 20f;
     [SerializeField] private float offIntensity = 0f;
+
+    [Header("Global Bulbs")]
+    public BulbEmissionController BigGreenBulb;
+    public BulbEmissionController BigRedBulb;
 
     [Header("Ability Controller")]
     [SerializeField] private AbilityController abilityController;
+   
 
-    [Header("Bulb Flashing Settings")]
-    private bool flashing = false;
-    [SerializeField] private float flashSpeed = 5f; // You can tweak
+
+    // ---------------- FLASH STATE (PER LANE, PRIVATE) ----------------
+
+    [Header("Breakdown Flashing Settings")]
+    [SerializeField] private float breakdownFlashSpeed = 5f;
+    private bool breakdownFlashing = false;
+    private float breakdownTimer = 0f;
+
+    [Header("Bonus Flashing Settings")]
+    [SerializeField] private float bonusFlashSpeed = 5f;
+    private bool bonusFlashing = false;
+    private float bonusTimer = 0f;
+
+    // ----------------------------------------------------------------
+
     private void Awake()
     {
-        if (laneTracker == null)
-        {
-            Debug.LogError($"[BulbIndicatorController] No laneTracker on {gameObject.name}");
-            return;
-        }
+        if (BreakdownManager.Instance != null)
+            BreakdownManager.Instance.OnResetIndicators += ResetIndicators;
 
-        
-
-        BreakdownManager.Instance.OnResetIndicators += ResetIndicators;
         ResetIndicators();
     }
 
@@ -40,16 +51,18 @@ public class BulbIndicatorController : MonoBehaviour
         if (laneTracker != null)
             laneTracker.OnLaneUpdated += UpdateIndicators;
 
-        BreakdownManager.Instance.OnLaneReset += HandleLaneReset;
-        BreakdownManager.Instance.OnResetIndicators += HandleGlobalReset;
-
-        
+        if (BreakdownManager.Instance != null)
+        {
+            BreakdownManager.Instance.OnLaneReset += HandleLaneReset;
+            BreakdownManager.Instance.OnResetIndicators += HandleGlobalReset;
+        }
     }
 
     private void OnDisable()
     {
         if (laneTracker != null)
             laneTracker.OnLaneUpdated -= UpdateIndicators;
+
         if (BreakdownManager.Instance != null)
         {
             BreakdownManager.Instance.OnLaneReset -= HandleLaneReset;
@@ -61,6 +74,61 @@ public class BulbIndicatorController : MonoBehaviour
     {
         UpdateIndicators();
     }
+
+    private void Update()
+    {
+        FlashBigRed();
+        UpdateBreakdownFlash();
+        UpdateBonusFlash();
+    }
+
+    // ===================== FLASH DRIVERS =====================
+
+    private void UpdateBreakdownFlash()
+    {
+        if (!breakdownFlashing) return;
+
+        breakdownTimer += Time.deltaTime * breakdownFlashSpeed;
+        float t = Mathf.PingPong(breakdownTimer, 1f);
+        float intensity = Mathf.Lerp(offIntensity, onIntensity, t);
+
+        foreach (var bulb in penaltyBulbs)
+        {
+            if (bulb == null) continue;
+            bulb.SetSmallRed(intensity);
+        }
+    }
+
+    private void UpdateBonusFlash()
+    {
+        if (!bonusFlashing) return;
+
+        bonusTimer += Time.deltaTime * bonusFlashSpeed;
+        float t = Mathf.PingPong(bonusTimer, 1f);
+        float intensity = Mathf.Lerp(offIntensity, onIntensity, t);
+
+        foreach (var bulb in bonusBulbs)
+        {
+            if (bulb == null) continue;
+            bulb.SetSmallGreen(intensity);
+        }
+    }
+
+    public void FlashBigRed()
+    {
+        if (!breakdownFlashing) return;
+
+        breakdownTimer += Time.deltaTime * breakdownFlashSpeed;
+        float t = Mathf.PingPong(breakdownTimer, 1f);
+        float intensity = Mathf.Lerp(offIntensity, onIntensity, t);
+
+        if (BigRedBulb != null)
+                BigRedBulb.SetBigRed(intensity);
+    }
+
+
+    // ===================== STATIC UPDATES =====================
+
     private void UpdateIndicators()
     {
         UpdatePenaltyBulbs();
@@ -69,133 +137,108 @@ public class BulbIndicatorController : MonoBehaviour
 
     private void UpdatePenaltyBulbs()
     {
-        if (penaltyBulbs == null || penaltyBulbs.Length == 0) return;
+        if (breakdownFlashing) return;
 
-        int penalties = laneTracker.penaltyCount;
+        int penalties = laneTracker != null ? laneTracker.penaltyCount : 0;
 
         for (int i = 0; i < penaltyBulbs.Length; i++)
         {
             if (penaltyBulbs[i] == null) continue;
-
             float intensity = i < penalties ? onIntensity : offIntensity;
             penaltyBulbs[i].SetSmallRed(intensity);
         }
     }
 
-
-
     private void UpdateBonusBulbs()
     {
         if (bonusBulbs == null || bonusBulbs.Length == 0) return;
 
-        int activeBonuses = Mathf.Clamp(laneTracker.bonusCount, 0, bonusBulbs.Length);
+        int activeBonuses = laneTracker != null
+            ? Mathf.Clamp(laneTracker.bonusCount, 0, bonusBulbs.Length)
+            : 0;
 
         for (int i = 0; i < bonusBulbs.Length; i++)
         {
             if (bonusBulbs[i] == null) continue;
-
             float intensity = i < activeBonuses ? onIntensity : offIntensity;
             bonusBulbs[i].SetSmallGreen(intensity);
         }
-        if (abilityController != null)
-        {
+
+        if (abilityController != null && laneTracker != null)
             abilityController.NotifyBonusChanged(laneTracker.bonusCount, bonusBulbs.Length);
-        }
     }
+
+    public void UpdateBigGreenBulb(bool isActive)
+    {
+        if (BigGreenBulb == null) return;
+        float intensity = isActive ? onIntensity : offIntensity;
+        BigGreenBulb.SetBigGreen(intensity);
+    }
+    // ===================== PUBLIC API (UNCHANGED) =====================
 
     public void StartBreakdownFlash()
     {
-        foreach (var bulb in penaltyBulbs)
-        {
-           
-            if (bulb == null) continue;
-            bulb.FlashSmallRed(true);
-            //bulb.SetSmallRed(onIntensity);
-            
-        }
-    }
-    public void StopBreakdownFlash()
-    {
-        foreach (var bulb in penaltyBulbs)
-        {
-            if (bulb == null) continue;
-            bulb.FlashSmallRed(false);
-            //bulb.SetSmallRed(offIntensity);
-        }
+        breakdownFlashing = true;
+        breakdownTimer = 0f;
     }
 
+    public void StopBreakdownFlash()
+    {
+        breakdownFlashing = false;
+        breakdownTimer = 0f;
+        UpdatePenaltyBulbs();
+    }
 
     public void StartAbilityFlash()
     {
-        flashing = true;
+        bonusFlashing = true;
+        bonusTimer = 0f;
     }
 
-    private void RefreshBonusBulbs()
-    {
-        foreach (var bulb in bonusBulbs)
-        {
-            bulb.SetSmallGreen(0.0f);
-        }
-    }
     public void StopAbilityFlash()
     {
-        flashing = false;
-
-        // Ensure bulbs return to normal emission
-        RefreshBonusBulbs();
-    }
-    private void Update()
-    {
-        if (flashing)
-        {
-            // basic emission pulsing for green bulbs
-            float emissionPower = (Mathf.Sin(Time.time * flashSpeed) + 1f) / 2f;
-            UpdateBonusBulbEmission(emissionPower);
-        }
-    }
-    private void UpdateBonusBulbEmission(float intensity)
-    {
-        // Loop your green bulb emission controllers:
-        foreach (var bulb in bonusBulbs)
-        {
-            float scaledIntensity = Mathf.Lerp(offIntensity, onIntensity, intensity);
-            bulb.SetSmallGreen(scaledIntensity);
-        }
+        bonusFlashing = false;
+        bonusTimer = 0f;
     }
 
     public void ResetBonus()
     {
-        laneTracker.bonusCount = 0;
+        if (laneTracker != null)
+            laneTracker.bonusCount = 0;
         StopAbilityFlash();
-        UpdateIndicators();
+        UpdateBonusBulbs();
     }
+
+    // ===================== RESET HANDLERS =====================
 
     private void ResetIndicators()
     {
-        flashing = false;
+        breakdownFlashing = false;
+        bonusFlashing = false;
+        breakdownTimer = 0f;
+        bonusTimer = 0f;
 
         foreach (var bulb in penaltyBulbs)
-            bulb.SetSmallRed(offIntensity);
+            if (bulb != null)
+                bulb.SetSmallRed(offIntensity);
 
         foreach (var bulb in bonusBulbs)
-            bulb.SetSmallGreen(offIntensity);
+            if (bulb != null)
+                bulb.SetSmallGreen(offIntensity);
     }
-
-
-
 
     private void HandleLaneReset(int laneIndex)
     {
         if (laneTracker == null) return;
-        if (laneTracker.laneIndex != laneIndex) return;
+        if (laneTracker.physicalLaneIndex != laneIndex) return;
 
-        ResetIndicators();     // Only reset THIS lane
+        ResetIndicators();
         UpdateIndicators();
     }
 
     private void HandleGlobalReset()
     {
-        ResetIndicators();     // This runs only on RestartGame
+        ResetIndicators();
         UpdateIndicators();
     }
 }

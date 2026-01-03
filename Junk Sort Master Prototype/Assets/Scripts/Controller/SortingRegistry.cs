@@ -33,6 +33,6 @@ public class SortingRegistry : MonoBehaviour
 
         if (tracker == null) return null;
 
-        return GetBinForLane(tracker.laneIndex);
+        return GetBinForLane(tracker.playableLaneIndex);
     }
 }

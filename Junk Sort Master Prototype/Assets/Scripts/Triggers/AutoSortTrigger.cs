@@ -13,17 +13,17 @@ public class AutoSortTrigger : MonoBehaviour
         if (tracker == null) return;
 
         AbilityController ability =
-            AbilityManager.Instance.GetAbilityForLane(tracker.laneIndex);
+            AbilityManager.Instance.GetAbilityForLane(tracker.playableLaneIndex);
 
         if (ability == null ||
             ability.currentState != AbilityController.AbilityState.Active)
             return;
 
-        JunkBin targetBin = SortingRegistry.Instance.GetBinForLane(tracker.laneIndex);
+        JunkBin targetBin = SortingRegistry.Instance.GetBinForLane(tracker.playableLaneIndex);
         if (targetBin != null)
         {
             Debug.Log("Auto-sorting junk of type " + junk.junkType +
-                " to bin for lane " + tracker.laneIndex);
+                " to bin for lane " + tracker.playableLaneIndex);
             junk.AutoFlyTo(targetBin);
         }
     }
