@@ -7,6 +7,9 @@ public class BulbEmissionController : MonoBehaviour
     private MaterialPropertyBlock _mpb;
     private bool initialized;
 
+    private float currentIntensity;
+    public float CurrentIntensity => currentIntensity;
+
     private void Awake()
     {
         Initialize();

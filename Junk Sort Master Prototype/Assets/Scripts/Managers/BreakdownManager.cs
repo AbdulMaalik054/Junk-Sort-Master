@@ -66,6 +66,9 @@ public class BreakdownManager : MonoBehaviour
     {
         UIManager.Instance.RemoveRepairButton();
     }
+
+    
+
     public void AddPenalty(int laneIndex)
     {
         if (laneBroken[laneIndex]) return;
@@ -78,6 +81,14 @@ public class BreakdownManager : MonoBehaviour
             TriggerLocalBreakdown(laneIndex);
     }
 
+    public int GetPenaltyCount(int laneIndex)
+    {
+        if (currentPenalties == null) return 0;
+        if (laneIndex < 0 || laneIndex >= currentPenalties.Length) return 0;
+        return currentPenalties[laneIndex];
+    }
+
+    
     private void TriggerLocalBreakdown(int laneIndex)
     {
         laneBroken[laneIndex] = true;
@@ -118,6 +129,8 @@ public class BreakdownManager : MonoBehaviour
     {
         if (currentPenalties == null) return;
         if (laneIndex < 0 || laneIndex >= currentPenalties.Length) return;
+
+        if (currentPenalties[laneIndex] <= 0) return;
 
         currentPenalties[laneIndex] =
             Mathf.Max(0, currentPenalties[laneIndex] - amount);

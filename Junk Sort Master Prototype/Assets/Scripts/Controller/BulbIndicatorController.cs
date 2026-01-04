@@ -21,8 +21,8 @@ public class BulbIndicatorController : MonoBehaviour
 
     [Header("Ability Controller")]
     [SerializeField] private AbilityController abilityController;
-   
 
+    int penalties = 0;
 
     // ---------------- FLASH STATE (PER LANE, PRIVATE) ----------------
 
@@ -143,7 +143,11 @@ public class BulbIndicatorController : MonoBehaviour
     {
         if (breakdownFlashing) return;
 
-        int penalties = laneTracker != null ? laneTracker.penaltyCount : 0;
+        if (laneTracker != null && BreakdownManager.Instance != null)
+        {
+            penalties = BreakdownManager.Instance
+                .GetPenaltyCount(laneTracker.physicalLaneIndex);
+        }
 
         for (int i = 0; i < penaltyBulbs.Length; i++)
         {

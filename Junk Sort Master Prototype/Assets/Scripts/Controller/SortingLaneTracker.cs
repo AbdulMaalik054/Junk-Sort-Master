@@ -9,7 +9,7 @@ public class SortingLaneTracker : MonoBehaviour
 
 
     [Header("Lane Tracking")]
-    public int penaltyCount = 0;
+    
     public int bonusCount = 0;
     public int streakCount = 0;
 
@@ -21,8 +21,10 @@ public class SortingLaneTracker : MonoBehaviour
 
     private void OnEnable()
     {
-        BreakdownManager.Instance.OnLaneReset += ResetLaneState;
+        if (BreakdownManager.Instance != null)
+            BreakdownManager.Instance.OnLaneReset += ResetLaneState;
     }
+
 
     private void OnDisable()
     {
@@ -34,26 +36,28 @@ public class SortingLaneTracker : MonoBehaviour
     {
         if (this.physicalLaneIndex != laneIndex) return;
 
-        penaltyCount = 0;
         bonusCount = 0;
+        streakCount = 0;
 
-        OnLaneUpdated?.Invoke(); // Ensure bulbs refresh visuals as well
+        OnLaneUpdated?.Invoke();
     }
+
 
     public void RegisterCorrect()
     {
+        if (physicalLaneIndex < 0)
+            return;
+
+        int penalties = breakdown.GetPenaltyCount(physicalLaneIndex);
+
         // Immediate penalty cancellation
-        if (penaltyCount > 0)
+        if (penalties > 0)
         {
-            penaltyCount--;
-
-            if (physicalLaneIndex >= 0)
-                breakdown.RemovePenalty(physicalLaneIndex, 1);
-
-            streakCount = 0; // optional but recommended: break streak on recovery
+            breakdown.RemovePenalty(physicalLaneIndex, 1);
+            streakCount = 0;
 
             Debug.Log(
-                $"LaneTracker {gameObject.name} cancelled penalty immediately. Remaining={penaltyCount}, laneIndex={physicalLaneIndex}"
+                $"LaneTracker {gameObject.name} cancelled penalty immediately. Remaining={breakdown.GetPenaltyCount(physicalLaneIndex)}, laneIndex={physicalLaneIndex}"
             );
         }
         else
@@ -77,9 +81,10 @@ public class SortingLaneTracker : MonoBehaviour
 
 
 
+
     public void RegisterWrong()
     {
-        penaltyCount++;
+        
         streakCount = 0;
 
         if (physicalLaneIndex >= 0)
@@ -95,15 +100,19 @@ public class SortingLaneTracker : MonoBehaviour
 
     public void ApplyStreakBonus()
     {
+        if (physicalLaneIndex < 0)
+            return;
+
         int bonusCycles = streakCount / streakThreshold;
         streakCount %= streakThreshold;
 
         for (int i = 0; i < bonusCycles; i++)
         {
-            if (penaltyCount > 0)
+            int penalties = breakdown.GetPenaltyCount(physicalLaneIndex);
+
+            if (penalties > 0)
             {
-                penaltyCount--;
-                
+                breakdown.RemovePenalty(physicalLaneIndex, 1);
             }
             else
             {
@@ -113,6 +122,7 @@ public class SortingLaneTracker : MonoBehaviour
 
         OnLaneUpdated?.Invoke();
     }
+
 
     public void ResetBonus()
     {
