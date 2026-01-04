@@ -4,7 +4,7 @@ public class AbilityController : MonoBehaviour
 {
     public enum AbilityState { Locked, Ready, Active }
     public AbilityState currentState = AbilityState.Locked;
-
+    [SerializeField] private SortingLaneTracker laneTracker;
     [SerializeField] private BulbIndicatorController bulbIndicator;
     [SerializeField] private float abilityDuration = 5f;
 
@@ -41,5 +41,6 @@ public class AbilityController : MonoBehaviour
         yield return new WaitForSeconds(abilityDuration);
         SetState(AbilityState.Locked);
         bulbIndicator.ResetBonus();
+        laneTracker.ResetBonus();
     }
 }

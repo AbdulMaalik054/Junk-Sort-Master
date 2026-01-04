@@ -5994,7 +5994,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &733937534
 Transform:
   m_ObjectHideFlags: 0
@@ -19685,6 +19685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityController
   currentState: 0
+  laneTracker: {fileID: 1025134289}
   bulbIndicator: {fileID: 1025134295}
   abilityDuration: 10
 --- !u!1 &4165179697234342672
@@ -22175,6 +22176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityController
   currentState: 0
+  laneTracker: {fileID: 6911359247430769512}
   bulbIndicator: {fileID: 6911359247430769513}
   abilityDuration: 10
 --- !u!4 &6952334795815679047
@@ -23003,6 +23005,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityController
   currentState: 0
+  laneTracker: {fileID: 0}
   bulbIndicator: {fileID: 7579509267388955874}
   abilityDuration: 5
 --- !u!1001 &7627746278930985474
@@ -23197,6 +23200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityController
   currentState: 0
+  laneTracker: {fileID: 7781086966738790219}
   bulbIndicator: {fileID: 7781086966738790220}
   abilityDuration: 10
 --- !u!1001 &7877698926238883042
@@ -23512,6 +23516,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityController
   currentState: 0
+  laneTracker: {fileID: 1624671653}
   bulbIndicator: {fileID: 1624671659}
   abilityDuration: 10
 --- !u!1001 &8833181499206621314

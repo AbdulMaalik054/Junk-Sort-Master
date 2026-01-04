@@ -36,6 +36,10 @@ public class BulbIndicatorController : MonoBehaviour
     private bool bonusFlashing = false;
     private float bonusTimer = 0f;
 
+    //[Header("Main Lane Flashing Settings")]
+    //[SerializeField] private float mainLaneFlashSpeed = 5f;
+    //private bool mainLaneFlashing = false;
+    //private float mainLaneTimer = 0f;
     // ----------------------------------------------------------------
 
     private void Awake()
@@ -77,7 +81,7 @@ public class BulbIndicatorController : MonoBehaviour
 
     private void Update()
     {
-        FlashBigRed();
+        //FlashBigRed();
         UpdateBreakdownFlash();
         UpdateBonusFlash();
     }
@@ -114,17 +118,17 @@ public class BulbIndicatorController : MonoBehaviour
         }
     }
 
-    public void FlashBigRed()
-    {
-        if (!breakdownFlashing) return;
+    //public void FlashBigRed()
+    //{
+    //    if (!mainLaneFlashing) return;
 
-        breakdownTimer += Time.deltaTime * breakdownFlashSpeed;
-        float t = Mathf.PingPong(breakdownTimer, 1f);
-        float intensity = Mathf.Lerp(offIntensity, onIntensity, t);
+    //    mainLaneTimer += Time.deltaTime * mainLaneFlashSpeed;
+    //    float t = Mathf.PingPong(mainLaneTimer, 1f);
+    //    float intensity = Mathf.Lerp(offIntensity, onIntensity, t);
 
-        if (BigRedBulb != null)
-                BigRedBulb.SetBigRed(intensity);
-    }
+    //    if (BigRedBulb != null)
+    //            BigRedBulb.SetBigRed(intensity);
+    //}
 
 
     // ===================== STATIC UPDATES =====================
@@ -203,8 +207,7 @@ public class BulbIndicatorController : MonoBehaviour
 
     public void ResetBonus()
     {
-        if (laneTracker != null)
-            laneTracker.bonusCount = 0;
+        
         StopAbilityFlash();
         UpdateBonusBulbs();
     }

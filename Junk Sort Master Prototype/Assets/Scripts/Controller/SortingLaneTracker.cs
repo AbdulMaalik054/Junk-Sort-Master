@@ -42,13 +42,40 @@ public class SortingLaneTracker : MonoBehaviour
 
     public void RegisterCorrect()
     {
-        streakCount++;
+        // Immediate penalty cancellation
+        if (penaltyCount > 0)
+        {
+            penaltyCount--;
 
-        if (streakCount >= streakThreshold)
-            ApplyStreakBonus();
+            if (physicalLaneIndex >= 0)
+                breakdown.RemovePenalty(physicalLaneIndex, 1);
+
+            streakCount = 0; // optional but recommended: break streak on recovery
+
+            Debug.Log(
+                $"LaneTracker {gameObject.name} cancelled penalty immediately. Remaining={penaltyCount}, laneIndex={physicalLaneIndex}"
+            );
+        }
+        else
+        {
+            // Build streak only when lane is clean
+            streakCount++;
+
+            if (streakCount >= streakThreshold)
+            {
+                bonusCount++;
+                streakCount = 0;
+
+                Debug.Log(
+                    $"LaneTracker {gameObject.name} earned bonus. Total bonuses={bonusCount}, laneIndex={physicalLaneIndex}"
+                );
+            }
+        }
 
         OnLaneUpdated?.Invoke();
     }
+
+
 
     public void RegisterWrong()
     {
@@ -58,8 +85,6 @@ public class SortingLaneTracker : MonoBehaviour
         if (physicalLaneIndex >= 0)
             breakdown.AddPenalty(physicalLaneIndex);
 
-        Debug.Log($"LaneTracker {gameObject.name} registering wrong. laneIndex={physicalLaneIndex}");
-
         OnLaneUpdated?.Invoke();
     }
 
@@ -68,7 +93,7 @@ public class SortingLaneTracker : MonoBehaviour
         RegisterWrong();
     }
 
-    private void ApplyStreakBonus()
+    public void ApplyStreakBonus()
     {
         int bonusCycles = streakCount / streakThreshold;
         streakCount %= streakThreshold;
@@ -78,6 +103,7 @@ public class SortingLaneTracker : MonoBehaviour
             if (penaltyCount > 0)
             {
                 penaltyCount--;
+                
             }
             else
             {

@@ -114,6 +114,19 @@ public class BreakdownManager : MonoBehaviour
         }
         
     }
+    public void RemovePenalty(int laneIndex, int amount = 1)
+    {
+        if (currentPenalties == null) return;
+        if (laneIndex < 0 || laneIndex >= currentPenalties.Length) return;
+
+        currentPenalties[laneIndex] =
+            Mathf.Max(0, currentPenalties[laneIndex] - amount);
+
+        Debug.Log(
+            $"Removed penalty from lane {laneIndex}. Current: {currentPenalties[laneIndex]}"
+        );
+    }
+
     public bool IsAnyLaneBroken() // optonal helper method
     {
         if (laneBroken == null) return false;

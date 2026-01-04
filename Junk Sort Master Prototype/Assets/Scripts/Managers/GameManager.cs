@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     private bool gameRunning;
     private bool paused;
 
+    private BulbIndicatorController mainLaneIndex;
+
     [Header("Progression")]
     [SerializeField] private ProgressionController progression;
 
@@ -30,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Global Bulbs Status")]
     [SerializeField] private bool bulbStatus = true;
+    
     [Header("Lanes Reference")]
     [SerializeField] public BulbIndicatorController[] laneControllers;
 
@@ -47,7 +50,7 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.ShowLoadingTransition("LOADING", 2.0f);
         MenuController.Instance.ReturnToMainMenu();
-        
+        mainLaneIndex = laneControllers[0];
 
     }
 
@@ -119,6 +122,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleLocalBreakdown(int laneIndex)
     {
+        SetGlobalBreakdown(bulbStatus);
         UIManager.Instance.SpawnRepairButton(laneIndex);
 
         if (!laneByIndex.TryGetValue(laneIndex, out var controller))
@@ -139,6 +143,7 @@ public class GameManager : MonoBehaviour
             controller.StopBreakdownFlash();
 
         conveyorController.StartAll();
+
     }
 
     // BULBS CACHE----------------------------------------------------
@@ -176,18 +181,18 @@ public class GameManager : MonoBehaviour
         }
     }
     // BIG BULBS FUNCTIONS ---------------------------------------------
-    private void SetGlobalNormal(bool ON)
+    private void SetGlobalNormal(bool isON)
     {
-        var mainLane = laneControllers[0];
-        mainLane?.UpdateBigGreenBulb(ON);
+
+        mainLaneIndex.UpdateBigGreenBulb(isON);
     }
 
-    private void SetGlobalBreakdown(bool ON)
+    private void SetGlobalBreakdown(bool isON)
     {
-        var mainLane = laneControllers[0];
-        mainLane?.FlashBigRed();
-        
-            
+        if (!isON) 
+            mainLaneIndex.BigRedBulb.SetBigRed(0f);
+        else
+            mainLaneIndex.BigRedBulb.SetBigRed(20f);
     }
 
 
