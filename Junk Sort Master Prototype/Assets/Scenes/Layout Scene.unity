@@ -1137,7 +1137,7 @@ CanvasGroup:
   m_GameObject: {fileID: 163421990}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 1
+  m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!4 &163913194 stripped
@@ -1300,7 +1300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4557747691054481878, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6432381772508295547, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_Sprite
@@ -3016,7 +3016,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &410087040
 Light:
   m_ObjectHideFlags: 0
@@ -3168,7 +3168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4557747691054481878, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6432381772508295547, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_Sprite
@@ -5779,7 +5779,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &644872165
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7795,7 +7795,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
   physicalLaneIndex: 2
   playableLaneIndex: 1
-  penaltyCount: 0
   bonusCount: 0
   streakCount: 0
   streakThreshold: 1
@@ -12798,7 +12797,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
   physicalLaneIndex: 3
   playableLaneIndex: 2
-  penaltyCount: 0
   bonusCount: 0
   streakCount: 0
   streakThreshold: 1
@@ -13078,7 +13076,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4557747691054481878, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6432381772508295547, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_Sprite
@@ -14104,7 +14102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4557747691054481878, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6432381772508295547, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_Sprite
@@ -17646,7 +17644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
       propertyPath: moveDirection.z
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
       propertyPath: junkBins.Array.size
@@ -18016,7 +18014,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
       propertyPath: moveDirection.z
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
       propertyPath: junkBins.Array.size
@@ -19058,7 +19056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
       propertyPath: moveDirection.z
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
       propertyPath: junkBins.Array.size
@@ -21434,6 +21432,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
+      propertyPath: acceleration
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
+      propertyPath: moveDirection.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
       propertyPath: junkBins.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -22011,7 +22017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
       propertyPath: moveDirection.z
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3092107961842514644, guid: cf11184547bc71d4d85aec4968811192, type: 3}
       propertyPath: junkBins.Array.size
@@ -22131,7 +22137,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
   physicalLaneIndex: 1
   playableLaneIndex: 0
-  penaltyCount: 0
   bonusCount: 0
   streakCount: 0
   streakThreshold: 1
@@ -22961,7 +22966,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
   physicalLaneIndex: 0
   playableLaneIndex: -1
-  penaltyCount: 0
   bonusCount: 0
   streakCount: 0
   streakThreshold: 0
@@ -23155,7 +23159,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SortingLaneTracker
   physicalLaneIndex: 4
   playableLaneIndex: 3
-  penaltyCount: 0
   bonusCount: 0
   streakCount: 0
   streakThreshold: 1
