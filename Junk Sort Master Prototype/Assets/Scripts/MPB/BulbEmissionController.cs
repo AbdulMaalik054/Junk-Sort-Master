@@ -3,6 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public class BulbEmissionController : MonoBehaviour
 {
+    private static readonly int SmallRedId = Shader.PropertyToID("_SmallRedIntensity");
+    private static readonly int SmallGreenId = Shader.PropertyToID("_SmallGreenIntensity");
+    private static readonly int BigRedId = Shader.PropertyToID("_BigRedIntensity");
+    private static readonly int BigGreenId = Shader.PropertyToID("_BigGreenIntensity");
+
     private Renderer _renderer;
     private MaterialPropertyBlock _mpb;
     private bool initialized;
@@ -29,26 +34,26 @@ public class BulbEmissionController : MonoBehaviour
         initialized = true;
     }
 
-    private void Write(string property, float value)
+    private void Write(int propertyId, float value)
     {
         if (!initialized)
             Initialize();
 
         _renderer.GetPropertyBlock(_mpb);
-        _mpb.SetFloat(property, value);
+        _mpb.SetFloat(propertyId, value);
         _renderer.SetPropertyBlock(_mpb);
     }
 
-    public void SetSmallRed(float intensity) => Write("_SmallRedIntensity", intensity);
-    public void SetSmallGreen(float intensity) => Write("_SmallGreenIntensity", intensity);
-    public void SetBigRed(float intensity) => Write("_BigRedIntensity", intensity);
-    public void SetBigGreen(float intensity) => Write("_BigGreenIntensity", intensity);
+    public void SetSmallRed(float intensity) => Write(SmallRedId, intensity);
+    public void SetSmallGreen(float intensity) => Write(SmallGreenId, intensity);
+    public void SetBigRed(float intensity) => Write(BigRedId, intensity);
+    public void SetBigGreen(float intensity) => Write(BigGreenId, intensity);
 
     public void ResetAll()
     {
-        Write("_SmallRedIntensity", 0f);
-        Write("_SmallGreenIntensity", 0f);
-        Write("_BigRedIntensity", 0f);
-        Write("_BigGreenIntensity", 0f);
+        Write(SmallRedId, 0f);
+        Write(SmallGreenId, 0f);
+        Write(BigRedId, 0f);
+        Write(BigGreenId, 0f);
     }
 }

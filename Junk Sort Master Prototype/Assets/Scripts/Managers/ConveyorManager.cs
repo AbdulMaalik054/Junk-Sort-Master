@@ -5,7 +5,7 @@ public class ConveyorManager : MonoBehaviour
     [SerializeField] private Vector3 moveDirection = Vector3.back;
     [SerializeField] private float currentSpeed = 0f;
     [SerializeField] private float maxSpeed = 5f;
-   // [SerializeField] private float acceleration = 4f;
+   
 
     [Header("Material Scrolling")]
     [SerializeField] private Renderer beltRenderer;
@@ -26,8 +26,7 @@ public class ConveyorManager : MonoBehaviour
     private void Awake()
     {
 
-        //if (beltRenderer != null)
-        //    beltMaterial = beltRenderer.sharedMaterial;
+        
         propBlock = new MaterialPropertyBlock();
         // Converting the string name to an ID is much faster for the CPU
         shaderID = Shader.PropertyToID(shaderPropertyName);
@@ -75,7 +74,7 @@ public class ConveyorManager : MonoBehaviour
         if (rb != null && !rb.isKinematic)
         {
             Vector3 displacement =
-                moveDirection.normalized * (-1 *currentSpeed ) * Time.fixedDeltaTime;
+                moveDirection.normalized * currentSpeed * Time.fixedDeltaTime;
 
             rb.MovePosition(rb.position + displacement);
 
@@ -105,10 +104,7 @@ public class ConveyorManager : MonoBehaviour
         maxSpeed = Mathf.Max(0f, newMaxSpeed);
     }
 
-    public void UpdateAcceleration(float newAcceleration)
-    {
-        //acceleration = Mathf.Max(0f, newAcceleration);
-    }
+    
 
 
 
