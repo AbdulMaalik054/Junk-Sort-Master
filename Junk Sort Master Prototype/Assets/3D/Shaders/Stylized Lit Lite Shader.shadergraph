@@ -26,6 +26,9 @@
         },
         {
             "m_Id": "457e9b0b56e046119419be3321926cbf"
+        },
+        {
+            "m_Id": "140f5868b2444d5687b6d34f3f82eae0"
         }
     ],
     "m_Keywords": [],
@@ -1239,6 +1242,50 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "140f5868b2444d5687b6d34f3f82eae0",
+    "m_Guid": {
+        "m_GuidSerialized": "450d196a-000a-4a76-a5de-2d8e9b427d30"
+    },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
+    "m_Name": "Offset",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Offset",
+    "m_DefaultReferenceName": "_Offset",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
+    "m_Value": 0.0,
+    "m_FloatType": 0,
+    "m_LiteralFloatMode": false,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.TangentMaterialSlot",
     "m_ObjectId": "1975e613a99f44c297022a7e76f111e2",
@@ -1667,9 +1714,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2152.0,
-            "y": 26.999998092651368,
-            "width": 183.0001220703125,
+            "x": -2108.999755859375,
+            "y": -81.99999237060547,
+            "width": 183.0,
             "height": 248.99996948242188
         }
     },
@@ -2859,10 +2906,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2580.999755859375,
-            "y": 212.0,
-            "width": 137.0,
-            "height": 34.0
+            "x": -2823.999755859375,
+            "y": -57.99999237060547,
+            "width": 136.999755859375,
+            "height": 33.99998474121094
         }
     },
     "m_Slots": [
@@ -4806,6 +4853,9 @@
         },
         {
             "m_Id": "55949a0e964e4987bc936649b8582084"
+        },
+        {
+            "m_Id": "140f5868b2444d5687b6d34f3f82eae0"
         },
         {
             "m_Id": "f0ae9dfc094c4cc4baed299cc1c2d428"

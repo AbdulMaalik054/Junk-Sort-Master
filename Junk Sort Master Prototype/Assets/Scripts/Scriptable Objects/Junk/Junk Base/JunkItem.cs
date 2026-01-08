@@ -22,12 +22,15 @@ public class JunkItem : MonoBehaviour, IPoolable
 
     public void OnSpawn()
     {
-        if (rb == null) return;
-
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-        //rb.isKinematic = false;
+        if (TryGetComponent(out Collider col)) col.enabled = true;
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
+
 
     public void OnDespawn()
     {
@@ -66,13 +69,14 @@ public class JunkItem : MonoBehaviour, IPoolable
     private IEnumerator FlyAnimation(Vector3 targetPos)
     {
         float duration = 0.35f;
+        Transform root = pooledRoot.transform;
         Vector3 start = transform.position;
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            transform.position = Vector3.Lerp(start, targetPos, elapsed / duration);
+            root.position = Vector3.Lerp(start, targetPos, elapsed / duration);
             yield return null;
         }
 

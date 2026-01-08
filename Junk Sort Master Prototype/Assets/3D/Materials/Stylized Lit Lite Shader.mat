@@ -72,10 +72,11 @@ Material:
     - _BigRedIntensity: 0
     - _InstancedRimPower: 3
     - _InstancedRimStrength: 0.25
+    - _Offset: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RimPower: 0.1
-    - _RimStrength: 25
+    - _RimStrength: 25.89
     - _SmallGreenIntensity: 0
     - _SmallRedIntensity: 0
     - _SmoothnessStrength: 0

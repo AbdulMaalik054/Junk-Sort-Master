@@ -1300,7 +1300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4557747691054481878, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6432381772508295547, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_Sprite
@@ -3016,7 +3016,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &410087040
 Light:
   m_ObjectHideFlags: 0
@@ -3168,7 +3168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4557747691054481878, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6432381772508295547, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_Sprite
@@ -5994,7 +5994,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &733937534
 Transform:
   m_ObjectHideFlags: 0
@@ -13076,7 +13076,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4557747691054481878, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6432381772508295547, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_Sprite
@@ -13331,7 +13331,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1656526178
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14102,7 +14102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4557747691054481878, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6432381772508295547, guid: 7b2f44398fee4564f8c92f651eb371b6, type: 3}
       propertyPath: m_Sprite
