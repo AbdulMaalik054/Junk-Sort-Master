@@ -57,7 +57,7 @@ public class MenuController : MonoBehaviour
     public void SelectDifficulty(int index)
     {
         GameManager.Instance.SelectDifficulty(index);
-        GameManager.Instance.StartGame();
+        GameManager.Instance.BeginGamePlay();
 
         // Hide menus when game starts
         HidePanel(mainMenuPanel);

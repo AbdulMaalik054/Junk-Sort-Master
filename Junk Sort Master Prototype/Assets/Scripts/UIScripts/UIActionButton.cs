@@ -10,6 +10,7 @@ public class UIActionButton : MonoBehaviour
         Exit,
         Restart,
         Home,
+        Play,
         Resume,
         Pause,
         BackToMenu,
@@ -88,6 +89,9 @@ public class UIActionButton : MonoBehaviour
 
             case UIButtonAction.Home:
                 GameManager.Instance.ReturnToMenu();
+                break;
+            case UIButtonAction.Play:
+                GameManager.Instance.StartGame();
                 break;
 
             case UIButtonAction.Resume:

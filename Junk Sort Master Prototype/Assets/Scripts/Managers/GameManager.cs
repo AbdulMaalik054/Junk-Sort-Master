@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.ShowLoadingTransition("LOADING", 2.0f);
         MenuController.Instance.ReturnToMainMenu();
         mainLaneIndex = laneControllers[0];
-
+        
     }
 
     // MENU FLOW -------------------------------------------------------
@@ -60,21 +60,37 @@ public class GameManager : MonoBehaviour
         currentDifficulty = (Difficulty)index;
     }
 
+    public void BeginGamePlay()
+    {
+        gameRunning = false;
+        paused = true;
+
+        GoalUIController.Instance.SetState(GoalUIState.PreLevel);
+        Time.timeScale = 0f;
+    
+        ApplyDifficulty();
+        progression.Initialize(currentDifficulty);
+        progression.ApplyTier(0);
+
+        ScoreManager.Instance.ResetScore();
+    }
     public void StartGame()
     {
         gameRunning = true;
         paused = false;
+
+        GoalUIController.Instance.SetState(GoalUIState.InGame);
         Time.timeScale = 1;
+
         SetGlobalNormal(bulbStatus);
         SetGlobalBreakdown(!bulbStatus);
-        ApplyDifficulty();
-        progression.Initialize(currentDifficulty);
-        progression.ApplyTier(0);
+
 
         if (breakdownSystemEnabled)
             InitializeBreakdowns();
         
         DragController.DisableDrag = false;
+
         UIManager.Instance.ShowStartTransition("GO!", 2.0f);
         UIManager.Instance.ShowtopBarGroup();
         UIManager.Instance.pauseButton.gameObject.SetActive(true);
@@ -86,6 +102,18 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(GameTimer());
     }
+    public void GameOverSuccess()
+    {
+        GoalUIController.Instance.SetState(GoalUIState.LevelSuccess);
+        Time.timeScale = 0f;
+    }
+
+    public void GameOverFailure()
+    {
+        GoalUIController.Instance.SetState(GoalUIState.LevelFailure);
+        Time.timeScale = 0f;
+    }
+
 
     // BREAKDOWNS ------------------------------------------------------
     private void InitializeBreakdowns()
@@ -242,7 +270,9 @@ public class GameManager : MonoBehaviour
 
         gameRunning = false;
         paused = false;
-        Time.timeScale = 0;
+        
+        GameOverSuccess();
+        //Time.timeScale = 0;
 
         spawner.StopSpawning();
         conveyorController.StopAll(false);
@@ -255,7 +285,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("BestScore", finalScore);
         
         UIManager.Instance.pauseButton.gameObject.SetActive(false);
-        UIManager.Instance.ShowGameOver(finalScore, PlayerPrefs.GetInt("BestScore"));
+        //UIManager.Instance.ShowGameOver(finalScore, PlayerPrefs.GetInt("BestScore"));
     }
 
     // DIFFICULTY ------------------------------------------------------
