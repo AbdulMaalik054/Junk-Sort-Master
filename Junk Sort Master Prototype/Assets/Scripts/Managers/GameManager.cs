@@ -102,17 +102,32 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(GameTimer());
     }
-    public void GameOverSuccess()
+    private void ResolveLevelEnd(bool timeExpired)
     {
-        GoalUIController.Instance.SetState(GoalUIState.LevelSuccess);
+        LevelEndReason reason;
+
+        if (timeExpired)
+            reason = LevelEndReason.TimeExpired;
+        else
+            reason = LevelEndReason.PrimaryGoalCompleted;
+
+        var result = GoalSummaryEvaluator.Evaluate(reason);
+
+        if (result.TotalBonusScore > 0)
+        {
+            ScoreManager.Instance.AddScore(result.TotalBonusScore);
+        }
+        GoalUIController.Instance.CacheEndLevelResult(result);
+        
+        GoalUIController.Instance.SetState(
+            result.LevelSucceeded
+        ? GoalUIState.LevelSuccess
+        : GoalUIState.LevelFailure );
+
         Time.timeScale = 0f;
     }
 
-    public void GameOverFailure()
-    {
-        GoalUIController.Instance.SetState(GoalUIState.LevelFailure);
-        Time.timeScale = 0f;
-    }
+
 
 
     // BREAKDOWNS ------------------------------------------------------
@@ -270,9 +285,8 @@ public class GameManager : MonoBehaviour
 
         gameRunning = false;
         paused = false;
-        
-        GameOverSuccess();
-        //Time.timeScale = 0;
+
+        ResolveLevelEnd(currentTime <= 0f);
 
         spawner.StopSpawning();
         conveyorController.StopAll(false);

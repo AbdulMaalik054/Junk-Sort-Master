@@ -17,8 +17,12 @@ public class GoalRuntimeData
     public int CurrentValue;
     public int TargetValue;
 
+    public bool IsLocked;
     public bool IsCompleted => CurrentValue >= TargetValue;
 
+    // NEW (optional, ignored for primary goals)
+    public SecondaryRewardType RewardType;
+    public int RewardValue;
     public string GetProgressText()
     {
         return IsCompleted

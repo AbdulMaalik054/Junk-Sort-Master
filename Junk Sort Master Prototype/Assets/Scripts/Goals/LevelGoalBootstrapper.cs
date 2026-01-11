@@ -25,9 +25,16 @@ public class LevelGoalBootstrapper : MonoBehaviour
                 Id = 2,
                 IsPrimary = false,
                 DisplayName = "No Mistakes",
-                CurrentValue = 0,
-                TargetValue = 1
+                CurrentValue = 1,
+                TargetValue = 1,
+                RewardType = SecondaryRewardType.ScoreBonus,
+                RewardValue = 500
             }
         });
+    var result = GoalSummaryEvaluator.Evaluate(LevelEndReason.TimeExpired);
+
+    Debug.Log($"SUCCESS: {result.LevelSucceeded}");
+    Debug.Log($"PRIMARY COMPLETE: {result.PrimaryGoal.IsCompleted}");
+    Debug.Log($"SECONDARY COUNT: {result.SecondaryGoals.Count}");
     }
 }

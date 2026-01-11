@@ -92,6 +92,18 @@ public class ScoreManager : MonoBehaviour
         FloatingTextPool.Instance.SpawnFloatingText("Combo Broken", Color.red, worldPos + offset);
     }
 
+    // ------------------------------------------------
+    // BONUS / EXTERNAL SCORE (Goals, Rewards, etc.)
+    // ------------------------------------------------
+    public void AddScore(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        Score += amount;
+        UIManager.Instance.UpdateScoreUI(Score);
+    }
+
     private void UpdateMultiplier(Vector3 worldPos)
     {
         int previousMultiplier = currentMultiplier;

@@ -100,4 +100,11 @@ public class GoalUIController : MonoBehaviour
                 return false;
         }
     }
+    public GoalSummaryResult? CachedEndLevelResult { get; private set; }
+
+    public void CacheEndLevelResult(GoalSummaryResult result)
+    {
+        CachedEndLevelResult = result;
+    }
+
 }

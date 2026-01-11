@@ -58,25 +58,36 @@ public class EndLevelGoalPresenter : MonoBehaviour
 
         SetVisible(visible);
 
-        if (visible)
-            Refresh();
+        if (!visible)
+            return;
+
+        var result = GoalUIController.Instance.CachedEndLevelResult;
+
+        if (result.HasValue)
+            Present(result.Value);
+        else
+            Debug.LogWarning("[EndLevelGoalPresenter] No cached GoalSummaryResult.");
     }
 
-    private void Refresh()
+    private void Present(GoalSummaryResult result)
     {
         ClearSecondaryGoals();
 
-        foreach (var goal in GoalSystem.ActiveGoals)
-        {
-            if (goal.IsPrimary)
-                BindPrimaryGoal(goal);
-            else
-                CreateSecondaryGoal(goal);
-        }
+        BindPrimaryGoal(result.PrimaryGoal);
+
+        foreach (var goal in result.SecondaryGoals)
+            CreateSecondaryGoal(goal);
     }
 
     private void BindPrimaryGoal(GoalRuntimeData goal)
     {
+        if (goal == null)
+        {
+            primaryGoalTitle.text = "No Primary Goal";
+            primaryGoalResult.text = "FAILED";
+            primaryGoalResult.color = Color.red;
+            return;
+        }
         primaryGoalTitle.text = goal.DisplayName;
         primaryGoalResult.text = goal.IsCompleted ? "SUCCESS" : "FAILED";
         primaryGoalResult.color = goal.IsCompleted ? Color.green : Color.red;
