@@ -17,6 +17,8 @@ public class GoalRuntimeData
     public int CurrentValue;
     public int TargetValue;
 
+    public int BonusScore;
+
     public bool IsLocked;
     public bool IsCompleted => CurrentValue >= TargetValue;
 

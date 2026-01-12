@@ -11,6 +11,8 @@ public class EndLevelGoalPresenter : MonoBehaviour
     [Header("Secondary Goals")]
     [SerializeField] private Transform secondaryGoalsContainer;
     [SerializeField] private EndLevelSecondaryGoalRow secondaryGoalRowPrefab;
+    [SerializeField] private TextMeshProUGUI totalBonusText;
+
 
     [Header("Visibility")]
     [SerializeField] private CanvasGroup canvasGroup;
@@ -77,7 +79,27 @@ public class EndLevelGoalPresenter : MonoBehaviour
 
         foreach (var goal in result.SecondaryGoals)
             CreateSecondaryGoal(goal);
+
+        BindTotalBonus(result);
     }
+
+    private void BindTotalBonus(GoalSummaryResult result)
+    {
+        if (totalBonusText == null)
+            return;
+
+        if (result.TotalBonusScore > 0)
+        {
+            totalBonusText.gameObject.SetActive(true);
+            totalBonusText.text = $"BONUS +{result.TotalBonusScore}";
+            totalBonusText.color = Color.cyan;
+        }
+        else
+        {
+            totalBonusText.gameObject.SetActive(false);
+        }
+    }
+
 
     private void BindPrimaryGoal(GoalRuntimeData goal)
     {

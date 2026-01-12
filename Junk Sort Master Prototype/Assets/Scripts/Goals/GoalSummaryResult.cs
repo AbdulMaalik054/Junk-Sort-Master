@@ -12,7 +12,7 @@ public struct GoalSummaryResult
     public GoalRuntimeData PrimaryGoal;
     public IReadOnlyList<GoalRuntimeData> SecondaryGoals;
 
-    // NEW
     public IReadOnlyList<SecondaryGoalRewardResult> SecondaryRewards;
     public int TotalBonusScore;
+    
 }

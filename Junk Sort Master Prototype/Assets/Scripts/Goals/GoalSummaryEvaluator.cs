@@ -13,7 +13,10 @@ public static class GoalSummaryEvaluator
         bool levelSucceeded = EvaluateSuccess(primaryGoal, endReason);
         
         var rewards = SecondaryGoalRewardEvaluator.Evaluate(secondaryGoals);
-        int totalBonus = rewards.Sum(r => r.ScoreAwarded);
+        int totalBonus = secondaryGoals
+            .Where(g => g.IsCompleted)
+            .Sum(g => g.BonusScore);
+
 
         return new GoalSummaryResult
         {
@@ -22,7 +25,7 @@ public static class GoalSummaryEvaluator
             PrimaryGoal = primaryGoal,
             SecondaryGoals = secondaryGoals,
 
-            SecondaryRewards = rewards,
+            //SecondaryRewards = rewards,
             TotalBonusScore = totalBonus
         };
     }

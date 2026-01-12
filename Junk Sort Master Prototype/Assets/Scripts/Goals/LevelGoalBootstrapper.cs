@@ -28,7 +28,7 @@ public class LevelGoalBootstrapper : MonoBehaviour
                 CurrentValue = 1,
                 TargetValue = 1,
                 RewardType = SecondaryRewardType.ScoreBonus,
-                RewardValue = 500
+                BonusScore = 500
             }
         });
     var result = GoalSummaryEvaluator.Evaluate(LevelEndReason.TimeExpired);
