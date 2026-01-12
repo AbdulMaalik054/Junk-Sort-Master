@@ -1,6 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class EndLevelGoalPresenter : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class EndLevelGoalPresenter : MonoBehaviour
     [SerializeField] private Transform secondaryGoalsContainer;
     [SerializeField] private EndLevelSecondaryGoalRow secondaryGoalRowPrefab;
     [SerializeField] private TextMeshProUGUI totalBonusText;
+    
+    [Header("Aniimation Parameters")]
+    [SerializeField] private float bonusCountDuration = 2.0f;
+    [SerializeField] private Transform totalBonusTransform;
 
 
     [Header("Visibility")]
@@ -80,25 +85,46 @@ public class EndLevelGoalPresenter : MonoBehaviour
         foreach (var goal in result.SecondaryGoals)
             CreateSecondaryGoal(goal);
 
-        BindTotalBonus(result);
+        PresentTotalBonus(result.TotalBonusScore);
     }
 
-    private void BindTotalBonus(GoalSummaryResult result)
+    private void PresentTotalBonus(int totalBonus)
     {
-        if (totalBonusText == null)
-            return;
-
-        if (result.TotalBonusScore > 0)
-        {
-            totalBonusText.gameObject.SetActive(true);
-            totalBonusText.text = $"BONUS +{result.TotalBonusScore}";
-            totalBonusText.color = Color.cyan;
-        }
-        else
+        if (totalBonus <= 0)
         {
             totalBonusText.gameObject.SetActive(false);
+            return;
         }
+
+        totalBonusText.gameObject.SetActive(true);
+        totalBonusText.text = "BONUS +0";
+
+        UIAnimator.PunchScale(totalBonusTransform);
+
+        StartCoroutine(AnimateBonusCount(totalBonus));
     }
+
+    private IEnumerator AnimateBonusCount(int targetBonus)
+    {
+        int displayed = 0;
+        float t = 0f;
+
+        while (t < bonusCountDuration)
+        {
+            t += Time.unscaledDeltaTime;
+            float p = Mathf.Clamp01(t / bonusCountDuration);
+
+            displayed = Mathf.RoundToInt(Mathf.Lerp(0, targetBonus, p));
+            totalBonusText.text = $"BONUS +{displayed}";
+
+            yield return null;
+        }
+
+        totalBonusText.text = $"BONUS +{targetBonus}";
+        ScoreManager.Instance.AddExternalScore(targetBonus);
+
+    }
+
 
 
     private void BindPrimaryGoal(GoalRuntimeData goal)

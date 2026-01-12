@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         gameRunning = false;
         paused = true;
 
-        GoalUIController.Instance.SetState(GoalUIState.PreLevel);
+        GoalUIController.Instance.RestartLevel();
         Time.timeScale = 0f;
     
         ApplyDifficulty();
@@ -113,10 +113,6 @@ public class GameManager : MonoBehaviour
 
         var result = GoalSummaryEvaluator.Evaluate(reason);
 
-        if (result.TotalBonusScore > 0)
-        {
-            ScoreManager.Instance.AddScore(result.TotalBonusScore);
-        }
         GoalUIController.Instance.CacheEndLevelResult(result);
         
         GoalUIController.Instance.SetState(
@@ -358,7 +354,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.HideGameOver();
         UIManager.Instance.RemoveRepairButton();
         UIManager.Instance.HidePauseMenu();
-        StartGame();
+        BeginGamePlay();
     }
 
     public void Quit()

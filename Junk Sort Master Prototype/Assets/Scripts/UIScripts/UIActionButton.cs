@@ -88,6 +88,7 @@ public class UIActionButton : MonoBehaviour
                 break;
 
             case UIButtonAction.Home:
+                GoalUIController.Instance.EnterMainMenu();
                 GameManager.Instance.ReturnToMenu();
                 break;
             case UIButtonAction.Play:

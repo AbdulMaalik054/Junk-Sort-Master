@@ -65,6 +65,46 @@ public class GoalUIController : MonoBehaviour
         Debug.Log($"<color=green>[GoalUIController]</color> Event firing! Subscribers: {OnGoalUIStateChanged?.GetInvocationList().Length}");
         OnGoalUIStateChanged?.Invoke(previousState, currentState);
     }
+    public void EnterMainMenu()
+    {
+        ClearCachedResults();
+        SetState(GoalUIState.Hidden);
+    }
+
+    public void EnterPreLevel()
+    {
+        ClearCachedResults();
+        SetState(GoalUIState.PreLevel);
+    }
+
+    public void BeginGameplay()
+    {
+        SetState(GoalUIState.InGame);
+    }
+
+    public void RestartLevel()
+    {
+        ClearCachedResults();
+        ForceState(GoalUIState.PreLevel);
+    }
+
+    private void ForceState(GoalUIState state)
+    {
+        currentState = state;
+        OnGoalUIStateChanged?.Invoke(CurrentState, state);
+    }
+
+    public void EndLevel(GoalSummaryResult result)
+    {
+        CachedEndLevelResult = result;
+        SetState(result.LevelSucceeded
+            ? GoalUIState.LevelSuccess
+            : GoalUIState.LevelFailure);
+    }
+    private void ClearCachedResults()
+    {
+        CachedEndLevelResult = null;
+    }
 
     /// <summary>
     /// Centralized transition rules to prevent UI chaos.

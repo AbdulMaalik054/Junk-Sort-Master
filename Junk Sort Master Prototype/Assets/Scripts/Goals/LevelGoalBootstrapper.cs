@@ -29,6 +29,16 @@ public class LevelGoalBootstrapper : MonoBehaviour
                 TargetValue = 1,
                 RewardType = SecondaryRewardType.ScoreBonus,
                 BonusScore = 500
+            },
+            new GoalRuntimeData
+            {
+                Id = 3,
+                IsPrimary = false,
+                DisplayName = "Trigger One Ability",
+                CurrentValue = 1,
+                TargetValue = 1,
+                RewardType = SecondaryRewardType.ScoreBonus,
+                BonusScore = 500
             }
         });
     var result = GoalSummaryEvaluator.Evaluate(LevelEndReason.TimeExpired);

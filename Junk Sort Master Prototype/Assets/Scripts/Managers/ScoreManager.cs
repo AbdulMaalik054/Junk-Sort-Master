@@ -95,7 +95,7 @@ public class ScoreManager : MonoBehaviour
     // ------------------------------------------------
     // BONUS / EXTERNAL SCORE (Goals, Rewards, etc.)
     // ------------------------------------------------
-    public void AddScore(int amount)
+    public void AddExternalScore(int amount)
     {
         if (amount <= 0)
             return;
@@ -103,6 +103,7 @@ public class ScoreManager : MonoBehaviour
         Score += amount;
         UIManager.Instance.UpdateScoreUI(Score);
     }
+
 
     private void UpdateMultiplier(Vector3 worldPos)
     {
