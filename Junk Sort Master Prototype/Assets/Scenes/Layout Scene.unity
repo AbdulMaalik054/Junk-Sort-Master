@@ -4759,6 +4759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelGoalBootstrapper
   hintDatabase: {fileID: 11400000, guid: f400e9a5b1e6c3c48a34c61da11bb5da, type: 2}
+  goalDatabase: {fileID: 11400000, guid: 2a605c5e8d6ce154c97228343c2f6ab2, type: 2}
 --- !u!1 &547881244
 GameObject:
   m_ObjectHideFlags: 0
@@ -8222,7 +8223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43416cf20e5cb694cb7293244c417f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelGoalBootstrapper
-  hintDatabase: {fileID: 0}
+  hintDatabase: {fileID: 11400000, guid: f400e9a5b1e6c3c48a34c61da11bb5da, type: 2}
+  goalDatabase: {fileID: 11400000, guid: 2a605c5e8d6ce154c97228343c2f6ab2, type: 2}
 --- !u!4 &905277571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 659fcc7bfa739904492218c389fca62d, type: 3}
@@ -14131,7 +14133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   currentDifficulty: 0
   easyTime: 120
-  mediumTime: 10
+  mediumTime: 30
   hardTime: 120
   endlessTime: 3600
   currentTime: 0

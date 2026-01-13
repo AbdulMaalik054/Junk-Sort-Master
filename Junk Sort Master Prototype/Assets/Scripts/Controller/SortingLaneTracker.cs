@@ -56,9 +56,7 @@ public class SortingLaneTracker : MonoBehaviour
             breakdown.RemovePenalty(physicalLaneIndex, 1);
             streakCount = 0;
 
-            Debug.Log(
-                $"LaneTracker {gameObject.name} cancelled penalty immediately. Remaining={breakdown.GetPenaltyCount(physicalLaneIndex)}, laneIndex={physicalLaneIndex}"
-            );
+            
         }
         else
         {
@@ -70,9 +68,8 @@ public class SortingLaneTracker : MonoBehaviour
                 bonusCount++;
                 streakCount = 0;
 
-                Debug.Log(
-                    $"LaneTracker {gameObject.name} earned bonus. Total bonuses={bonusCount}, laneIndex={physicalLaneIndex}"
-                );
+                
+                
             }
         }
 

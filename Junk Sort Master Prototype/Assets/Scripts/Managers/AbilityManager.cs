@@ -16,7 +16,7 @@ public class AbilityManager : MonoBehaviour
     {
         if (lane < 0 || lane >= laneAbilities.Count)
             return null;
-        Debug.Log($"Getting ability for lane {lane}");
+        
         return laneAbilities[lane];
     }
 }
