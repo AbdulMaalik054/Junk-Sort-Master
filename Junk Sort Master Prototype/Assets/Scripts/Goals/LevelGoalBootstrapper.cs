@@ -2,6 +2,27 @@ using UnityEngine;
 
 public class LevelGoalBootstrapper : MonoBehaviour
 {
+    [Header("Optional: Assign Database Manually")]
+    [SerializeField] private GoalHintDatabase hintDatabase;
+
+    private void Awake()
+    {
+        // Assign singleton if manually provided
+        if (hintDatabase != null)
+        {
+            GoalHintDatabase.SetInstance(hintDatabase);
+        }
+
+        // Ensure database exists
+        if (GoalHintDatabase.Instance == null)
+        {
+            Debug.LogError("[LevelGoalBootstrapper] GoalHintDatabase not found! Please assign in Inspector or place in Resources/Goals.");
+        }
+
+        // Reset session state for all hints
+        GoalHintEvaluator.ResetSession();
+    }
+
     private void Start()
     {
         

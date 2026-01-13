@@ -20,6 +20,9 @@ public class GoalUIController : MonoBehaviour
 
     [SerializeField]
     private GoalUIState currentState = GoalUIState.Hidden;
+    
+
+    public List<GoalHint> CachedHints { get; private set; }
 
     public GoalUIState CurrentState => currentState;
 
@@ -28,7 +31,7 @@ public class GoalUIController : MonoBehaviour
     /// Subscribers should update layout, visibility, or copy accordingly.
     /// </summary>
     public event Action<GoalUIState, GoalUIState> OnGoalUIStateChanged;
-    public IReadOnlyList<GoalHint> CachedHints { get; private set; }
+    
 
     private void Awake()
     {
@@ -159,11 +162,19 @@ public class GoalUIController : MonoBehaviour
             MistakeCount = PlayerMistakeTracker.TotalMistakes
         };
 
-        CachedHints = GoalHintEvaluator.Evaluate(
-            GoalHintDatabase.AllHints,
-            context
-        );
+        var db = GoalHintDatabase.Instance;
+        if (db == null)
+        {
+            Debug.LogWarning("[GoalUIController] GoalHintDatabase not found!");
+            CachedHints = new List<GoalHint>();
+            return;
+        }
+
+        CachedHints = GoalHintEvaluator.Evaluate(db.AllHints, context);
     }
 
 
 }
+
+
+

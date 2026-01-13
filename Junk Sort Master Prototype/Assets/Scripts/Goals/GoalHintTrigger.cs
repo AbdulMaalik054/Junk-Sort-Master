@@ -18,7 +18,8 @@ public struct GoalHintTrigger
                 return context.PrimaryGoalFailed;
 
             case GoalHintTriggerType.SecondaryGoalFailed:
-                return context.FailedSecondaryGoalIds.Contains(GoalId);
+                return GoalId < 0 ||
+                       context.FailedSecondaryGoalIds.Contains(GoalId);
 
             case GoalHintTriggerType.PlayerRepeatedMistake:
                 return context.MistakeCount >= Threshold;
