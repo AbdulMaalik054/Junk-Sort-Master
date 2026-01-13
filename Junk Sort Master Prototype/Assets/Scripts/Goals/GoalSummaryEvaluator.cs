@@ -30,6 +30,7 @@ public static class GoalSummaryEvaluator
         };
     }
 
+
     private static bool EvaluateSuccess(
         GoalRuntimeData primaryGoal,
         LevelEndReason endReason

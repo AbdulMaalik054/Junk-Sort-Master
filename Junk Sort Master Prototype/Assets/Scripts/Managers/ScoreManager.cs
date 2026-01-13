@@ -51,7 +51,7 @@ public class ScoreManager : MonoBehaviour
     {
         Score -= penaltyAmount;
         if (Score < 0) Score = 0;
-
+        PlayerMistakeTracker.RegisterMistake();
         UIManager.Instance.UpdateScoreUI(Score);
 
         // Floating red penalty
@@ -65,7 +65,7 @@ public class ScoreManager : MonoBehaviour
     {
         Score -= penaltyAmount;
         if (Score < 0) Score = 0;
-
+        PlayerMistakeTracker.RegisterMistake();
         UIManager.Instance.UpdateScoreUI(Score);
 
         // Floating red penalty

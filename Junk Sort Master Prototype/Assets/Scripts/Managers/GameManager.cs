@@ -239,6 +239,7 @@ public class GameManager : MonoBehaviour
 
     private void CleanupGameplay()
     {
+        PlayerMistakeTracker.Reset();
         StopAllCoroutines();
         gameRunning = false;
         paused = false;

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -26,6 +28,7 @@ public class GoalUIController : MonoBehaviour
     /// Subscribers should update layout, visibility, or copy accordingly.
     /// </summary>
     public event Action<GoalUIState, GoalUIState> OnGoalUIStateChanged;
+    public IReadOnlyList<GoalHint> CachedHints { get; private set; }
 
     private void Awake()
     {
@@ -145,6 +148,22 @@ public class GoalUIController : MonoBehaviour
     public void CacheEndLevelResult(GoalSummaryResult result)
     {
         CachedEndLevelResult = result;
+
+        var context = new GoalHintContext
+        {
+            PrimaryGoalFailed = !result.LevelSucceeded,
+            FailedSecondaryGoalIds = result.SecondaryGoals
+                .Where(g => !g.IsCompleted)
+                .Select(g => g.Id)
+                .ToHashSet(),
+            MistakeCount = PlayerMistakeTracker.TotalMistakes
+        };
+
+        CachedHints = GoalHintEvaluator.Evaluate(
+            GoalHintDatabase.AllHints,
+            context
+        );
     }
+
 
 }
