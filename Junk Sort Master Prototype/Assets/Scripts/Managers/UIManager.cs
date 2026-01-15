@@ -100,13 +100,23 @@ public class UIManager : MonoBehaviour
     public void ShowPauseMenu()
     {
         pauseButton.gameObject.SetActive(false);
+
+        pausePanel.gameObject.SetActive(true);
+        
+
         UIAnimator.FadeIn(pausePanel, 0.2f);
     }
+
     public void HidePauseMenu()
     {
+        
+
         UIAnimator.FadeOut(pausePanel, 0.2f);
+        pausePanel.gameObject.SetActive(false);
+
         pauseButton.gameObject.SetActive(true);
     }
+
 
     // Game Over
     public void ShowGameOver(int finalScore, int bestScore)

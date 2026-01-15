@@ -88,16 +88,19 @@ public class GoalUIController : MonoBehaviour
         SetState(GoalUIState.InGame);
     }
 
-    public void RestartLevel()
+    public void OnLevelStart()
     {
         ClearCachedResults();
-        ForceState(GoalUIState.PreLevel);
+        SetState(GoalUIState.PreLevel);
     }
 
-    private void ForceState(GoalUIState state)
+    public void ExitToMainMenu()
     {
-        currentState = state;
-        OnGoalUIStateChanged?.Invoke(CurrentState, state);
+        Debug.Log("[GoalUIController] Forcing exit to main menu");
+
+        ClearCachedResults();
+        currentState = GoalUIState.Hidden;
+        OnGoalUIStateChanged?.Invoke(GoalUIState.InGame, GoalUIState.Hidden);
     }
 
     public void EndLevel(GoalSummaryResult result)
@@ -136,7 +139,7 @@ public class GoalUIController : MonoBehaviour
                 return to == GoalUIState.InGame || to == GoalUIState.Paused;
 
             case GoalUIState.Paused:
-                return to == GoalUIState.InGame || to == GoalUIState.LevelFailure;
+                return to == GoalUIState.InGame || to == GoalUIState.Hidden || to == GoalUIState.LevelFailure;
 
             case GoalUIState.LevelSuccess:
             case GoalUIState.LevelFailure:

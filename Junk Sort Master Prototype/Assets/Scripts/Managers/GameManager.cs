@@ -62,10 +62,11 @@ public class GameManager : MonoBehaviour
 
     public void BeginGamePlay()
     {
+        
         gameRunning = false;
         paused = true;
 
-        GoalUIController.Instance.RestartLevel();
+        GoalUIController.Instance.OnLevelStart();
         Time.timeScale = 0f;
     
         ApplyDifficulty();
@@ -239,7 +240,7 @@ public class GameManager : MonoBehaviour
 
     private void CleanupGameplay()
     {
-        PlayerMistakeTracker.Reset();
+        
         StopAllCoroutines();
         gameRunning = false;
         paused = false;
@@ -248,6 +249,7 @@ public class GameManager : MonoBehaviour
         spawner.StopSpawning();
         PoolManager.Instance.ResetPools();
         ScoreManager.Instance.ResetScore();
+        
     }
 
     public void ReturnToMenu()
@@ -264,16 +266,31 @@ public class GameManager : MonoBehaviour
     }
 
     // PAUSE -----------------------------------------------------------
-    public void TogglePause()
+    public void PauseGame()
     {
-        paused = !paused;
-        Time.timeScale = paused ? 0 : 1;
+        if (!gameRunning || paused) return;
 
-        if (paused)
-            UIManager.Instance.ShowPauseMenu();
-        else
-            UIManager.Instance.HidePauseMenu();
+        paused = true;
+        Time.timeScale = 0;
+        Debug.Log("game  pause.");
+        UIManager.Instance.ShowPauseMenu();
+        GoalUIController.Instance.SetState(GoalUIState.Paused);
     }
+
+    public void ResumeGame()
+    {
+        if (!paused) return;
+
+        paused = false;
+        Time.timeScale = 1;
+
+        Debug.Log("Resuming game from pause.");
+
+        UIManager.Instance.HidePauseMenu();
+        GoalUIController.Instance.SetState(GoalUIState.InGame);
+    }
+
+
 
     // GAME OVER -------------------------------------------------------
     public void GameOver()
@@ -350,13 +367,19 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1;
+        // Normalize pause first
+        GoalUIController.Instance.EnterMainMenu();
+
         BreakdownManager.Instance.Initialize(laneControllers.Length);
         CleanupGameplay();
+
         UIManager.Instance.HideGameOver();
         UIManager.Instance.RemoveRepairButton();
         UIManager.Instance.HidePauseMenu();
-        BeginGamePlay();
+
+        BeginGamePlay(); // This will go to PreLevel
     }
+
 
     public void Quit()
     {

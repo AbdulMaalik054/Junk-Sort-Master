@@ -18,10 +18,19 @@ MonoBehaviour:
     IsPrimary: 1
     TargetValue: 10
     BonusScore: 100
+    IsConstraintGoal: 0
     RewardType: 0
   - Id: 11
     DisplayName: No Wrong Sorting
     IsPrimary: 0
-    TargetValue: 0
+    TargetValue: 1
+    BonusScore: 500
+    IsConstraintGoal: 1
+    RewardType: 0
+  - Id: 111
+    DisplayName: Use Ability Once
+    IsPrimary: 0
+    TargetValue: 1
     BonusScore: 100
+    IsConstraintGoal: 0
     RewardType: 0

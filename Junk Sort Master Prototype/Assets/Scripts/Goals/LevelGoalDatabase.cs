@@ -15,5 +15,6 @@ public class LevelGoalDefinition
     public bool IsPrimary;
     public int TargetValue;
     public int BonusScore;
+    public bool IsConstraintGoal;
     public SecondaryRewardType RewardType;
 }

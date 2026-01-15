@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GoalHintDatabase
   AllHints:
   - {fileID: 11400000, guid: 4f0c2bebea3dee9488b7c6a13afd5bed, type: 2}
+  - {fileID: 11400000, guid: 7d6d455887ae3c440ae8493cd7d7695a, type: 2}

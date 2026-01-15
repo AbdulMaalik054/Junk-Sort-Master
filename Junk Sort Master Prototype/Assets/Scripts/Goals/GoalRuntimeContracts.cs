@@ -11,15 +11,14 @@ using UnityEngine;
 public class GoalRuntimeData
 {
     public int Id;
-    public bool IsPrimary;
     public string DisplayName;
-
+    public bool IsPrimary;
+    public bool IsConstraintGoal;
     public int CurrentValue;
     public int TargetValue;
-
     public int BonusScore;
+    
 
-    public bool IsLocked;
     public bool IsCompleted => CurrentValue >= TargetValue;
 
     // NEW (optional, ignored for primary goals)
@@ -49,6 +48,17 @@ public static class GoalSystem
     {
         _activeGoals.Clear();
         _activeGoals.AddRange(goals);
+
+        foreach (var goal in _activeGoals)
+        {
+            OnGoalProgressUpdated?.Invoke(goal);
+        }
+    }
+
+    public static void Reset()
+    {
+        _activeGoals.Clear();
+        OnGoalProgressUpdated = null;
     }
 
     public static void ReportProgress(int goalId, int newValue)

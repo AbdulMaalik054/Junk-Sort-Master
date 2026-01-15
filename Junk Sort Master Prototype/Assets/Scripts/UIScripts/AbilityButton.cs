@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class AbilityButton : MonoBehaviour
@@ -7,11 +8,17 @@ public class AbilityButton : MonoBehaviour
     public void OnClick()
     {
         AbilityController ability = AbilityManager.Instance.GetAbilityForLane(playableLaneIndex);
-        
+
 
         if (ability != null)
+        {
             ability.OnAbilityClicked();
+            
+        }
     }
+
+    
+
 }
-        
+
 

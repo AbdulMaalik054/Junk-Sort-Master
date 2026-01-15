@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b908974060dd88c41b58877f5c27517d, type: 3}
-  m_Name: GoalHintAsset01
+  m_Name: GoalHint_ID_1 1
   m_EditorClassIdentifier: Assembly-CSharp::GoalHint
-  Id: primary_failed_focus
-  Message: Focus on completing the primary objective before time runs out.
+  Id: 11
+  Message: No Wrong Sorting
   Trigger:
-    TriggerType: 0
-    GoalId: 1
+    TriggerType: 1
+    GoalId: 11
     Threshold: 0
     OnlyOnce: 1

@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public enum SortResult
@@ -40,6 +41,7 @@ public class SortingResolver : MonoBehaviour
                 
                 ScoreManager.Instance.AddCorrectScore(correctScore, pos);
                 tracker.RegisterCorrect();
+                PrimaryGoalEvaluation();
                 break;
 
             case SortResult.Wrong:
@@ -56,5 +58,22 @@ public class SortingResolver : MonoBehaviour
         }
 
         junk.ReturnToPool();
+    }
+
+    private void PrimaryGoalEvaluation()
+    {
+        var goal = GoalSystem.ActiveGoals
+        .FirstOrDefault(g => g.IsPrimary);
+
+        if (goal == null)
+        {
+            Debug.LogWarning("[GoalSystem] No primary goal found for sorting.");
+            return;
+        }
+
+        GoalSystem.ReportProgress(
+            goal.Id,
+            goal.CurrentValue + 1
+        );
     }
 }

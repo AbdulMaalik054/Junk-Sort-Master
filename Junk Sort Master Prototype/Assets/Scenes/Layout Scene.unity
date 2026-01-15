@@ -937,16 +937,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 125853479}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
     m_Left: 0
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 124
+  m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -4478,7 +4478,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2464071590242956052, guid: 9fe8b3fd4176dfa45a7c52d04f5f2824, type: 3}
       propertyPath: action
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1096626009017536325, guid: 9fe8b3fd4176dfa45a7c52d04f5f2824, type: 3}
       propertyPath: m_Pivot.x
@@ -4758,8 +4758,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43416cf20e5cb694cb7293244c417f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelGoalBootstrapper
-  hintDatabase: {fileID: 11400000, guid: f400e9a5b1e6c3c48a34c61da11bb5da, type: 2}
   goalDatabase: {fileID: 11400000, guid: 2a605c5e8d6ce154c97228343c2f6ab2, type: 2}
+  hintDatabase: {fileID: 11400000, guid: f400e9a5b1e6c3c48a34c61da11bb5da, type: 2}
 --- !u!1 &547881244
 GameObject:
   m_ObjectHideFlags: 0
@@ -6207,7 +6207,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 627686292}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -8179,52 +8179,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 876348749}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &884480382
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 884480383}
-  - component: {fileID: 884480384}
-  m_Layer: 0
-  m_Name: LevelInitializer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &884480383
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 884480382}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1385629064}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &884480384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 884480382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43416cf20e5cb694cb7293244c417f4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelGoalBootstrapper
-  hintDatabase: {fileID: 11400000, guid: f400e9a5b1e6c3c48a34c61da11bb5da, type: 2}
-  goalDatabase: {fileID: 11400000, guid: 2a605c5e8d6ce154c97228343c2f6ab2, type: 2}
 --- !u!4 &905277571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 659fcc7bfa739904492218c389fca62d, type: 3}
@@ -10144,7 +10098,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1790342799693961365, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
       propertyPath: action
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1790342799693961365, guid: 97304223d8ccd2140acfb43eb15cfeb7, type: 3}
       propertyPath: difficulty
@@ -12887,7 +12841,6 @@ Transform:
   m_Children:
   - {fileID: 338953242}
   - {fileID: 8001809}
-  - {fileID: 884480383}
   - {fileID: 1797241517}
   - {fileID: 540108887}
   m_Father: {fileID: 0}
@@ -14133,7 +14086,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   currentDifficulty: 0
   easyTime: 120
-  mediumTime: 30
+  mediumTime: 40
   hardTime: 120
   endlessTime: 3600
   currentTime: 0
@@ -22129,6 +22082,7 @@ MonoBehaviour:
   laneTracker: {fileID: 1025134289}
   bulbIndicator: {fileID: 1025134295}
   abilityDuration: 10
+  abilitySecondaryGoalId: 111
 --- !u!1 &4165179697234342672
 GameObject:
   m_ObjectHideFlags: 0
@@ -24639,6 +24593,7 @@ MonoBehaviour:
   laneTracker: {fileID: 6911359247430769512}
   bulbIndicator: {fileID: 6911359247430769513}
   abilityDuration: 10
+  abilitySecondaryGoalId: 111
 --- !u!4 &6952334795815679047
 Transform:
   m_ObjectHideFlags: 0
@@ -25467,6 +25422,7 @@ MonoBehaviour:
   laneTracker: {fileID: 0}
   bulbIndicator: {fileID: 7579509267388955874}
   abilityDuration: 5
+  abilitySecondaryGoalId: 0
 --- !u!1001 &7627746278930985474
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25661,6 +25617,7 @@ MonoBehaviour:
   laneTracker: {fileID: 7781086966738790219}
   bulbIndicator: {fileID: 7781086966738790220}
   abilityDuration: 10
+  abilitySecondaryGoalId: 111
 --- !u!1001 &7877698926238883042
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25977,6 +25934,7 @@ MonoBehaviour:
   laneTracker: {fileID: 1624671653}
   bulbIndicator: {fileID: 1624671659}
   abilityDuration: 10
+  abilitySecondaryGoalId: 111
 --- !u!1001 &8833181499206621314
 PrefabInstance:
   m_ObjectHideFlags: 0
