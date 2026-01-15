@@ -62,13 +62,19 @@ public class GameManager : MonoBehaviour
 
     public void BeginGamePlay()
     {
-        
         gameRunning = false;
         paused = true;
 
+        // --- GOAL RESET LOGIC ---
+        if (LevelGoalBootstrapper.Instance != null)
+        {
+            LevelGoalBootstrapper.Instance.InitializeGoalsForLevel();
+        }
+        // ------------------------
+
         GoalUIController.Instance.OnLevelStart();
         Time.timeScale = 0f;
-    
+
         ApplyDifficulty();
         progression.Initialize(currentDifficulty);
         progression.ApplyTier(0);

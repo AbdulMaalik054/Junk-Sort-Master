@@ -58,7 +58,9 @@ public static class GoalSystem
     public static void Reset()
     {
         _activeGoals.Clear();
-        OnGoalProgressUpdated = null;
+        // OnGoalProgressUpdated = null; // REMOVE OR COMMENT THIS OUT
+        // Clearing the list is enough. Setting the event to null 
+        // kills all UI listeners that are still active in the scene.
     }
 
     public static void ReportProgress(int goalId, int newValue)

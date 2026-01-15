@@ -14086,7 +14086,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   currentDifficulty: 0
   easyTime: 120
-  mediumTime: 40
+  mediumTime: 10
   hardTime: 120
   endlessTime: 3600
   currentTime: 0
