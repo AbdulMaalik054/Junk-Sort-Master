@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b908974060dd88c41b58877f5c27517d, type: 3}
   m_Name: GoalHint_ID_1 1
   m_EditorClassIdentifier: Assembly-CSharp::GoalHint
-  Id: 11
+  Id: Avoid_Mistakes
   Message: No Wrong Sorting
   Trigger:
     TriggerType: 1

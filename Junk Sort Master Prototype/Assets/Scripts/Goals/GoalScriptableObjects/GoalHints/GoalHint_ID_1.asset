@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b908974060dd88c41b58877f5c27517d, type: 3}
   m_Name: GoalHint_ID_1
   m_EditorClassIdentifier: Assembly-CSharp::GoalHint
-  Id: 1
+  Id: primary_objective_failed
   Message: Focus on completing the primary objective before time runs out.
   Trigger:
     TriggerType: 0

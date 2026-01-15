@@ -17,7 +17,7 @@ using UnityEngine;
 public class GoalUIController : MonoBehaviour
 {
     public static GoalUIController Instance;
-
+    public GoalSummaryResult? CachedEndLevelResult { get; private set; }
     [SerializeField]
     private GoalUIState currentState = GoalUIState.Hidden;
     
@@ -71,6 +71,30 @@ public class GoalUIController : MonoBehaviour
         Debug.Log($"<color=green>[GoalUIController]</color> Event firing! Subscribers: {OnGoalUIStateChanged?.GetInvocationList().Length}");
         OnGoalUIStateChanged?.Invoke(previousState, currentState);
     }
+    public void CacheEndLevelResult(GoalSummaryResult result)
+    {
+        CachedEndLevelResult = result;
+
+        var context = new GoalHintContext
+        {
+            PrimaryGoalFailed = !result.LevelSucceeded,
+            FailedSecondaryGoalIds = result.SecondaryGoals
+                .Where(g => !g.IsCompleted)
+                .Select(g => g.Id)
+                .ToHashSet(),
+            MistakeCount = PlayerMistakeTracker.TotalMistakes
+        };
+
+        var db = GoalHintDatabase.Instance;
+        if (db == null)
+        {
+            Debug.LogWarning("[GoalUIController] GoalHintDatabase not found!");
+            CachedHints = new List<GoalHint>();
+            return;
+        }
+
+        CachedHints = GoalHintEvaluator.Evaluate(db.AllHints, context);
+    }
     public void EnterMainMenu()
     {
         ClearCachedResults();
@@ -114,7 +138,9 @@ public class GoalUIController : MonoBehaviour
     {
         CachedEndLevelResult = null;
     }
+    
 
+    
     /// <summary>
     /// Centralized transition rules to prevent UI chaos.
     /// Adjust here instead of scattering guards across systems.
@@ -149,32 +175,7 @@ public class GoalUIController : MonoBehaviour
                 return false;
         }
     }
-    public GoalSummaryResult? CachedEndLevelResult { get; private set; }
-
-    public void CacheEndLevelResult(GoalSummaryResult result)
-    {
-        CachedEndLevelResult = result;
-
-        var context = new GoalHintContext
-        {
-            PrimaryGoalFailed = !result.LevelSucceeded,
-            FailedSecondaryGoalIds = result.SecondaryGoals
-                .Where(g => !g.IsCompleted)
-                .Select(g => g.Id)
-                .ToHashSet(),
-            MistakeCount = PlayerMistakeTracker.TotalMistakes
-        };
-
-        var db = GoalHintDatabase.Instance;
-        if (db == null)
-        {
-            Debug.LogWarning("[GoalUIController] GoalHintDatabase not found!");
-            CachedHints = new List<GoalHint>();
-            return;
-        }
-
-        CachedHints = GoalHintEvaluator.Evaluate(db.AllHints, context);
-    }
+    
 
 
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 public class GoalTutorialController : MonoBehaviour
 {
@@ -30,8 +31,12 @@ public class GoalTutorialController : MonoBehaviour
 
     private void HandleUIStateChanged(GoalUIState previous, GoalUIState current)
     {
-        if (current == GoalUIState.LevelFailure)
-            EvaluateAndPresentHints();
+        if (current == GoalUIState.LevelSuccess || current == GoalUIState.LevelFailure)
+        {
+            // Stop any running fades before starting a new one
+            StopAllCoroutines();
+            hintPresenter.TryDisplayHint();
+        }
         else
             hintPresenter.Hide();
     }
