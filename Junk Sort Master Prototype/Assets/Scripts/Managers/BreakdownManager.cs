@@ -31,11 +31,11 @@ public class BreakdownManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    private void Start()
-    {
-        OnLocalBreakdown += HandleLocalBreakdown;
-        OnLocalRepaired += HandleLocalRepaired;
-    }
+    //private void Start()
+    //{
+    //    OnLocalBreakdown += HandleLocalBreakdown;
+    //    OnLocalRepaired += HandleLocalRepaired;
+    //}
 
     public void Initialize(int laneCount)
     {
@@ -55,17 +55,17 @@ public class BreakdownManager : MonoBehaviour
             OnLaneReset?.Invoke(i); // Reset per-lane tracking
     }
 
-    private void HandleLocalBreakdown(int laneIndex)
-    {
+    //private void HandleLocalBreakdown(int laneIndex)
+    //{
         
-        UIManager.Instance.SpawnRepairButton(laneIndex);
+    //    UIManager.Instance.ShowRepairButton(laneIndex);
         
-    }
+    //}
 
-    private void HandleLocalRepaired()
-    {
-        UIManager.Instance.RemoveRepairButton();
-    }
+    //private void HandleLocalRepaired()
+    //{
+    //    UIManager.Instance.RemoveRepairButton();
+    //}
 
     
 
@@ -105,8 +105,8 @@ public class BreakdownManager : MonoBehaviour
 
     public void RepairLane(int laneIndex)
     {
-        
 
+        if (laneIndex < 0 || laneIndex >= laneBroken.Length) return;
         laneBroken[laneIndex] = false;
         currentPenalties[laneIndex] = 0;
 

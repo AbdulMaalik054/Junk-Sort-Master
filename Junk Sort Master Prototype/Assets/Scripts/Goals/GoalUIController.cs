@@ -20,7 +20,7 @@ public class GoalUIController : MonoBehaviour
     public GoalSummaryResult? CachedEndLevelResult { get; private set; }
     [SerializeField]
     private GoalUIState currentState = GoalUIState.Hidden;
-    
+
 
     public List<GoalHint> CachedHints { get; private set; }
 
@@ -31,7 +31,7 @@ public class GoalUIController : MonoBehaviour
     /// Subscribers should update layout, visibility, or copy accordingly.
     /// </summary>
     public event Action<GoalUIState, GoalUIState> OnGoalUIStateChanged;
-    
+
 
     private void Awake()
     {
@@ -138,9 +138,9 @@ public class GoalUIController : MonoBehaviour
     {
         CachedEndLevelResult = null;
     }
-    
 
-    
+
+
     /// <summary>
     /// Centralized transition rules to prevent UI chaos.
     /// Adjust here instead of scattering guards across systems.
@@ -175,10 +175,9 @@ public class GoalUIController : MonoBehaviour
                 return false;
         }
     }
-    
+
 
 
 }
-
 
 

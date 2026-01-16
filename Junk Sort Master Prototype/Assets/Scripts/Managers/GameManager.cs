@@ -168,18 +168,21 @@ public class GameManager : MonoBehaviour
 
     private void HandleLocalBreakdown(int laneIndex)
     {
-        SetGlobalBreakdown(bulbStatus);
-        UIManager.Instance.SpawnRepairButton(laneIndex);
-
-        if (!laneByIndex.TryGetValue(laneIndex, out var controller))
+        
+        if (laneByIndex.TryGetValue(laneIndex, out var controller))
         {
-            Debug.LogError($"[GameManager] No lane controller for lane {laneIndex}");
-            return;
+            Debug.Log($"Showing Repair Button for Lane {laneIndex} at {controller.name}");
+            UIManager.Instance.ShowRepairButton(laneIndex, controller.transform);
+            controller.StartBreakdownFlash();
+        }
+        else
+        {
+            Debug.LogError($"Could not find lane controller for index {laneIndex}!");
         }
 
-        Debug.Log($"Lane {laneIndex} breakdown handled in GameManager.");
-        controller.StartBreakdownFlash();
+        SetGlobalBreakdown(bulbStatus);
     }
+
 
     private void HandleLocalRepair()
     {

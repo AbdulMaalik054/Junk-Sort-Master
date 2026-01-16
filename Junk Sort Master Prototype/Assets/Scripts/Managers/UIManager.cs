@@ -35,9 +35,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] public Button pauseButton;
 
     [Header("Repair Button")]
-    [SerializeField] private CanvasGroup repairButtonGroup;
-    [SerializeField] private RectTransform repairButtonParent;
-    [SerializeField] private RepairButton repairButtonPrefab;
+    
+    [SerializeField] private RepairButton repairBtn;
     
     
 
@@ -130,24 +129,17 @@ public class UIManager : MonoBehaviour
     }
 
     // Repair Buttons
-    public void SpawnRepairButton(int laneIndex)
+    public void ShowRepairButton(int laneIndex, Transform anchor)
     {
-        
-        RepairButton newBtn = repairButtonPrefab;
-        RectTransform buttonRect = newBtn.GetComponent<RectTransform>();
-        buttonRect.anchoredPosition = Vector2.zero; // center of screen
-
-        // Set lane assignment
-        newBtn.laneIndex = laneIndex;
-        UIAnimator.FadeIn(repairButtonGroup, 0.2f);
-        UIAnimator.PunchScale(buttonRect.transform, 1.2f, 0.2f);
+        repairBtn.SetupRepair(laneIndex, anchor);
+        repairBtn.SetVisible(true);
     }
 
 
     public void RemoveRepairButton()
-    {   
-        UIAnimator.FadeOut(repairButtonGroup, 0.2f);
-        
+    {
+        repairBtn.SetVisible(false);
+
     }
     public void ShowtopBarGroup() => topBarGroup.gameObject.SetActive(true);
     public void HideTopBarGroup() => topBarGroup.gameObject.SetActive(false);

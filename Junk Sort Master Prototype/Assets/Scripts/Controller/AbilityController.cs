@@ -23,12 +23,15 @@ public class AbilityController : MonoBehaviour
             : AbilityState.Locked);
     }
 
+    // Inside AbilityController.cs
     private void SetState(AbilityState newState)
     {
         currentState = newState;
-
         if (newState == AbilityState.Active)
             bulbIndicator.StartAbilityFlash();
+
+        // Notify the manager to refresh UI immediately
+        AbilityManager.Instance.RefreshAllButtons();
     }
 
     public void OnAbilityClicked()
@@ -43,10 +46,25 @@ public class AbilityController : MonoBehaviour
         ReportAbilityUsed();
     }
 
+    public float GetActiveProgress()
+    {
+        if (currentState != AbilityState.Active) return 0f;
+        // Returns 1.0 at start, 0.0 at end
+        return 1f - (timerCount / abilityDuration);
+    }
+
+    // Update your AbilityTimer to track progress
+    private float timerCount = 0f;
     private IEnumerator AbilityTimer()
     {
         SetState(AbilityState.Active);
-        yield return new WaitForSeconds(abilityDuration);
+        timerCount = 0f;
+        while (timerCount < abilityDuration)
+        {
+            timerCount += Time.deltaTime;
+            // The Manager will poll this value via RefreshUI
+            yield return null;
+        }
         SetState(AbilityState.Locked);
         bulbIndicator.ResetBonus();
         laneTracker.ResetBonus();
@@ -70,4 +88,7 @@ public class AbilityController : MonoBehaviour
 
         Debug.Log("[SecondaryGoal] Ability usage reported");
     }
+
+    
+    
 }
