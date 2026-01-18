@@ -18,6 +18,7 @@ public class AbilityController : MonoBehaviour
 
     public void NotifyBonusChanged(int currentBonus, int maxBonus)
     {
+        if (currentState == AbilityState.Active) return;
         SetState(currentBonus >= maxBonus
             ? AbilityState.Ready
             : AbilityState.Locked);
@@ -30,8 +31,8 @@ public class AbilityController : MonoBehaviour
         if (newState == AbilityState.Active)
             bulbIndicator.StartAbilityFlash();
 
-        // Notify the manager to refresh UI immediately
-        AbilityManager.Instance.RefreshAllButtons();
+        //// Notify the manager to refresh UI immediately
+        //AbilityManager.Instance.RefreshAllButtons();
     }
 
     public void OnAbilityClicked()

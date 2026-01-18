@@ -3,7 +3,7 @@ using UnityEngine;
 public class AutoSortTrigger : MonoBehaviour
 {
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
 
         JunkItem junk = other.GetComponentInChildren<JunkItem>();

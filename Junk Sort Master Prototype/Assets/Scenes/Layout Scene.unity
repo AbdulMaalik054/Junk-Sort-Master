@@ -6285,7 +6285,7 @@ MonoBehaviour:
   secondaryGoalsContainer: {fileID: 1625612627}
   secondaryGoalRowPrefab: {fileID: 3919527624929843450, guid: c388eb6009d4eaf409fded935512a03d, type: 3}
   totalBonusText: {fileID: 1279864950}
-  bonusCountDuration: 5
+  bonusCountDuration: 3
   totalBonusTransform: {fileID: 1279864949}
   canvasGroup: {fileID: 627686294}
 --- !u!114 &627686296
@@ -7411,8 +7411,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.05079174, y: 0.84253883, z: 6.7045927}
-  m_Center: {x: -0.47460413, y: 0.48069668, z: -0.04164362}
+  m_Size: {x: 16.142365, y: 0.5141964, z: 6.7045927}
+  m_Center: {x: 7.5711823, y: 0.7689712, z: -0.04164362}
 --- !u!114 &807160808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14279,7 +14279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   currentDifficulty: 0
   easyTime: 120
-  mediumTime: 60
+  mediumTime: 100
   hardTime: 120
   endlessTime: 3600
   currentTime: 0
